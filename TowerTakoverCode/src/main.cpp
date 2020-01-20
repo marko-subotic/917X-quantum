@@ -3,7 +3,6 @@
 // ---- START VEXCODE CONFIGURED DEVICES ----
 // Robot Configuration:
 // [Name]               [Type]        [Port(s)]
-// Controller1          controller                    
 // ---- END VEXCODE CONFIGURED DEVICES ----
 
 using namespace vex;
@@ -308,11 +307,11 @@ void usercontrol(void) {
     //////////////////////////////////////////////////////////
 
     if (Controller1.ButtonA.pressing()) {
-      TrayAngle.spin(vex::directionType::fwd, 50, vex::velocityUnits::rpm);
+      TrayAngle.spin(vex::directionType::fwd, 90, vex::velocityUnits::rpm);
 
     } else if (Controller1.ButtonB.pressing()) {
 
-      TrayAngle.spin(vex::directionType::rev, 50, vex::velocityUnits::rpm);
+      TrayAngle.spin(vex::directionType::rev, 90, vex::velocityUnits::rpm);
 
     } else {
 
