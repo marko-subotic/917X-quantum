@@ -21,8 +21,8 @@ vex::motor Right = vex::motor(vex::PORT11, true);
 vex::motor IntakeLeft = vex::motor(vex::PORT2, true);
 vex::motor IntakeRight = vex::motor(vex::PORT12);
 
-vex::motor ArmAngleL = vex::motor(vex::PORT3, true);
-vex::motor ArmAngleR = vex::motor(vex::PORT13);
+vex::motor ArmAngleL = vex::motor(vex::PORT13, true);
+vex::motor ArmAngleR = vex::motor(vex::PORT3);
 
 vex::motor TrayAngle = vex::motor(vex::PORT4, true);
 
@@ -181,9 +181,9 @@ static int intake = 0;
 void intakeInFunc() {
   // intakeIn *= -1;
   // intakeOut = -1;
-  if (intake != 100) {
-    intake = 100;
-  } else if (intake == 100) {
+  if (intake != 20) {
+    intake = 20;
+  } else if (intake == 20) {
     intake = 0;
   }
 }
@@ -307,11 +307,11 @@ void usercontrol(void) {
     //////////////////////////////////////////////////////////
 
     if (Controller1.ButtonA.pressing()) {
-      TrayAngle.spin(vex::directionType::fwd, 90, vex::velocityUnits::rpm);
+      TrayAngle.spin(vex::directionType::fwd, 70, vex::velocityUnits::rpm);
 
     } else if (Controller1.ButtonB.pressing()) {
 
-      TrayAngle.spin(vex::directionType::rev, 90, vex::velocityUnits::rpm);
+      TrayAngle.spin(vex::directionType::rev, 70, vex::velocityUnits::rpm);
 
     } else {
 
