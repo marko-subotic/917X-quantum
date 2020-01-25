@@ -1,0 +1,9 @@
+cd [directory path] = gets you to a directory
+cd.. = goes up one directory
+cd... = goes up 2 directories
+git status = shows you what files are changed and uploaded
+git add = tracks files in the local git repo, * will track all files
+git commit -m "" = commits the changes and then you can add a message
+git push = uploads to the remote repo, most often github
+git pull = downloads all changes from remot repo
+git clone {url of remot repo} = copies the git repo onto local
