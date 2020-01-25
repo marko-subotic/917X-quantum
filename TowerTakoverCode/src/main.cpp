@@ -237,9 +237,13 @@ void usercontrol(void) {
     if ((abs(RightSide1) <= 10) and (abs(RightSide2) >= 10)) {
       RightSide = (RightSide2 * RightSide2 * RightSide2) / (16629);
     }
-
+    if ((Controller1.ButtonUp.pressing())) {
+      Left.spin(vex::directionType::fwd, 40, vex::velocityUnits::rpm);
+      Right.spin(vex::directionType::fwd, 40, vex::velocityUnits::rpm);
+    }else{
     Left.spin(vex::directionType::fwd, LeftSide, vex::velocityUnits::rpm);
     Right.spin(vex::directionType::fwd, RightSide, vex::velocityUnits::rpm);
+    }
 
     ////////////////////////////////////////////////////////
     //                                                    //
@@ -274,13 +278,13 @@ void usercontrol(void) {
     ///////////////////////////////////////////////////////////
 
     if ((Controller1.ButtonL1.pressing())) {
-      ArmAngleL.spin(vex::directionType::fwd, 15, vex::velocityUnits::rpm);
-      ArmAngleR.spin(vex::directionType::fwd, 15, vex::velocityUnits::rpm);
+      ArmAngleL.spin(vex::directionType::fwd, 40, vex::velocityUnits::rpm);
+      ArmAngleR.spin(vex::directionType::fwd, 40, vex::velocityUnits::rpm);
     }
 
     else if ((Controller1.ButtonL2.pressing())) {
-      ArmAngleL.spin(vex::directionType::rev, 20, vex::velocityUnits::rpm);
-      ArmAngleR.spin(vex::directionType::rev, 20, vex::velocityUnits::rpm);
+      ArmAngleL.spin(vex::directionType::rev, 40, vex::velocityUnits::rpm);
+      ArmAngleR.spin(vex::directionType::rev, 40, vex::velocityUnits::rpm);
     }
 
     else {
@@ -307,11 +311,11 @@ void usercontrol(void) {
     //////////////////////////////////////////////////////////
 
     if (Controller1.ButtonA.pressing()) {
-      TrayAngle.spin(vex::directionType::fwd, 70, vex::velocityUnits::rpm);
+      TrayAngle.spin(vex::directionType::fwd, 90, vex::velocityUnits::rpm);
 
     } else if (Controller1.ButtonB.pressing()) {
 
-      TrayAngle.spin(vex::directionType::rev, 70, vex::velocityUnits::rpm);
+      TrayAngle.spin(vex::directionType::rev, 90, vex::velocityUnits::rpm);
 
     } else {
 
