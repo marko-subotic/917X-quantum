@@ -258,13 +258,21 @@ void usercontrol(void) {
       RightSide = (RightSide2 * RightSide2 * RightSide2) / (16629);
     }
     if ((Controller1.ButtonUp.pressing())) {
-      LeftBack.spin(vex::directionType::fwd, 40, vex::velocityUnits::rpm);
-      LeftFront.spin(vex::directionType::fwd, 40, vex::velocityUnits::rpm);
+      LeftBack.spin(vex::directionType::fwd, 80, vex::velocityUnits::rpm);
+      LeftFront.spin(vex::directionType::fwd, 80, vex::velocityUnits::rpm);
 
-      RightBack.spin(vex::directionType::fwd, 40, vex::velocityUnits::rpm);
-      RightFront.spin(vex::directionType::fwd, 40, vex::velocityUnits::rpm);
+      RightBack.spin(vex::directionType::fwd, 80, vex::velocityUnits::rpm);
+      RightFront.spin(vex::directionType::fwd, 80, vex::velocityUnits::rpm);
 
-    }else{
+    }else if ((Controller1.ButtonDown.pressing())) {
+      LeftBack.spin(vex::directionType::fwd, -80, vex::velocityUnits::rpm);
+      LeftFront.spin(vex::directionType::fwd, -80, vex::velocityUnits::rpm);
+
+      RightBack.spin(vex::directionType::fwd, -80, vex::velocityUnits::rpm);
+      RightFront.spin(vex::directionType::fwd, -80, vex::velocityUnits::rpm);
+
+    }
+    else{
     LeftBack.spin(vex::directionType::fwd, LeftSide, vex::velocityUnits::rpm);
     LeftFront.spin(vex::directionType::fwd, LeftSide, vex::velocityUnits::rpm);
 
