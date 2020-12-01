@@ -1,4 +1,4 @@
-#include "vex.h"
+                                                                  #include "vex.h"
 
 // ---- START VEXCODE CONFIGURED DEVICES ----
 // Robot Configuration:
@@ -15,22 +15,23 @@ competition Competition;
 vex::controller Controller1 = vex::controller();
 vex::controller Controller2 = vex::controller();
 
-vex::motor LeftBack = vex::motor(vex::PORT1);
-vex::motor RightBack = vex::motor(vex::PORT11, true);
-vex::motor LeftFront = vex::motor(vex::PORT3);
-vex::motor RightFront = vex::motor(vex::PORT14,true);
+vex::motor LeftBack = vex::motor(vex::PORT19);
+vex::motor RightBack = vex::motor(vex::PORT20, true);
+vex::motor LeftFront = vex::motor(vex::PORT17);
+vex::motor RightFront = vex::motor(vex::PORT18,true);
 
-vex::motor IntakeLeft = vex::motor(vex::PORT2, true);
-vex::motor IntakeRight = vex::motor(vex::PORT12);
+vex::motor IntakeLeft = vex::motor(vex::PORT3, true);
+vex::motor IntakeRight = vex::motor(vex::PORT4);
 
-vex::motor ArmAngle = vex::motor(vex::PORT13, true);
+vex::motor BottomRoller = vex::motor(vex::PORT1, true);
 
-vex::motor TrayAngle = vex::motor(vex::PORT4, true);
+vex::motor TopRoller = vex::motor(vex::PORT2, true);
 
 ///////////////////////////////////////////////////////////////
 //                                                           //
 //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-static int side = 1; // SET FOR SIDE (1 FOR BLUE, -1 FOR RED)!!
+//blue: 1, red: -1
+int side=1;
 //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 //                                                           //
 ///////////////////////////////////////////////////////////////
@@ -46,109 +47,118 @@ void pre_auton(void) { vexcodeInit(); }
 //                                                           //
 ///////////////////////////////////////////////////////////////
 
-// move (in feet; + forward, - backwards)
-void move(double dist) {
-  dist *= 343.77468;
-  LeftBack.startRotateFor(dist, vex::rotationUnits::deg, 40,
-                      vex::velocityUnits::pct);
-  LeftFront.startRotateFor(dist, vex::rotationUnits::deg, 40,
-                      vex::velocityUnits::pct);
-  RightBack.rotateFor(dist, vex::rotationUnits::deg, 40, vex::velocityUnits::pct);
-  RightFront.rotateFor(dist, vex::rotationUnits::deg, 40, vex::velocityUnits::pct);
+//move (in tiles; + forward, - backwards)
+void move(double dist, int spd)
+{
+    dist *=(343.77468*2);
+    LeftBack.startRotateFor(dist, vex::rotationUnits::deg, spd, vex::velocityUnits::pct);
+    LeftFront.startRotateFor(dist, vex::rotationUnits::deg, spd, vex::velocityUnits::pct);
 
+    RightBack.startRotateFor(dist, vex::rotationUnits::deg, spd, vex::velocityUnits::pct);
+    RightFront.rotateFor(dist, vex::rotationUnits::deg, spd, vex::velocityUnits::pct);
 }
 
-// turn degrees, (+ for right, - for left)
-void turn(int deg, int side) {
-  deg *= 2.4 * side;
-  LeftBack.startRotateFor(deg, vex::rotationUnits::deg, 70,
-                      vex::velocityUnits::pct);
-  LeftFront.startRotateFor(deg, vex::rotationUnits::deg, 70,
-                      vex::velocityUnits::pct);
-  RightBack.rotateFor(-deg, vex::rotationUnits::deg, 70, vex::velocityUnits::pct);
-  RightFront.rotateFor(-deg, vex::rotationUnits::deg, 70, vex::velocityUnits::pct);
+//turn degrees, (+ for right, - for left)
+void turn(int deg)
+{
+    //move(-0.5,60);
+    deg *= 2.32*side;
+    LeftFront.startRotateFor(deg, vex::rotationUnits::deg, 50, vex::velocityUnits::pct);
+    LeftBack.startRotateFor(deg, vex::rotationUnits::deg, 50, vex::velocityUnits::pct);
 
+    RightFront.startRotateFor(-deg, vex::rotationUnits::deg, 50, vex::velocityUnits::pct);
+    RightBack.rotateFor(-deg, vex::rotationUnits::deg, 50, vex::velocityUnits::pct);
 }
 
-// grab one cube and keep in robot, time in seconds, push for direction (+ for
-// intake, - for pushing)
-void grab(int time, int push) {
-  LeftBack.startRotateFor(130 * time, vex::rotationUnits::deg, 30,
-                      vex::velocityUnits::pct);
-  LeftFront.startRotateFor(130 * time, vex::rotationUnits::deg, 30,
-                      vex::velocityUnits::pct);
-  RightBack.startRotateFor(130 * time, vex::rotationUnits::deg, 30,
-                       vex::velocityUnits::pct);
-  RightFront.startRotateFor(130 * time, vex::rotationUnits::deg, 30,
-                       vex::velocityUnits::pct);                     
-  IntakeLeft.spin(vex::directionType::rev, 90 * push, vex::velocityUnits::pct);
-  IntakeRight.spin(vex::directionType::rev, 90 * push, vex::velocityUnits::pct);
-  vex::task::sleep(time * 1000);
-  IntakeLeft.spin(vex::directionType::rev, 50 * push, vex::velocityUnits::rpm);
-  IntakeRight.spin(vex::directionType::rev, 50 * push, vex::velocityUnits::rpm);
+//grab one cube and keep in robot, time in seconds, push for direction (+ for intake, - for pushing)
+void grab(double time, int push)
+{
+    LeftFront.startRotateFor(310*time, vex::rotationUnits::deg, 31, vex::velocityUnits::pct);
+    LeftBack.startRotateFor(310*time, vex::rotationUnits::deg, 31, vex::velocityUnits::pct);
+
+    RightFront.startRotateFor(310*time, vex::rotationUnits::deg, 31, vex::velocityUnits::pct);
+    RightBack.startRotateFor(310*time, vex::rotationUnits::deg, 31, vex::velocityUnits::pct);
+    
+    /*
+    LeftFront.spin(vex::directionType::fwd, 35, vex::velocityUnits::pct); 
+    RightFront.spin(vex::directionType::fwd, 35, vex::velocityUnits::pct);
+
+    LeftBack.spin(vex::directionType::fwd, 35, vex::velocityUnits::pct); 
+    RightBack.spin(vex::directionType::fwd, 35, vex::velocityUnits::pct);
+    */
+
+    IntakeLeft.spin(vex::directionType::rev, 99*push, vex::velocityUnits::pct); 
+    IntakeRight.spin(vex::directionType::rev, 99*push, vex::velocityUnits::pct);
+    vex::task::sleep(time*1000);
+
+    LeftFront.spin(vex::directionType::fwd, 0, vex::velocityUnits::pct); 
+    RightFront.spin(vex::directionType::fwd, 0, vex::velocityUnits::pct);
+
+    LeftBack.spin(vex::directionType::fwd, 0, vex::velocityUnits::pct); 
+    RightBack.spin(vex::directionType::fwd, 0, vex::velocityUnits::pct);
+    vex::task::sleep(400);
+
+    IntakeLeft.spin(vex::directionType::rev, 0, vex::velocityUnits::rpm); 
+    IntakeRight.spin(vex::directionType::rev, 0, vex::velocityUnits::rpm); 
 }
 
-// take out cube, lift arm, place cube, and lower WIP
-void tower() {
-  IntakeLeft.stop();
-  IntakeRight.stop();
-  IntakeLeft.startRotateFor(200, vex::rotationUnits::deg, 80,
-                            vex::velocityUnits::pct);
-  IntakeRight.rotateFor(200, vex::rotationUnits::deg, 80,
-                        vex::velocityUnits::pct);
-  ArmAngle.startRotateTo(240, vex::rotationUnits::deg, 30,
-                          vex::velocityUnits::pct);
-  //ArmAngleR.rotateTo(240, vex::rotationUnits::deg, 30, vex::velocityUnits::pct);
-  vex::task::sleep(500);
-  IntakeLeft.startRotateFor(180, vex::rotationUnits::deg, 90,
-                            vex::velocityUnits::pct);
-  IntakeRight.rotateFor(180, vex::rotationUnits::deg, 90,
-                        vex::velocityUnits::pct);
-  vex::task::sleep(500);
-  ArmAngle.startRotateTo(55, vex::rotationUnits::deg);
-  //ArmAngleR.rotateTo(55, vex::rotationUnits::deg);
+//take out cube, lift arm, place cube, and lower WIP
+/*void tower()
+{
+    IntakeLeft.stop(); 
+    IntakeRight.stop();
+    
+    IntakeLeft.startRotateFor(200, vex::rotationUnits::deg, 80, vex::velocityUnits::pct);
+    IntakeRight.rotateFor(200, vex::rotationUnits::deg, 80, vex::velocityUnits::pct); 
+    
+    TrayAngle.rotateFor(40, vex::rotationUnits::deg, 50, vex::velocityUnits::pct);
+
+    ArmAngle.rotateFor(240, vex::rotationUnits::deg, 30, vex::velocityUnits::pct); 
+    vex::task::sleep(500);
+    IntakeLeft.startRotateFor(180, vex::rotationUnits::deg, 90, vex::velocityUnits::pct);
+    IntakeRight.rotateFor(180, vex::rotationUnits::deg, 90, vex::velocityUnits::pct); 
+    vex::task::sleep(500);
+    ArmAngle.rotateTo(55, vex::rotationUnits::deg); 
 }
 
-// slowly lower tray and score
-void stack() {
-  vex::task::sleep(500);
+//slowly lower tray and score
+void stack()
+{
+    IntakeLeft.startRotateFor(360, vex::rotationUnits::deg, -35, vex::velocityUnits::pct);
+    IntakeRight.startRotateFor(360, vex::rotationUnits::deg, -35, vex::velocityUnits::pct);
 
-  IntakeLeft.startRotateFor(90, vex::rotationUnits::deg, -20,
-                            vex::velocityUnits::pct);
-  IntakeRight.startRotateFor(90, vex::rotationUnits::deg, -20,
-                             vex::velocityUnits::pct);
+    TrayAngle.rotateFor(-1100, vex::rotationUnits::deg, 70, vex::velocityUnits::pct);
+    TrayAngle.rotateFor(-200, vex::rotationUnits::deg, 25, vex::velocityUnits::pct);
+    vex::task::sleep(200);
 
-  LeftBack.startRotateFor(90, vex::rotationUnits::deg, 5, vex::velocityUnits::pct);
-  LeftFront.startRotateFor(90, vex::rotationUnits::deg, 5, vex::velocityUnits::pct);
-  RightBack.startRotateFor(90, vex::rotationUnits::deg, 5, vex::velocityUnits::pct);
-  RightFront.startRotateFor(90, vex::rotationUnits::deg, 5, vex::velocityUnits::pct);
+    LeftFront.startRotateFor(35, vex::rotationUnits::deg, 20, vex::velocityUnits::pct);
+    LeftBack.startRotateFor(35, vex::rotationUnits::deg, 20, vex::velocityUnits::pct);
+    RightFront.startRotateFor(35, vex::rotationUnits::deg, 20, vex::velocityUnits::pct);
+    RightBack.rotateFor(35, vex::rotationUnits::deg, 20, vex::velocityUnits::pct);
+    vex::task::sleep(200);
 
-  TrayAngle.rotateFor(380, vex::rotationUnits::deg, 30,
-                      vex::velocityUnits::rpm);
-
-  LeftBack.startRotateFor(30, vex::rotationUnits::deg, 10, vex::velocityUnits::pct);
-  LeftFront.startRotateFor(30, vex::rotationUnits::deg, 10, vex::velocityUnits::pct);
-  RightBack.rotateFor(30, vex::rotationUnits::deg, 10, vex::velocityUnits::pct);
-  RightFront.rotateFor(30, vex::rotationUnits::deg, 10, vex::velocityUnits::pct);
-
-  IntakeLeft.startRotateFor(180, vex::rotationUnits::deg, -20,
-                            vex::velocityUnits::pct);
-  IntakeRight.startRotateFor(180, vex::rotationUnits::deg, -20,
-                             vex::velocityUnits::pct);
-
-  LeftBack.startRotateFor(-360, vex::rotationUnits::deg, 20,
-                      vex::velocityUnits::pct);
-  LeftFront.startRotateFor(-360, vex::rotationUnits::deg, 20,
-                      vex::velocityUnits::pct);  
-  RightBack.rotateFor(-360, vex::rotationUnits::deg, 20, vex::velocityUnits::pct);
-  RightFront.rotateFor(-360, vex::rotationUnits::deg, 20, vex::velocityUnits::pct);
-
-  TrayAngle.rotateFor(-400, vex::rotationUnits::deg, 30,
-                      vex::velocityUnits::rpm);
-
-  ArmAngle.startRotateTo(65, vex::rotationUnits::deg);
-  //ArmAngleR.rotateTo(65, vex::rotationUnits::deg);
+    LeftFront.startRotateFor(-720, vex::rotationUnits::deg, 50, vex::velocityUnits::pct);
+    LeftBack.startRotateFor(-720, vex::rotationUnits::deg, 50, vex::velocityUnits::pct);
+    RightFront.startRotateFor(-720, vex::rotationUnits::deg, 50, vex::velocityUnits::pct);
+    RightBack.rotateFor(-720, vex::rotationUnits::deg, 50, vex::velocityUnits::pct);
 }
+
+//stuff before auton
+void start()
+{
+    //side=s;
+    TrayAngle.rotateTo(-500, vex::rotationUnits::deg, 80, vex::velocityUnits::pct);
+    vex::task::sleep(250);
+    ArmAngle.startRotateTo(-700, vex::rotationUnits::deg, 60, vex::velocityUnits::pct);
+    vex::task::sleep(300);
+
+    TrayAngle.rotateTo(-350, vex::rotationUnits::deg, 40, vex::velocityUnits::pct);
+    vex::task::sleep(100);
+    ArmAngle.rotateTo(-69, vex::rotationUnits::deg);
+    vex::task::sleep(400);
+}
+
+
 
 /////////////////////////////////////////////////////
 //                                                 //
@@ -158,12 +168,6 @@ void stack() {
 //                                                 //
 /////////////////////////////////////////////////////
 
-void onePoint() {
-  move(0.5);
-  move(-1);
-  vex::task::sleep(2000);
-  move(2);
-}
 
 void threePoint() {
   move(1.7);
@@ -175,28 +179,50 @@ void threePoint() {
   vex::task::sleep(500);
 }
 
-void autonomous(void) {
-  move(0.3);
-  ArmAngle.startRotateTo(100, vex::rotationUnits::deg, 30,
-                          vex::velocityUnits::pct);
-  //ArmAngleR.rotateTo(100, vex::rotationUnits::deg, 30, vex::velocityUnits::pct);
-  vex::task::sleep(250);
-  ArmAngle.startRotateTo(30, vex::rotationUnits::deg);
-  //ArmAngleR.rotateTo(55, vex::rotationUnits::deg);
-  vex::task::sleep(1000);
 
-  onePoint();
+//overall speed
+int s=35;
+
+void one() {
+  //start();
+    vex::task::sleep(500);
+
+    //start bot 1 tile from goal zone, facing backwards
+    move(-1,s);
+    move(2,s+10);
+
 }
 
+void five() 
+{
+    start();
+    
+    move(0.1,s);
+    grab(4.05,1);
+    vex::task::sleep(100);
+
+    move(-1.06,s+12);
+    turn(-135);
+    vex::task::sleep(400);
+    move(0.67,s);
+
+    stack();
+}
+
+void autonomous(void) {
+  one();
+}*/
+
 ///////////////////////////////////////////////////////
 //                                                   //
 //                                                   //
-//                INTAKE IN & OUT                    //
+//           INTAKE AND ROLLERS IN & OUT             //
 //                                                   //
 //                                                   //
 ///////////////////////////////////////////////////////
 
-static int intake = 0;
+int intake = 0;
+static int roller = 0;
 
 void intakeInFunc() {
   // intakeIn *= -1;
@@ -215,6 +241,22 @@ void intakeOutFunc() {
     intake = -200;
   } else if (intake == -200) {
     intake = 0;
+  }
+}
+
+void rollerInFunc() {
+  if (roller != 200) {
+    roller = 200;
+  } else if (roller == 200) {
+    roller = 0;
+  }
+}
+
+void rollerOutFunc() {
+  if (roller != -400) {
+    roller = -400;
+  } else if (roller == -400) {
+    roller = 0;
   }
 }
 
@@ -258,11 +300,11 @@ void usercontrol(void) {
       RightSide = (RightSide2 * RightSide2 * RightSide2) / (16629);
     }
     if ((Controller1.ButtonUp.pressing())) {
-      LeftBack.spin(vex::directionType::fwd, 80, vex::velocityUnits::rpm);
-      LeftFront.spin(vex::directionType::fwd, 80, vex::velocityUnits::rpm);
+      LeftBack.spin(vex::directionType::fwd, 40, vex::velocityUnits::rpm);
+      LeftFront.spin(vex::directionType::fwd, 40, vex::velocityUnits::rpm);
 
-      RightBack.spin(vex::directionType::fwd, 80, vex::velocityUnits::rpm);
-      RightFront.spin(vex::directionType::fwd, 80, vex::velocityUnits::rpm);
+      RightBack.spin(vex::directionType::fwd, 40, vex::velocityUnits::rpm);
+      RightFront.spin(vex::directionType::fwd, 40, vex::velocityUnits::rpm);
 
     }else if ((Controller1.ButtonDown.pressing())) {
       LeftBack.spin(vex::directionType::fwd, -80, vex::velocityUnits::rpm);
@@ -284,7 +326,7 @@ void usercontrol(void) {
     ////////////////////////////////////////////////////////
     //                                                    //
     //                                                    //
-    //                   INTAKE CONTROL                   //
+    //               INTAKE & ROLLER CONTROL              //
     //                                                    //
     //                                                    //
     ////////////////////////////////////////////////////////
@@ -292,71 +334,16 @@ void usercontrol(void) {
     Controller1.ButtonR1.pressed(intakeInFunc);
     Controller1.ButtonR2.pressed(intakeOutFunc);
 
-    // if (intakeIn == 1) {
-    // IntakeLeft.spin(vex::directionType::fwd, 200, vex::velocityUnits::rpm);
-    // IntakeRight.spin(vex::directionType::fwd, 200, vex::velocityUnits::rpm);
-    // } else if (intakeOut == 1) {
-    // IntakeLeft.spin(vex::directionType::fwd, -100, vex::velocityUnits::rpm);
-    // IntakeRight.spin(vex::directionType::fwd, -100, vex::velocityUnits::rpm);
-    // } else {
-    // IntakeLeft.setBrake(hold);
-    // IntakeRight.setBrake(vex::brakeType::hold);
-    // }
+    Controller1.ButtonL1.pressed(rollerInFunc);
+    Controller1.ButtonL2.pressed(rollerOutFunc);
+
+    
     IntakeLeft.spin(vex::directionType::fwd, intake, vex::velocityUnits::rpm);
     IntakeRight.spin(vex::directionType::fwd, intake, vex::velocityUnits::rpm);
 
-    ///////////////////////////////////////////////////////////
-    //                                                       //
-    //                                                       //
-    //                      ARM ANGLE                        //
-    //                                                       //
-    //                                                       //
-    ///////////////////////////////////////////////////////////
-
-    if ((Controller1.ButtonL1.pressing())) {
-      ArmAngle.spin(vex::directionType::fwd, 100, vex::velocityUnits::rpm);
-      //ArmAngleR.spin(vex::directionType::fwd, 40, vex::velocityUnits::rpm);
-    }
-
-    else if ((Controller1.ButtonL2.pressing())) {
-      ArmAngle.spin(vex::directionType::rev, 100, vex::velocityUnits::rpm);
-      //ArmAngleR.spin(vex::directionType::rev, 40, vex::velocityUnits::rpm);
-    }
-
-    else {
-      ArmAngle.stop(vex::brakeType::hold);
-      //ArmAngleR.stop(vex::brakeType::hold);
-    }
-
-    /*if (Controller1.ButtonUp.pressing()) {
-      ArmAngleL.startRotateTo(210, vex::rotationUnits::deg);
-      ArmAngleR.rotateTo(210, vex::rotationUnits::deg);
-    }
-
-    if (Controller1.ButtonDown.pressing()) {
-      ArmAngleL.startRotateTo(55, vex::rotationUnits::deg);
-      ArmAngleR.rotateTo(55, vex::rotationUnits::deg);
-    }*/
-
-    //////////////////////////////////////////////////////////
-    //                                                      //
-    //                                                      //
-    //                   TRAY ANGLE                         //
-    //                                                      //
-    //                                                      //
-    //////////////////////////////////////////////////////////
-
-    if (Controller1.ButtonA.pressing()) {
-      TrayAngle.spin(vex::directionType::fwd, 90, vex::velocityUnits::rpm);
-
-    } else if (Controller1.ButtonB.pressing()) {
-
-      TrayAngle.spin(vex::directionType::rev, 90, vex::velocityUnits::rpm);
-
-    } else {
-
-      TrayAngle.stop(vex::brakeType::hold);
-    }
+    BottomRoller.spin(vex::directionType::fwd, roller, vex::velocityUnits::rpm);
+    TopRoller.spin(vex::directionType::fwd, roller, vex::velocityUnits::rpm);
+    
 
     //////////////////////////////////////////////////////////
     //                                                      //
@@ -384,7 +371,7 @@ void usercontrol(void) {
 // Main will set up the competition functions and callbacks.
 int main() {
   // Set up callbacks for autonomous and driver control periods.
-  Competition.autonomous(autonomous);
+  //Competition.autonomous(autonomous);
   Competition.drivercontrol(usercontrol);
 
   // Run the pre-autonomous function.
