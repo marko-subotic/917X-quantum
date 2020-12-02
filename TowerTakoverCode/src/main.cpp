@@ -221,27 +221,29 @@ void autonomous(void) {
 //                                                   //
 ///////////////////////////////////////////////////////
 
-int intake = 0;
+static int intake = 0;
 static int roller = 0;
 
 void intakeInFunc() {
-  // intakeIn *= -1;
-  // intakeOut = -1;
   if (intake != 100) {
     intake = 100;
   } else if (intake == 100) {
     intake = 0;
   }
+  printf("intake in \v");
+  Brain.Screen.clearLine();
+  Brain.Screen.print(intake);
 }
 
 void intakeOutFunc() {
-  // *= -1;
-  // intakeIn = -1;
   if (intake != -200) {
     intake = -200;
   } else if (intake == -200) {
     intake = 0;
   }
+  printf("intake out \v");
+  Brain.Screen.clearLine();
+  Brain.Screen.print(intake);
 }
 
 void rollerInFunc() {
@@ -250,6 +252,9 @@ void rollerInFunc() {
   } else if (roller == 200) {
     roller = 0;
   }
+  printf("roller moving in\v");
+  Brain.Screen.clearLine();
+  Brain.Screen.print("This button is pressed\v");
 }
 
 void rollerOutFunc() {
@@ -258,7 +263,11 @@ void rollerOutFunc() {
   } else if (roller == -400) {
     roller = 0;
   }
+  printf("roller moving out\v");
+  Brain.Screen.clearLine();
+  Brain.Screen.print("This button is pressed\v");
 }
+
 
 ///////////////////////////////////////////////////////
 //                                                   //
@@ -278,6 +287,29 @@ void usercontrol(void) {
     //                                                   //
     //                                                   //
     ///////////////////////////////////////////////////////
+
+
+    ////////////////////////////////////////////////////////
+    //                                                    //
+    //                                                    //
+    //               INTAKE & ROLLER CONTROL              //
+    //                                                    //
+    //                                                    //
+    ////////////////////////////////////////////////////////
+
+    Controller1.ButtonR1.pressed(intakeInFunc);
+    Controller1.ButtonR2.pressed(intakeOutFunc);
+
+    Controller1.ButtonL1.pressed(rollerInFunc);
+    Controller1.ButtonL2.pressed(rollerOutFunc);
+
+    
+    IntakeLeft.spin(vex::directionType::fwd, intake, vex::velocityUnits::rpm);
+    IntakeRight.spin(vex::directionType::fwd, intake, vex::velocityUnits::rpm);
+
+    BottomRoller.spin(vex::directionType::fwd, -roller, vex::velocityUnits::rpm);
+    TopRoller.spin(vex::directionType::fwd, roller, vex::velocityUnits::rpm);
+    
 
     int LeftSide1 = Controller1.Axis3.value();
     int RightSide1 = Controller1.Axis2.value();
@@ -323,28 +355,7 @@ void usercontrol(void) {
 
     }
 
-    ////////////////////////////////////////////////////////
-    //                                                    //
-    //                                                    //
-    //               INTAKE & ROLLER CONTROL              //
-    //                                                    //
-    //                                                    //
-    ////////////////////////////////////////////////////////
-
-    Controller1.ButtonR1.pressed(intakeInFunc);
-    Controller1.ButtonR2.pressed(intakeOutFunc);
-
-    Controller1.ButtonL1.pressed(rollerInFunc);
-    Controller1.ButtonL2.pressed(rollerOutFunc);
-
     
-    IntakeLeft.spin(vex::directionType::fwd, intake, vex::velocityUnits::rpm);
-    IntakeRight.spin(vex::directionType::fwd, intake, vex::velocityUnits::rpm);
-
-    BottomRoller.spin(vex::directionType::fwd, roller, vex::velocityUnits::rpm);
-    TopRoller.spin(vex::directionType::fwd, roller, vex::velocityUnits::rpm);
-    
-
     //////////////////////////////////////////////////////////
     //                                                      //
     //                                                      //
