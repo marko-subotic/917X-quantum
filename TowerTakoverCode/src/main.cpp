@@ -221,30 +221,12 @@ void autonomous(void) {
 //                                                   //
 ///////////////////////////////////////////////////////
 
-static int intake = 0;
+static int takein = 0;
 static int roller = 0;
 
-void intakeInFunc() {
-  if (intake != 100) {
-    intake = 100;
-  } else if (intake == 100) {
-    intake = 0;
-  }
-  printf("intake in \v");
-  Brain.Screen.clearLine();
-  Brain.Screen.print(intake);
-}
 
-void intakeOutFunc() {
-  if (intake != -200) {
-    intake = -200;
-  } else if (intake == -200) {
-    intake = 0;
-  }
-  printf("intake out \v");
-  Brain.Screen.clearLine();
-  Brain.Screen.print(intake);
-}
+
+
 
 void rollerInFunc() {
   if (roller != 200) {
@@ -252,9 +234,8 @@ void rollerInFunc() {
   } else if (roller == 200) {
     roller = 0;
   }
-  printf("roller moving in\v");
   Brain.Screen.clearLine();
-  Brain.Screen.print("This button is pressed\v");
+  Brain.Screen.print("roller moving in\v");
 }
 
 void rollerOutFunc() {
@@ -263,11 +244,29 @@ void rollerOutFunc() {
   } else if (roller == -400) {
     roller = 0;
   }
-  printf("roller moving out\v");
   Brain.Screen.clearLine();
-  Brain.Screen.print("This button is pressed\v");
+  Brain.Screen.print("roller moving out\v");
 }
 
+void intakeInFunc() {
+  if (takein != 200) {
+    takein = 200;
+  } else if (takein == 200) {
+    takein = 0;
+  }
+  Brain.Screen.clearLine();
+  Brain.Screen.print("roller moving in\v");
+}
+
+void intakeOutFunc() {
+  if (takein != -400) {
+    takein = -400;
+  } else if (takein == -400) {
+    takein = 0;
+  }
+  Brain.Screen.clearLine();
+  Brain.Screen.print("roller moving out\v");
+}
 
 ///////////////////////////////////////////////////////
 //                                                   //
@@ -304,8 +303,8 @@ void usercontrol(void) {
     Controller1.ButtonL2.pressed(rollerOutFunc);
 
     
-    IntakeLeft.spin(vex::directionType::fwd, intake, vex::velocityUnits::rpm);
-    IntakeRight.spin(vex::directionType::fwd, intake, vex::velocityUnits::rpm);
+    IntakeLeft.spin(vex::directionType::fwd, takein, vex::velocityUnits::rpm);
+    IntakeRight.spin(vex::directionType::fwd, takein, vex::velocityUnits::rpm);
 
     BottomRoller.spin(vex::directionType::fwd, -roller, vex::velocityUnits::rpm);
     TopRoller.spin(vex::directionType::fwd, roller, vex::velocityUnits::rpm);
