@@ -20,12 +20,12 @@ vex::motor RightBack = vex::motor(vex::PORT20, true);
 vex::motor LeftFront = vex::motor(vex::PORT17);
 vex::motor RightFront = vex::motor(vex::PORT18,true);
 
-vex::motor IntakeLeft = vex::motor(vex::PORT3, true);
+vex::motor IntakeLeft = vex::motor(vex::PORT3,true);
 vex::motor IntakeRight = vex::motor(vex::PORT4);
 
-vex::motor BottomRoller = vex::motor(vex::PORT1, true);
+vex::motor BottomRoller = vex::motor(vex::PORT1);
 
-vex::motor TopRoller = vex::motor(vex::PORT2, true);
+vex::motor TopRoller = vex::motor(vex::PORT2,true);
 
 ///////////////////////////////////////////////////////////////
 //                                                           //
@@ -224,14 +224,10 @@ void autonomous(void) {
 static int takein = 0;
 static int roller = 0;
 
-
-
-
-
 void rollerInFunc() {
-  if (roller != 200) {
-    roller = 200;
-  } else if (roller == 200) {
+  if (roller != 400) {
+    roller = 400;
+  } else if (roller == 400) {
     roller = 0;
   }
   Brain.Screen.clearLine();
@@ -249,9 +245,9 @@ void rollerOutFunc() {
 }
 
 void intakeInFunc() {
-  if (takein != 200) {
-    takein = 200;
-  } else if (takein == 200) {
+  if (takein != 400) {
+    takein = 400;
+  } else if (takein == 400) {
     takein = 0;
   }
   Brain.Screen.clearLine();
@@ -277,6 +273,13 @@ void intakeOutFunc() {
 ///////////////////////////////////////////////////////
 
 void usercontrol(void) {
+  
+
+  Controller1.ButtonL1.pressed(rollerInFunc);
+  Controller1.ButtonL2.pressed(rollerOutFunc);
+
+  Controller1.ButtonR1.pressed(intakeInFunc);
+  Controller1.ButtonR2.pressed(intakeOutFunc);
   while (1) {
 
     ///////////////////////////////////////////////////////
@@ -296,11 +299,10 @@ void usercontrol(void) {
     //                                                    //
     ////////////////////////////////////////////////////////
 
-    Controller1.ButtonR1.pressed(intakeInFunc);
-    Controller1.ButtonR2.pressed(intakeOutFunc);
+    
 
-    Controller1.ButtonL1.pressed(rollerInFunc);
-    Controller1.ButtonL2.pressed(rollerOutFunc);
+    //Controller1.ButtonL1.pressed(rollerInFunc);
+    //Controller1.ButtonL2.pressed(rollerOutFunc);
 
     
     IntakeLeft.spin(vex::directionType::fwd, takein, vex::velocityUnits::rpm);
