@@ -225,9 +225,9 @@ static int takein = 0;
 static int roller = 0;
 
 void rollerInFunc() {
-  if (roller != 400) {
-    roller = 400;
-  } else if (roller == 400) {
+  if (roller != 100) {
+    roller = 100;
+  } else if (roller == 100) {
     roller = 0;
   }
   Brain.Screen.clearLine();
