@@ -1,4 +1,4 @@
-                                                                  #include "vex.h"
+#include "vex.h"
 
 // ---- START VEXCODE CONFIGURED DEVICES ----
 // Robot Configuration:
@@ -235,9 +235,9 @@ void rollerInFunc() {
 }
 
 void rollerOutFunc() {
-  if (roller != -400) {
-    roller = -400;
-  } else if (roller == -400) {
+  if (roller != -100) {
+    roller = -100;
+  } else if (roller == -100) {
     roller = 0;
   }
   Brain.Screen.clearLine();
@@ -245,9 +245,9 @@ void rollerOutFunc() {
 }
 
 void intakeInFunc() {
-  if (takein != 400) {
-    takein = 400;
-  } else if (takein == 400) {
+  if (takein != 100) {
+    takein = 100;
+  } else if (takein == 100) {
     takein = 0;
   }
   Brain.Screen.clearLine();
@@ -255,9 +255,9 @@ void intakeInFunc() {
 }
 
 void intakeOutFunc() {
-  if (takein != -400) {
-    takein = -400;
-  } else if (takein == -400) {
+  if (takein != -100) {
+    takein = -100;
+  } else if (takein == -100) {
     takein = 0;
   }
   Brain.Screen.clearLine();
@@ -305,11 +305,11 @@ void usercontrol(void) {
     //Controller1.ButtonL2.pressed(rollerOutFunc);
 
     
-    IntakeLeft.spin(vex::directionType::fwd, takein, vex::velocityUnits::rpm);
-    IntakeRight.spin(vex::directionType::fwd, takein, vex::velocityUnits::rpm);
+    IntakeLeft.spin(vex::directionType::fwd, takein, vex::velocityUnits::pct);
+    IntakeRight.spin(vex::directionType::fwd, takein, vex::velocityUnits::pct);
 
-    BottomRoller.spin(vex::directionType::fwd, -roller, vex::velocityUnits::rpm);
-    TopRoller.spin(vex::directionType::fwd, roller, vex::velocityUnits::rpm);
+    BottomRoller.spin(vex::directionType::fwd, -roller, vex::velocityUnits::pct);
+    TopRoller.spin(vex::directionType::fwd, roller, vex::velocityUnits::pct);
     
 
     int LeftSide1 = Controller1.Axis3.value();
