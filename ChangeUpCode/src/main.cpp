@@ -25,7 +25,7 @@ vex::motor IntakeRight = vex::motor(vex::PORT4);
 
 vex::motor BottomRoller = vex::motor(vex::PORT1);
 
-vex::motor TopRoller = vex::motor(vex::PORT2,true);
+vex::motor TopRoller = vex::motor(vex::PORT2);
 
 ///////////////////////////////////////////////////////////////
 //                                                           //
@@ -222,23 +222,38 @@ void autonomous(void) {
 ///////////////////////////////////////////////////////
 
 static int takein = 0;
-static int roller = 0;
+static int bottomRoller = 0;
+static int topRoller = 0;
+
+void topRollerInFunc() {
+  if (topRoller != 100) {
+    topRoller = 100;
+  } else if (topRoller == 100) {
+    topRoller = 0;
+  }
+  Brain.Screen.clearLine();
+  Brain.Screen.print("top roller moving in\v");
+}
 
 void rollerInFunc() {
-  if (roller != 100) {
-    roller = 100;
-  } else if (roller == 100) {
-    roller = 0;
+  if (bottomRoller != 100) {
+    bottomRoller = 100;
+    topRoller = 100;
+  } else if (bottomRoller == 100) {
+    bottomRoller = 0;
+    topRoller = 0;
   }
   Brain.Screen.clearLine();
   Brain.Screen.print("roller moving in\v");
 }
 
 void rollerOutFunc() {
-  if (roller != -100) {
-    roller = -100;
-  } else if (roller == -100) {
-    roller = 0;
+  if (bottomRoller != -100) {
+    bottomRoller = -100;
+    topRoller = -100;
+  } else if (bottomRoller == -100) {
+    bottomRoller = 0;
+    topRoller = 0;
   }
   Brain.Screen.clearLine();
   Brain.Screen.print("roller moving out\v");
@@ -277,6 +292,7 @@ void usercontrol(void) {
 
   Controller1.ButtonL1.pressed(rollerInFunc);
   Controller1.ButtonL2.pressed(rollerOutFunc);
+  Controller1.ButtonX.pressed(rollerOutFunc);
 
   Controller1.ButtonR1.pressed(intakeInFunc);
   Controller1.ButtonR2.pressed(intakeOutFunc);
@@ -308,8 +324,8 @@ void usercontrol(void) {
     IntakeLeft.spin(vex::directionType::fwd, takein, vex::velocityUnits::pct);
     IntakeRight.spin(vex::directionType::fwd, takein, vex::velocityUnits::pct);
 
-    BottomRoller.spin(vex::directionType::fwd, -roller, vex::velocityUnits::pct);
-    TopRoller.spin(vex::directionType::fwd, roller, vex::velocityUnits::pct);
+    BottomRoller.spin(vex::directionType::fwd, -bottomRoller, vex::velocityUnits::pct);
+    TopRoller.spin(vex::directionType::fwd, topRoller, vex::velocityUnits::pct);
     
 
     int LeftSide1 = Controller1.Axis3.value();
