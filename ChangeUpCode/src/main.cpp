@@ -89,21 +89,18 @@ void pre_auton(void) { vexcodeInit(); }
 ///////////////////////////////////////////////////////////////
 
 //move (in tiles; + forward, - backwards)
-void move(double dist, int spd)
-{
 
-  dist *=(343.77468*2);
-  LeftBack.startRotateFor(dist, vex::rotationUnits::deg, spd, vex::velocityUnits::pct);
-  LeftFront.startRotateFor(dist, vex::rotationUnits::deg, spd, vex::velocityUnits::pct);
+const double EncoderWheelDiameterInches = 4.1;
+const double DistanceUntilDecelerateInches = 5;
+const double DistanceUntilLinearInches = .01;
+const double LinearSpeed = 5;
 
-  RightBack.startRotateFor(dist, vex::rotationUnits::deg, spd, vex::velocityUnits::pct);
-  RightFront.rotateFor(dist, vex::rotationUnits::deg, spd, vex::velocityUnits::pct);
-}
+const double MinErrorInches = .01;
+
 
 void moveForward(double dist, int spd)
 {
   distan.setPosition(0,degrees);
-  bool goingUp = true;
   double firstAngle = inert.orientation(roll,degrees);
   double currentAngle = inert.orientation(roll,degrees);
   double error = dist;
@@ -111,58 +108,23 @@ void moveForward(double dist, int spd)
   double kChange = 1;
   double leftSpeed = spd;
   double rightSpeed = spd;
-  int range = 1;
-  dist *=(343.77468*2);
-  while(error>=5){
-    currentAngle = inert.orientation(roll,degrees);
-    if(firstAngle-currentAngle!=0){
-      if(currentAngle<firstAngle){
-        if(goingUp){
-          leftSpeed += (currentAngle-firstAngle)*kChange;
-        }else{
-          rightSpeed -= (currentAngle-firstAngle)*kChange;
-        }
-        if(leftSpeed-spd>range){
-          goingUp = false;
-        }else if(leftSpeed-spd<range){
-          goingUp = true;
-        }
-        if(rightSpeed-spd>range){
-          goingUp = false;
-        }else if(rightSpeed-spd<range){
-          goingUp = true;
-        }
-      }
-      if(currentAngle>firstAngle){
-        if(goingUp){
-          rightSpeed += (currentAngle-firstAngle)*kChange;
-        }else{
-          leftSpeed -= (currentAngle-firstAngle)*kChange;
-        }
-        if(leftSpeed-spd>range){
-          goingUp = false;
-        }else if(leftSpeed-spd<range){
-          goingUp = true;
-        }
-        if(rightSpeed-spd>range){
-          goingUp = false;
-        }else if(rightSpeed-spd<range){
-          goingUp = true;
-        }
-      }
+  while(error>=MinErrorInches){
+    if(error<=DistanceUntilDecelerateInches){
+      spd = error*kError;
+    }else if(error<=DistanceUntilLinearInches){
+      spd = LinearSpeed;
     }
+    currentAngle = inert.orientation(yaw,degrees);
+    leftSpeed = spd +(currentAngle-firstAngle)*kChange;
+    rightSpeed = spd - (currentAngle-firstAngle)*kChange;
     leftDrive.spin(vex::directionType::fwd,leftSpeed,vex::velocityUnits::pct);
     rightDrive.spin(vex::directionType::fwd,rightSpeed,vex::velocityUnits::pct);
-    error -= (distan.position(degrees)*M_PI*4.1);
+    error -= (distan.position(degrees)*M_PI*EncoderWheelDiameterInches);
   }
-  while(error>=.01){
-    leftDrive.spin(vex::directionType::fwd,kError*(error),vex::velocityUnits::pct);
-    rightDrive.spin(vex::directionType::fwd,kError*(error),vex::velocityUnits::pct);
-    error -= (distan.position(degrees)*M_PI*4.1);
-
-  }
+  leftDrive.stop();
+  rightDrive.stop();
 }
-void accelerate(double dist, int spd)
+void moveBackward(double dist, int spd)
 {
   double encoderPlaceholder = 0;
   double error = dist;
