@@ -8,6 +8,8 @@ using code = vision::code;
 brain  Brain;
 
 // VEXcode device constructors
+encoder distan = encoder(Brain.ThreeWirePort.A);
+inertial inert = inertial(PORT5);
 
 // VEXcode generated functions
 

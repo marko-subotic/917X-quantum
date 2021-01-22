@@ -1,3 +1,41 @@
+// ---- START VEXCODE CONFIGURED DEVICES ----
+// Robot Configuration:
+// [Name]               [Type]        [Port(s)]
+// distan               encoder       A, B            
+// inert                inertial      5               
+// ---- END VEXCODE CONFIGURED DEVICES ----
+// ---- START VEXCODE CONFIGURED DEVICES ----
+// Robot Configuration:
+// [Name]               [Type]        [Port(s)]
+// distan               encoder       A, B            
+// inertial             inertial      5               
+// ---- END VEXCODE CONFIGURED DEVICES ----
+// ---- START VEXCODE CONFIGURED DEVICES ----
+// Robot Configuration:
+// [Name]               [Type]        [Port(s)]
+// distan               encoder       A, B            
+// Inertial             inertial      5               
+// ---- END VEXCODE CONFIGURED DEVICES ----
+// ---- START VEXCODE CONFIGURED DEVICES ----
+// Robot Configuration:
+// [Name]               [Type]        [Port(s)]
+// distan               encoder       A, B            
+// ---- END VEXCODE CONFIGURED DEVICES ----
+// ---- START VEXCODE CONFIGURED DEVICES ----
+// Robot Configuration:
+// [Name]               [Type]        [Port(s)]
+// dist                 encoder       A, B            
+// ---- END VEXCODE CONFIGURED DEVICES ----
+// ---- START VEXCODE CONFIGURED DEVICES ----
+// Robot Configuration:
+// [Name]               [Type]        [Port(s)]
+// dist                 encoder       A, B            
+// ---- END VEXCODE CONFIGURED DEVICES ----
+// ---- START VEXCODE CONFIGURED DEVICES ----
+// Robot Configuration:
+// [Name]               [Type]        [Port(s)]
+// EncoderA             encoder       A, B            
+// ---- END VEXCODE CONFIGURED DEVICES ----
 #include "vex.h"
 
 // ---- START VEXCODE CONFIGURED DEVICES ----
@@ -19,13 +57,16 @@ vex::motor LeftBack = vex::motor(vex::PORT19);
 vex::motor RightBack = vex::motor(vex::PORT20, true);
 vex::motor LeftFront = vex::motor(vex::PORT17);
 vex::motor RightFront = vex::motor(vex::PORT18,true);
+motor_group   leftDrive( LeftBack, LeftFront);
+motor_group   rightDrive( RightBack, RightFront);
+//vex::encoder dist = vex::encoder(vex::PORTA,vex::PORTB)
 
 vex::motor IntakeLeft = vex::motor(vex::PORT3,true);
 vex::motor IntakeRight = vex::motor(vex::PORT4);
 
 vex::motor BottomRoller = vex::motor(vex::PORT1);
 
-vex::motor TopRoller = vex::motor(vex::PORT2);
+vex::motor TopRoller = vex::motor(vex::PORT2, ratio6_1);
 
 ///////////////////////////////////////////////////////////////
 //                                                           //
@@ -50,14 +91,96 @@ void pre_auton(void) { vexcodeInit(); }
 //move (in tiles; + forward, - backwards)
 void move(double dist, int spd)
 {
-    dist *=(343.77468*2);
-    LeftBack.startRotateFor(dist, vex::rotationUnits::deg, spd, vex::velocityUnits::pct);
-    LeftFront.startRotateFor(dist, vex::rotationUnits::deg, spd, vex::velocityUnits::pct);
 
-    RightBack.startRotateFor(dist, vex::rotationUnits::deg, spd, vex::velocityUnits::pct);
-    RightFront.rotateFor(dist, vex::rotationUnits::deg, spd, vex::velocityUnits::pct);
+  dist *=(343.77468*2);
+  LeftBack.startRotateFor(dist, vex::rotationUnits::deg, spd, vex::velocityUnits::pct);
+  LeftFront.startRotateFor(dist, vex::rotationUnits::deg, spd, vex::velocityUnits::pct);
+
+  RightBack.startRotateFor(dist, vex::rotationUnits::deg, spd, vex::velocityUnits::pct);
+  RightFront.rotateFor(dist, vex::rotationUnits::deg, spd, vex::velocityUnits::pct);
 }
 
+void moveForward(double dist, int spd)
+{
+  distan.setPosition(0,degrees);
+  bool goingUp = true;
+  double firstAngle = inert.orientation(roll,degrees);
+  double currentAngle = inert.orientation(roll,degrees);
+  double error = dist;
+  double kError = 1;
+  double kChange = 1;
+  double leftSpeed = spd;
+  double rightSpeed = spd;
+  int range = 1;
+  dist *=(343.77468*2);
+  while(error>=5){
+    currentAngle = inert.orientation(roll,degrees);
+    if(firstAngle-currentAngle!=0){
+      if(currentAngle<firstAngle){
+        if(goingUp){
+          leftSpeed += (currentAngle-firstAngle)*kChange;
+        }else{
+          rightSpeed -= (currentAngle-firstAngle)*kChange;
+        }
+        if(leftSpeed-spd>range){
+          goingUp = false;
+        }else if(leftSpeed-spd<range){
+          goingUp = true;
+        }
+        if(rightSpeed-spd>range){
+          goingUp = false;
+        }else if(rightSpeed-spd<range){
+          goingUp = true;
+        }
+      }
+      if(currentAngle>firstAngle){
+        if(goingUp){
+          rightSpeed += (currentAngle-firstAngle)*kChange;
+        }else{
+          leftSpeed -= (currentAngle-firstAngle)*kChange;
+        }
+        if(leftSpeed-spd>range){
+          goingUp = false;
+        }else if(leftSpeed-spd<range){
+          goingUp = true;
+        }
+        if(rightSpeed-spd>range){
+          goingUp = false;
+        }else if(rightSpeed-spd<range){
+          goingUp = true;
+        }
+      }
+    }
+    leftDrive.spin(vex::directionType::fwd,leftSpeed,vex::velocityUnits::pct);
+    rightDrive.spin(vex::directionType::fwd,rightSpeed,vex::velocityUnits::pct);
+    error -= (distan.position(degrees)*M_PI*4.1);
+  }
+  while(error>=.01){
+    leftDrive.spin(vex::directionType::fwd,kError*(error),vex::velocityUnits::pct);
+    rightDrive.spin(vex::directionType::fwd,kError*(error),vex::velocityUnits::pct);
+    error -= (distan.position(degrees)*M_PI*4.1);
+
+  }
+}
+void accelerate(double dist, int spd)
+{
+  double encoderPlaceholder = 0;
+  double error = dist;
+  double constant = 1;
+  dist *=(343.77468*2);
+  while(error>=dist-5){
+    leftDrive.spin(vex::directionType::fwd,constant*(error),vex::velocityUnits::pct);
+    rightDrive.spin(vex::directionType::fwd,constant*(error),vex::velocityUnits::pct);
+    error = error-encoderPlaceholder;
+  }
+  while(error>=.1){
+    leftDrive.spin(vex::directionType::fwd,100,vex::velocityUnits::pct);
+    rightDrive.spin(vex::directionType::fwd,100,vex::velocityUnits::pct);
+    error = error-encoderPlaceholder;
+  }
+  leftDrive.spin(vex::directionType::fwd,0,vex::velocityUnits::pct);
+  rightDrive.spin(vex::directionType::fwd,0,vex::velocityUnits::pct);
+}
 //turn degrees, (+ for right, - for left)
 void turn(int deg)
 {
@@ -238,10 +361,8 @@ void topRollerInFunc() {
 void rollerInFunc() {
   if (bottomRoller != 100) {
     bottomRoller = 100;
-    topRoller = 100;
   } else if (bottomRoller == 100) {
     bottomRoller = 0;
-    topRoller = 0;
   }
   Brain.Screen.clearLine();
   Brain.Screen.print("roller moving in\v");
@@ -250,10 +371,8 @@ void rollerInFunc() {
 void rollerOutFunc() {
   if (bottomRoller != -100) {
     bottomRoller = -100;
-    topRoller = -100;
   } else if (bottomRoller == -100) {
     bottomRoller = 0;
-    topRoller = 0;
   }
   Brain.Screen.clearLine();
   Brain.Screen.print("roller moving out\v");
@@ -292,7 +411,7 @@ void usercontrol(void) {
 
   Controller1.ButtonL1.pressed(rollerInFunc);
   Controller1.ButtonL2.pressed(rollerOutFunc);
-  Controller1.ButtonX.pressed(rollerOutFunc);
+  Controller1.ButtonX.pressed(topRollerInFunc);
 
   Controller1.ButtonR1.pressed(intakeInFunc);
   Controller1.ButtonR2.pressed(intakeOutFunc);
