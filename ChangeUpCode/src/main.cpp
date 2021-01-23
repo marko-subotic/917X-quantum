@@ -1,6 +1,12 @@
 // ---- START VEXCODE CONFIGURED DEVICES ----
 // Robot Configuration:
 // [Name]               [Type]        [Port(s)]
+// distan               encoder       G, H            
+// inert                inertial      5               
+// ---- END VEXCODE CONFIGURED DEVICES ----
+// ---- START VEXCODE CONFIGURED DEVICES ----
+// Robot Configuration:
+// [Name]               [Type]        [Port(s)]
 // distan               encoder       A, B            
 // inert                inertial      5               
 // ---- END VEXCODE CONFIGURED DEVICES ----
@@ -100,6 +106,7 @@ const double MinErrorInches = .01;
 
 void moveForward(double dist, int spd)
 {
+  
   distan.setPosition(0,degrees);
   double firstAngle = inert.orientation(roll,degrees);
   double currentAngle = inert.orientation(roll,degrees);
@@ -108,6 +115,9 @@ void moveForward(double dist, int spd)
   double kChange = 1;
   double leftSpeed = spd;
   double rightSpeed = spd;
+  Brain.Screen.clearLine();
+    Brain.Screen.print("distance till: ");
+    Brain.Screen.print(error);
   while(error>=MinErrorInches){
     if(error<=DistanceUntilDecelerateInches){
       spd = error*kError;
@@ -119,7 +129,11 @@ void moveForward(double dist, int spd)
     rightSpeed = spd - (currentAngle-firstAngle)*kChange;
     leftDrive.spin(vex::directionType::fwd,leftSpeed,vex::velocityUnits::pct);
     rightDrive.spin(vex::directionType::fwd,rightSpeed,vex::velocityUnits::pct);
-    error -= (distan.position(degrees)*M_PI*EncoderWheelDiameterInches);
+    error -= ((distan.position(degrees)/360)*M_PI*EncoderWheelDiameterInches);
+    Brain.Screen.clearLine();
+    Brain.Screen.print("distance till: ");
+    Brain.Screen.print(error);
+
   }
   leftDrive.stop();
   rightDrive.stop();
@@ -156,92 +170,8 @@ void turn(int deg)
 }
 
 //grab one cube and keep in robot, time in seconds, push for direction (+ for intake, - for pushing)
-void grab(double time, int push)
-{
-    LeftFront.startRotateFor(310*time, vex::rotationUnits::deg, 31, vex::velocityUnits::pct);
-    LeftBack.startRotateFor(310*time, vex::rotationUnits::deg, 31, vex::velocityUnits::pct);
 
-    RightFront.startRotateFor(310*time, vex::rotationUnits::deg, 31, vex::velocityUnits::pct);
-    RightBack.startRotateFor(310*time, vex::rotationUnits::deg, 31, vex::velocityUnits::pct);
-    
-    /*
-    LeftFront.spin(vex::directionType::fwd, 35, vex::velocityUnits::pct); 
-    RightFront.spin(vex::directionType::fwd, 35, vex::velocityUnits::pct);
 
-    LeftBack.spin(vex::directionType::fwd, 35, vex::velocityUnits::pct); 
-    RightBack.spin(vex::directionType::fwd, 35, vex::velocityUnits::pct);
-    */
-
-    IntakeLeft.spin(vex::directionType::rev, 99*push, vex::velocityUnits::pct); 
-    IntakeRight.spin(vex::directionType::rev, 99*push, vex::velocityUnits::pct);
-    vex::task::sleep(time*1000);
-
-    LeftFront.spin(vex::directionType::fwd, 0, vex::velocityUnits::pct); 
-    RightFront.spin(vex::directionType::fwd, 0, vex::velocityUnits::pct);
-
-    LeftBack.spin(vex::directionType::fwd, 0, vex::velocityUnits::pct); 
-    RightBack.spin(vex::directionType::fwd, 0, vex::velocityUnits::pct);
-    vex::task::sleep(400);
-
-    IntakeLeft.spin(vex::directionType::rev, 0, vex::velocityUnits::rpm); 
-    IntakeRight.spin(vex::directionType::rev, 0, vex::velocityUnits::rpm); 
-}
-
-//take out cube, lift arm, place cube, and lower WIP
-/*void tower()
-{
-    IntakeLeft.stop(); 
-    IntakeRight.stop();
-    
-    IntakeLeft.startRotateFor(200, vex::rotationUnits::deg, 80, vex::velocityUnits::pct);
-    IntakeRight.rotateFor(200, vex::rotationUnits::deg, 80, vex::velocityUnits::pct); 
-    
-    TrayAngle.rotateFor(40, vex::rotationUnits::deg, 50, vex::velocityUnits::pct);
-
-    ArmAngle.rotateFor(240, vex::rotationUnits::deg, 30, vex::velocityUnits::pct); 
-    vex::task::sleep(500);
-    IntakeLeft.startRotateFor(180, vex::rotationUnits::deg, 90, vex::velocityUnits::pct);
-    IntakeRight.rotateFor(180, vex::rotationUnits::deg, 90, vex::velocityUnits::pct); 
-    vex::task::sleep(500);
-    ArmAngle.rotateTo(55, vex::rotationUnits::deg); 
-}
-
-//slowly lower tray and score
-void stack()
-{
-    IntakeLeft.startRotateFor(360, vex::rotationUnits::deg, -35, vex::velocityUnits::pct);
-    IntakeRight.startRotateFor(360, vex::rotationUnits::deg, -35, vex::velocityUnits::pct);
-
-    TrayAngle.rotateFor(-1100, vex::rotationUnits::deg, 70, vex::velocityUnits::pct);
-    TrayAngle.rotateFor(-200, vex::rotationUnits::deg, 25, vex::velocityUnits::pct);
-    vex::task::sleep(200);
-
-    LeftFront.startRotateFor(35, vex::rotationUnits::deg, 20, vex::velocityUnits::pct);
-    LeftBack.startRotateFor(35, vex::rotationUnits::deg, 20, vex::velocityUnits::pct);
-    RightFront.startRotateFor(35, vex::rotationUnits::deg, 20, vex::velocityUnits::pct);
-    RightBack.rotateFor(35, vex::rotationUnits::deg, 20, vex::velocityUnits::pct);
-    vex::task::sleep(200);
-
-    LeftFront.startRotateFor(-720, vex::rotationUnits::deg, 50, vex::velocityUnits::pct);
-    LeftBack.startRotateFor(-720, vex::rotationUnits::deg, 50, vex::velocityUnits::pct);
-    RightFront.startRotateFor(-720, vex::rotationUnits::deg, 50, vex::velocityUnits::pct);
-    RightBack.rotateFor(-720, vex::rotationUnits::deg, 50, vex::velocityUnits::pct);
-}
-
-//stuff before auton
-void start()
-{
-    //side=s;
-    TrayAngle.rotateTo(-500, vex::rotationUnits::deg, 80, vex::velocityUnits::pct);
-    vex::task::sleep(250);
-    ArmAngle.startRotateTo(-700, vex::rotationUnits::deg, 60, vex::velocityUnits::pct);
-    vex::task::sleep(300);
-
-    TrayAngle.rotateTo(-350, vex::rotationUnits::deg, 40, vex::velocityUnits::pct);
-    vex::task::sleep(100);
-    ArmAngle.rotateTo(-69, vex::rotationUnits::deg);
-    vex::task::sleep(400);
-}
 
 
 
@@ -253,50 +183,11 @@ void start()
 //                                                 //
 /////////////////////////////////////////////////////
 
-
-void threePoint() {
-  move(1.7);
-  grab(5, 1);
-  move(-2.4);
-  turn(-91, side);
-  move(2.5);
-  stack();
-  vex::task::sleep(500);
-}
-
-
-//overall speed
-int s=35;
-
-void one() {
-  //start();
-    vex::task::sleep(500);
-
-    //start bot 1 tile from goal zone, facing backwards
-    move(-1,s);
-    move(2,s+10);
-
-}
-
-void five() 
-{
-    start();
-    
-    move(0.1,s);
-    grab(4.05,1);
-    vex::task::sleep(100);
-
-    move(-1.06,s+12);
-    turn(-135);
-    vex::task::sleep(400);
-    move(0.67,s);
-
-    stack();
-}
-
 void autonomous(void) {
-  one();
-}*/
+  inert.calibrate();
+  wait(2000,msec);
+  moveForward(25,70);
+}
 
 ///////////////////////////////////////////////////////
 //                                                   //
@@ -472,11 +363,13 @@ void usercontrol(void) {
 // Main will set up the competition functions and callbacks.
 int main() {
   // Set up callbacks for autonomous and driver control periods.
-  //Competition.autonomous(autonomous);
+  Competition.autonomous(autonomous);
   Competition.drivercontrol(usercontrol);
 
   // Run the pre-autonomous function.
-  pre_auton();
+  //inert.calibrate();
+  //wait(2000,msec);
+  //moveForward(5,70);
 
   // Prevent main from exiting with an infinite loop.
   while (true) {
