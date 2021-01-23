@@ -129,7 +129,7 @@ void moveForward(double dist, int spd)
     rightSpeed = spd - (currentAngle-firstAngle)*kChange;
     leftDrive.spin(vex::directionType::fwd,leftSpeed,vex::velocityUnits::pct);
     rightDrive.spin(vex::directionType::fwd,rightSpeed,vex::velocityUnits::pct);
-    error -= ((distan.position(degrees)/360)*M_PI*EncoderWheelDiameterInches);
+    error = dist - ((distan.position(degrees)/360)*M_PI*EncoderWheelDiameterInches);
     Brain.Screen.clearLine();
     Brain.Screen.print("distance till: ");
     Brain.Screen.print(error);
