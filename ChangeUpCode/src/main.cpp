@@ -102,32 +102,121 @@ void pre_auton(void) { vexcodeInit(); }
 
 //move (in tiles; + forward, - backwards)
 
-const double EncoderWheelDiameterInches = 4.37;
-const double DistanceUntilDecelerateInches = 20;
-const double DistanceUntilAccelerate = 5;
-const double DistanceUntilLinearInches = 3;
-const double LinearSpeed = 5;
 
-const double MinErrorInches = .01;
 
 void encoderTest(){
   distan.resetRotation();
   while(true){
     Brain.Screen.clearLine();
-    Brain.Screen.print(distan.position(degrees));
+
+    Brain.Screen.print("Pitch: ");
+    Brain.Screen.print(inert.orientation(pitch,degrees));
+    Brain.Screen.print(" Roll: ");
+    Brain.Screen.print(inert.orientation(roll,degrees));
+    Brain.Screen.print(" Yaw: ");
+    Brain.Screen.print(inert.orientation(yaw,degrees));
 
   }
 }
-void moveForward(double dist, int spd)
+
+bool turnRight(int ang, double currentAng){
+  if(ang-currentAng>=0){
+    if(ang-currentAng>=180){
+      return false;
+    }
+    return true;
+  }else{
+    if(ang-currentAng<=-180){
+      return true;
+    }
+    return false;
+  }
+}
+const double AngleUntilAccelerate = 5;
+const double TurnLinearSpeed = 5;
+const double MinErrorDegrees = .1;
+
+void turn(double ang, int spd)
 {
+
+
+
+  Brain.Screen.print(inert.orientation(yaw,degrees));
+  Brain.Screen.newLine();
+  int oSpeed = spd;
+  spd = TurnLinearSpeed;
+  double firstAngle = inert.orientation(yaw,degrees);
+  double currentAngle = inert.orientation(yaw,degrees);
+  double error =fabs(ang-currentAngle);
+  const double AngleUntilDecelerate = fabs(error/2);
+const double AngleUntilLinear = fabs(error/5);
+  double kError = 1/AngleUntilDecelerate;
+  double kAccel = (oSpeed/(TurnLinearSpeed*AngleUntilAccelerate))-(1/AngleUntilAccelerate);
+  bool turnWhere = turnRight(ang,currentAngle);
+  
+
+  //Brain.Screen.clearLine();
+   // Brain.Screen.print("Angle till: ");
+    //Brain.Screen.print(error);
+  while(fabs(error)>=MinErrorDegrees){
+    Brain.Screen.clearLine();
+    
+    double distanceCovered =  fabs(inert.orientation(yaw,degrees)-firstAngle);
+    if(fabs(error)<=AngleUntilDecelerate){
+      spd = oSpeed*fabs(error)*kError;
+      if(fabs(error)<=AngleUntilLinear){
+        spd = TurnLinearSpeed;
+      }
+    }else if(fabs(distanceCovered)<=AngleUntilAccelerate){
+          Brain.Screen.print(fabs(distanceCovered));
+
+      spd = TurnLinearSpeed*(1 + fabs(distanceCovered) * kAccel);
+    }
+    double leftSpeed = spd;
+    double rightSpeed = spd;
+    if(turnWhere){
+      rightSpeed *= -1;
+    }else{
+      leftSpeed *= -1;
+    }
+    currentAngle = inert.orientation(yaw,degrees);    
+    LeftBack.spin(vex::directionType::fwd,leftSpeed,vex::velocityUnits::pct);
+    RightBack.spin(vex::directionType::fwd,rightSpeed,vex::velocityUnits::pct);
+    LeftFront.spin(vex::directionType::fwd,leftSpeed,vex::velocityUnits::pct);
+    RightFront.spin(vex::directionType::fwd,rightSpeed,vex::velocityUnits::pct);
+    error = ang - (inert.orientation(yaw,degrees));
+    //Brain.Screen.clearLine();
+    //Brain.Screen.print("distance till: ");
+    //Brain.Screen.print(error);
+
+  }
+
+  leftDrive.stop();
+  rightDrive.stop();
+  leftDrive.setStopping(brake);
+  rightDrive.setStopping(brake);
+  Brain.Screen.print(inert.orientation(yaw,degrees));
+  Brain.Screen.newLine();
+}
+
+void move(double dist, int spd,int ang, int angSpeed)
+{
+const double EncoderWheelDiameterInches = 4.37;
+const double DistanceUntilDecelerateInches = 20;
+const double DistanceUntilAccelerate = 10;
+const double DistanceUntilLinearInches = 2;
+const double LinearSpeed = 5;
+const double MinErrorInches = .1;
+  Brain.Screen.print(inert.orientation(yaw,degrees));
+  Brain.Screen.newLine();
   int oSpeed = spd;
   spd = LinearSpeed;
   distan.resetRotation();
-  double firstAngle = inert.orientation(roll,degrees);
-  double currentAngle = inert.orientation(roll,degrees);
+  double firstAngle = inert.orientation(yaw,degrees);
+  double currentAngle = inert.orientation(yaw,degrees);
   double error = dist;
   double kError = 1/DistanceUntilDecelerateInches;
-  double kChange = 1.2;
+  double kChange = 1.5;
   double kAccel = (oSpeed/(LinearSpeed*DistanceUntilAccelerate))-(1/DistanceUntilAccelerate);
   double leftSpeed = spd;
   double rightSpeed = spd;
@@ -135,66 +224,54 @@ void moveForward(double dist, int spd)
   //Brain.Screen.clearLine();
    // Brain.Screen.print("distance till: ");
     //Brain.Screen.print(error);
-  while(error>=MinErrorInches){
+  while(fabs(error)>=MinErrorInches){
     double distanceCovered =  ((distan.position(degrees)/360)*M_PI*EncoderWheelDiameterInches);
-    if(distanceCovered<=DistanceUntilAccelerate){
-      spd = LinearSpeed*(1 + distanceCovered * kAccel);
-    }else if(error<=DistanceUntilDecelerateInches){
-      spd = oSpeed*error*kError;
-      if(error<=DistanceUntilLinearInches){
+    if(fabs(distanceCovered)<=DistanceUntilAccelerate){
+      spd = LinearSpeed*(1 + fabs(distanceCovered) * kAccel);
+    }else if(fabs(error)<=DistanceUntilDecelerateInches){
+      spd = oSpeed*fabs(error)*kError;
+      if(fabs(error)<=DistanceUntilLinearInches){
         spd = LinearSpeed;
       }
     }
     currentAngle = inert.orientation(yaw,degrees);
-    leftSpeed = spd -(currentAngle-firstAngle)*kChange;
-    rightSpeed = spd + (currentAngle-firstAngle)*kChange;
+    leftSpeed = spd -(currentAngle-firstAngle)*kChange*(spd/oSpeed);
+    rightSpeed = spd + (currentAngle-firstAngle)*kChange*(spd/oSpeed);
+    if(dist<0){
+      double temp = leftSpeed;
+      leftSpeed = -rightSpeed;
+      rightSpeed = -temp;
+    }
     
     LeftBack.spin(vex::directionType::fwd,leftSpeed,vex::velocityUnits::pct);
     RightBack.spin(vex::directionType::fwd,rightSpeed,vex::velocityUnits::pct);
     LeftFront.spin(vex::directionType::fwd,leftSpeed,vex::velocityUnits::pct);
     RightFront.spin(vex::directionType::fwd,rightSpeed,vex::velocityUnits::pct);
     error = dist - ((distan.position(degrees)/360)*M_PI*EncoderWheelDiameterInches);
-    Brain.Screen.clearLine();
-    Brain.Screen.print("distance till: ");
-    Brain.Screen.print(error);
+    //Brain.Screen.clearLine();
+    //Brain.Screen.print("distance till: ");
+    //Brain.Screen.print(error);
 
   }
+
   leftDrive.stop();
   rightDrive.stop();
   leftDrive.setStopping(brake);
   rightDrive.setStopping(brake);
-}
-void moveBackward(double dist, int spd)
-{
-  double encoderPlaceholder = 0;
-  double error = dist;
-  double constant = 1;
-  dist *=(343.77468*2);
-  while(error>=dist-5){
-    leftDrive.spin(vex::directionType::fwd,constant*(error),vex::velocityUnits::pct);
-    rightDrive.spin(vex::directionType::fwd,constant*(error),vex::velocityUnits::pct);
-    error = error-encoderPlaceholder;
-  }
-  while(error>=.1){
-    leftDrive.spin(vex::directionType::fwd,100,vex::velocityUnits::pct);
-    rightDrive.spin(vex::directionType::fwd,100,vex::velocityUnits::pct);
-    error = error-encoderPlaceholder;
-  }
-  leftDrive.spin(vex::directionType::fwd,0,vex::velocityUnits::pct);
-  rightDrive.spin(vex::directionType::fwd,0,vex::velocityUnits::pct);
-}
-//turn degrees, (+ for right, - for left)
-void turn(int deg)
-{
-    //move(-0.5,60);
-    deg *= 2.32*side;
-    LeftFront.startRotateFor(deg, vex::rotationUnits::deg, 50, vex::velocityUnits::pct);
-    LeftBack.startRotateFor(deg, vex::rotationUnits::deg, 50, vex::velocityUnits::pct);
-
-    RightFront.startRotateFor(-deg, vex::rotationUnits::deg, 50, vex::velocityUnits::pct);
-    RightBack.rotateFor(-deg, vex::rotationUnits::deg, 50, vex::velocityUnits::pct);
+  Brain.Screen.print(inert.orientation(yaw,degrees));
+  Brain.Screen.newLine();
+  turn(ang,angSpeed);
 }
 
+void intakeL(directionType dir, double time, double velocity){
+  IntakeLeft.spinFor(dir, time, sec, -velocity, vex::velocityUnits::pct);
+}
+void intakeR(directionType dir, double time, double velocity){
+  IntakeRight.spinFor(dir, time, sec, -velocity, vex::velocityUnits::pct);
+}
+void roller(double time, double velocity){
+  BottomRoller.spinFor(fwd, time, sec, -velocity, vex::velocityUnits::pct);
+}
 //grab one cube and keep in robot, time in seconds, push for direction (+ for intake, - for pushing)
 
 
@@ -211,9 +288,24 @@ void turn(int deg)
 
 void autonomous(void) {
   inert.calibrate();
+  TopRoller.spin(fwd,100,pct);
   wait(2000,msec);
   Brain.Screen.print("Pressed");
-  moveForward(30,75);
+  //turn(-135,35);
+//  turn(-89,50);
+  //intakes(fwd,4,100);
+  vex::thread([](){
+    intakeL(fwd,4,100);
+  }).detach();
+  vex::thread([](){
+    intakeR(fwd,4,100);
+  }).detach();
+  move(30,60,90,25);
+  wait(.5,sec);
+  move(4,50,90,2);
+  roller(2,100);
+
+
   //encoderTest();
     Brain.Screen.print("Passed");
 
