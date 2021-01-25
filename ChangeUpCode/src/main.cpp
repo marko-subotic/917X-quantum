@@ -7,6 +7,12 @@
 // ---- START VEXCODE CONFIGURED DEVICES ----
 // Robot Configuration:
 // [Name]               [Type]        [Port(s)]
+// distan               encoder       G, H            
+// inert                inertial      5               
+// ---- END VEXCODE CONFIGURED DEVICES ----
+// ---- START VEXCODE CONFIGURED DEVICES ----
+// Robot Configuration:
+// [Name]               [Type]        [Port(s)]
 // distan               encoder       A, B            
 // inert                inertial      5               
 // ---- END VEXCODE CONFIGURED DEVICES ----
@@ -96,39 +102,57 @@ void pre_auton(void) { vexcodeInit(); }
 
 //move (in tiles; + forward, - backwards)
 
-const double EncoderWheelDiameterInches = 4.1;
-const double DistanceUntilDecelerateInches = 5;
-const double DistanceUntilLinearInches = .01;
+const double EncoderWheelDiameterInches = 4.37;
+const double DistanceUntilDecelerateInches = 20;
+const double DistanceUntilAccelerate = 5;
+const double DistanceUntilLinearInches = 3;
 const double LinearSpeed = 5;
 
 const double MinErrorInches = .01;
 
+void encoderTest(){
+  distan.resetRotation();
+  while(true){
+    Brain.Screen.clearLine();
+    Brain.Screen.print(distan.position(degrees));
 
+  }
+}
 void moveForward(double dist, int spd)
 {
-  
-  distan.setPosition(0,degrees);
+  int oSpeed = spd;
+  spd = LinearSpeed;
+  distan.resetRotation();
   double firstAngle = inert.orientation(roll,degrees);
   double currentAngle = inert.orientation(roll,degrees);
   double error = dist;
-  double kError = 1;
-  double kChange = 1;
+  double kError = 1/DistanceUntilDecelerateInches;
+  double kChange = 1.2;
+  double kAccel = (oSpeed/(LinearSpeed*DistanceUntilAccelerate))-(1/DistanceUntilAccelerate);
   double leftSpeed = spd;
   double rightSpeed = spd;
-  Brain.Screen.clearLine();
-    Brain.Screen.print("distance till: ");
-    Brain.Screen.print(error);
+
+  //Brain.Screen.clearLine();
+   // Brain.Screen.print("distance till: ");
+    //Brain.Screen.print(error);
   while(error>=MinErrorInches){
-    if(error<=DistanceUntilDecelerateInches){
-      spd = error*kError;
-    }else if(error<=DistanceUntilLinearInches){
-      spd = LinearSpeed;
+    double distanceCovered =  ((distan.position(degrees)/360)*M_PI*EncoderWheelDiameterInches);
+    if(distanceCovered<=DistanceUntilAccelerate){
+      spd = LinearSpeed*(1 + distanceCovered * kAccel);
+    }else if(error<=DistanceUntilDecelerateInches){
+      spd = oSpeed*error*kError;
+      if(error<=DistanceUntilLinearInches){
+        spd = LinearSpeed;
+      }
     }
     currentAngle = inert.orientation(yaw,degrees);
-    leftSpeed = spd +(currentAngle-firstAngle)*kChange;
-    rightSpeed = spd - (currentAngle-firstAngle)*kChange;
-    leftDrive.spin(vex::directionType::fwd,leftSpeed,vex::velocityUnits::pct);
-    rightDrive.spin(vex::directionType::fwd,rightSpeed,vex::velocityUnits::pct);
+    leftSpeed = spd -(currentAngle-firstAngle)*kChange;
+    rightSpeed = spd + (currentAngle-firstAngle)*kChange;
+    
+    LeftBack.spin(vex::directionType::fwd,leftSpeed,vex::velocityUnits::pct);
+    RightBack.spin(vex::directionType::fwd,rightSpeed,vex::velocityUnits::pct);
+    LeftFront.spin(vex::directionType::fwd,leftSpeed,vex::velocityUnits::pct);
+    RightFront.spin(vex::directionType::fwd,rightSpeed,vex::velocityUnits::pct);
     error = dist - ((distan.position(degrees)/360)*M_PI*EncoderWheelDiameterInches);
     Brain.Screen.clearLine();
     Brain.Screen.print("distance till: ");
@@ -137,6 +161,8 @@ void moveForward(double dist, int spd)
   }
   leftDrive.stop();
   rightDrive.stop();
+  leftDrive.setStopping(brake);
+  rightDrive.setStopping(brake);
 }
 void moveBackward(double dist, int spd)
 {
@@ -186,7 +212,11 @@ void turn(int deg)
 void autonomous(void) {
   inert.calibrate();
   wait(2000,msec);
-  moveForward(25,70);
+  Brain.Screen.print("Pressed");
+  moveForward(30,75);
+  //encoderTest();
+    Brain.Screen.print("Passed");
+
 }
 
 ///////////////////////////////////////////////////////
@@ -265,6 +295,7 @@ void usercontrol(void) {
   Controller1.ButtonL1.pressed(rollerInFunc);
   Controller1.ButtonL2.pressed(rollerOutFunc);
   Controller1.ButtonX.pressed(topRollerInFunc);
+  Controller1.ButtonA.pressed(autonomous);
 
   Controller1.ButtonR1.pressed(intakeInFunc);
   Controller1.ButtonR2.pressed(intakeOutFunc);
@@ -320,7 +351,7 @@ void usercontrol(void) {
     if ((abs(RightSide1) <= 10) and (abs(RightSide2) >= 10)) {
       RightSide = (RightSide2 * RightSide2 * RightSide2) / (16629);
     }
-    if ((Controller1.ButtonUp.pressing())) {
+    if ((Controller1.ButtonRight.pressing())) {
       BottomRoller.spin(vex::directionType::fwd, 40, vex::velocityUnits::pct);
 
     }else if ((Controller1.ButtonDown.pressing())) {
@@ -367,9 +398,7 @@ int main() {
   Competition.drivercontrol(usercontrol);
 
   // Run the pre-autonomous function.
-  //inert.calibrate();
-  //wait(2000,msec);
-  //moveForward(5,70);
+  
 
   // Prevent main from exiting with an infinite loop.
   while (true) {
