@@ -90,7 +90,10 @@ int side=1;
 ///////////////////////////////////////////////////////////////
 
 // Runs preauton sequnces
-void pre_auton(void) { vexcodeInit(); }
+void pre_auton(void) { 
+  vexcodeInit(); 
+  
+  }
 
 ///////////////////////////////////////////////////////////////
 //                                                           //
@@ -134,7 +137,7 @@ bool turnRight(int ang, double currentAng){
 }
 const double AngleUntilAccelerate = 5;
 const double TurnLinearSpeed = 5;
-const double MinErrorDegrees = .1;
+const double MinErrorDegrees = .3;
 
 void turn(double ang, int spd)
 {
@@ -149,7 +152,7 @@ void turn(double ang, int spd)
   double currentAngle = inert.orientation(yaw,degrees);
   double error =fabs(ang-currentAngle);
   const double AngleUntilDecelerate = fabs(error/2);
-const double AngleUntilLinear = fabs(error/5);
+const double AngleUntilLinear = fabs(error/4);
   double kError = 1/AngleUntilDecelerate;
   double kAccel = (oSpeed/(TurnLinearSpeed*AngleUntilAccelerate))-(1/AngleUntilAccelerate);
   bool turnWhere = turnRight(ang,currentAngle);
@@ -202,9 +205,9 @@ const double AngleUntilLinear = fabs(error/5);
 void move(double dist, int spd,int ang, int angSpeed)
 {
 const double EncoderWheelDiameterInches = 4.37;
-const double DistanceUntilDecelerateInches = 20;
+const double DistanceUntilDecelerateInches = 17;
 const double DistanceUntilAccelerate = 10;
-const double DistanceUntilLinearInches = 2;
+const double DistanceUntilLinearInches = 3;
 const double LinearSpeed = 5;
 const double MinErrorInches = .1;
   Brain.Screen.print(inert.orientation(yaw,degrees));
@@ -287,23 +290,50 @@ void roller(double time, double velocity){
 /////////////////////////////////////////////////////
 
 void autonomous(void) {
+  
+    TopRoller.spin(fwd,100,pct);
   inert.calibrate();
-  TopRoller.spin(fwd,100,pct);
+  Brain.Screen.print("calibrated");
   wait(2000,msec);
   Brain.Screen.print("Pressed");
-  //turn(-135,35);
-//  turn(-89,50);
-  //intakes(fwd,4,100);
   vex::thread([](){
-    intakeL(fwd,4,100);
+    intakeL(fwd,60,100);
   }).detach();
   vex::thread([](){
-    intakeR(fwd,4,100);
+    intakeR(fwd,60,100);
   }).detach();
-  move(30,60,90,25);
+  move(30,60,-135,22);
+  wait(.2,sec);
+  move(31,60,-135,2);
+  /*vex::thread([](){
+    intakeL(fwd,2,100);
+  }).detach();
+  vex::thread([](){
+    intakeR(fwd,60,100);
+  }).detach();
+  */
+  roller(.4,100);
+  move(-10,30,-4,22);
   wait(.5,sec);
-  move(4,50,90,2);
-  roller(2,100);
+  /*vex::thread([](){
+    intakeL(fwd,20,100);
+  }).detach();
+  vex::thread([](){
+    intakeR(fwd,20,100);
+  }).detach();
+  */
+  move(48,70,0,22);
+  turn(-90,22);
+  move(4.25,30,-90,2);
+  roller(.5,100);
+  wait(.5,sec);
+  roller(.5,100);
+  move(-15,30,-6,22);
+  move(47,70,-52,12);
+  move(21,40,-59,10);
+  roller(1,100);
+
+
 
 
   //encoderTest();
@@ -488,9 +518,10 @@ int main() {
   // Set up callbacks for autonomous and driver control periods.
   Competition.autonomous(autonomous);
   Competition.drivercontrol(usercontrol);
+  
 
   // Run the pre-autonomous function.
-  
+  pre_auton();
 
   // Prevent main from exiting with an infinite loop.
   while (true) {
