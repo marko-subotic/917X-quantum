@@ -202,24 +202,24 @@ const double AngleUntilLinear = fabs(error/4);
   Brain.Screen.newLine();
 }
 
-void move(double dist, int spd,int ang, int angSpeed)
+void move(double dist, double spd,int ang, int angSpeed)
 {
 const double EncoderWheelDiameterInches = 4.37;
-const double DistanceUntilDecelerateInches = 17;
-const double DistanceUntilAccelerate = 10;
-const double DistanceUntilLinearInches = 3;
-const double LinearSpeed = 5;
+const double DistanceUntilDecelerateInches = 13;
+const double DistanceUntilAccelerate = 7;
+const double DistanceUntilLinearInches = 4;
+const double LinearSpeed = 10;
 const double MinErrorInches = .1;
   Brain.Screen.print(inert.orientation(yaw,degrees));
   Brain.Screen.newLine();
-  int oSpeed = spd;
+  double oSpeed = spd;
   spd = LinearSpeed;
   distan.resetRotation();
   double firstAngle = inert.orientation(yaw,degrees);
   double currentAngle = inert.orientation(yaw,degrees);
   double error = dist;
   double kError = 1/DistanceUntilDecelerateInches;
-  double kChange = 1.5;
+  double kChange = 1.47;
   double kAccel = (oSpeed/(LinearSpeed*DistanceUntilAccelerate))-(1/DistanceUntilAccelerate);
   double leftSpeed = spd;
   double rightSpeed = spd;
@@ -238,13 +238,16 @@ const double MinErrorInches = .1;
       }
     }
     currentAngle = inert.orientation(yaw,degrees);
-    leftSpeed = spd -(currentAngle-firstAngle)*kChange*(spd/oSpeed);
-    rightSpeed = spd + (currentAngle-firstAngle)*kChange*(spd/oSpeed);
+    leftSpeed = spd -(currentAngle-firstAngle)*kChange;//*(spd/oSpeed);
+    rightSpeed = spd + (currentAngle-firstAngle)*kChange;//*(spd/oSpeed);
     if(dist<0){
       double temp = leftSpeed;
       leftSpeed = -rightSpeed;
       rightSpeed = -temp;
     }
+
+          printf("%f\n", spd);
+
     
     LeftBack.spin(vex::directionType::fwd,leftSpeed,vex::velocityUnits::pct);
     RightBack.spin(vex::directionType::fwd,rightSpeed,vex::velocityUnits::pct);
@@ -291,7 +294,7 @@ void roller(double time, double velocity){
 
 void autonomous(void) {
   
-    TopRoller.spin(fwd,100,pct);
+  TopRoller.spin(fwd,100,pct);
   inert.calibrate();
   Brain.Screen.print("calibrated");
   wait(2000,msec);
@@ -302,36 +305,23 @@ void autonomous(void) {
   vex::thread([](){
     intakeR(fwd,60,100);
   }).detach();
-  move(30,60,-135,22);
+  move(29,70,-135,22);
   wait(.2,sec);
-  move(31,60,-135,2);
-  /*vex::thread([](){
-    intakeL(fwd,2,100);
-  }).detach();
-  vex::thread([](){
-    intakeR(fwd,60,100);
-  }).detach();
-  */
+  move(30,75,-135,2);
   roller(.4,100);
-  move(-10,30,-4,22);
-  wait(.5,sec);
-  /*vex::thread([](){
-    intakeL(fwd,20,100);
-  }).detach();
-  vex::thread([](){
-    intakeR(fwd,20,100);
-  }).detach();
-  */
-  move(48,70,0,22);
-  turn(-90,22);
-  move(4.25,30,-90,2);
+  move(-11,30,0,22);
+  wait(.2,sec);
+  move(36,70,-90,22);
+  //turn(-90,22);
+  move(4.5,30,-90,2);
   roller(.5,100);
   wait(.5,sec);
   roller(.5,100);
-  move(-15,30,-6,22);
+  /*move(-15,30,-6,22);
   move(47,70,-52,12);
   move(21,40,-59,10);
   roller(1,100);
+  */
 
 
 
