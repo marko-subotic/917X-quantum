@@ -226,8 +226,9 @@ const double NonMaxSpeedDist = DistanceUntilDecelerateInches + DistanceUntilLine
   double kDecel = (oSpeed-LinearSpeed)/(oSpeed*DistanceUntilDecelerateInches);
   double leftSpeed = spd;
   double rightSpeed = spd;
+  int printer[6000];
   
-  // int i = 0;
+   int i = 0;
     double prevDistan = 0;
   while(fabs(error)>=MinErrorInches){
     bool isAccel = false;
@@ -281,8 +282,10 @@ const double NonMaxSpeedDist = DistanceUntilDecelerateInches + DistanceUntilLine
      // rightDrive.stop();
       //return;
     //}
-
-    double currentDistan = distanceCovered;
+    if(i<6000){
+      printer[i]= distan.position(degrees);
+    }
+    /*double currentDistan = distanceCovered;
     if (currentDistan > 5 && currentDistan < 7)
     {
       if (currentDistan != prevDistan)
@@ -292,7 +295,7 @@ const double NonMaxSpeedDist = DistanceUntilDecelerateInches + DistanceUntilLine
         prevDistan = currentDistan;
       }
     }
-
+*/
 
     
     LeftBack.spin(vex::directionType::fwd,leftSpeed,vex::velocityUnits::pct);
@@ -305,7 +308,9 @@ const double NonMaxSpeedDist = DistanceUntilDecelerateInches + DistanceUntilLine
     //Brain.Screen.print(error);
 
   }
-
+  for(int l = 0; l<6000;l++){
+    printf("%d\n", printer[l]);
+  }
   leftDrive.stop();
   rightDrive.stop();
   leftDrive.setStopping(brake);
