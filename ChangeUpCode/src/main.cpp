@@ -136,13 +136,12 @@ bool turnRight(int ang, double currentAng){
   }
 }
 const double AngleUntilAccelerate = 5;
-const double TurnLinearSpeed = 5;
+const double TurnLinearSpeed = 1;
 const double MinErrorDegrees = .3;
 
 void turn(double ang, int spd)
 {
-
-
+  printf("Start: %f\n", inert.orientation(yaw,degrees));
 
   Brain.Screen.print(inert.orientation(yaw,degrees));
   Brain.Screen.newLine();
@@ -151,8 +150,9 @@ void turn(double ang, int spd)
   double firstAngle = inert.orientation(yaw,degrees);
   double currentAngle = inert.orientation(yaw,degrees);
   double error =fabs(ang-currentAngle);
+  double angNeeded = fabs(ang-currentAngle);
   const double AngleUntilDecelerate = fabs(error/2.2);
-const double AngleUntilLinear = fabs(error/6);
+const double AngleUntilLinear = fabs(error/5);
   double kError = 1/AngleUntilDecelerate;
   double kSlow = 1;
   double kAccel = (oSpeed/(TurnLinearSpeed*AngleUntilAccelerate))-(1/AngleUntilAccelerate);
@@ -162,10 +162,14 @@ const double AngleUntilLinear = fabs(error/6);
   //Brain.Screen.clearLine();
    // Brain.Screen.print("Angle till: ");
     //Brain.Screen.print(error);
-  while(fabs(error)>=MinErrorDegrees){
+    double distanceCovered =  fabs(inert.orientation(yaw,degrees)-firstAngle);
+
+  while(fabs(distanceCovered)<=angNeeded){
+  //while(fabs(error)>=MinErrorDegrees){
+
     Brain.Screen.clearLine();
     
-    double distanceCovered =  fabs(inert.orientation(yaw,degrees)-firstAngle);
+     distanceCovered =  fabs(inert.orientation(yaw,degrees)-firstAngle);
     if(fabs(error)<=AngleUntilDecelerate){
       spd = oSpeed*fabs(error)*kError*kSlow;
       if(fabs(error)<=AngleUntilLinear){
@@ -199,6 +203,7 @@ const double AngleUntilLinear = fabs(error/6);
   rightDrive.stop();
   leftDrive.setStopping(brake);
   rightDrive.setStopping(brake);
+  printf("End: %f\n\n", inert.orientation(yaw,degrees));
   Brain.Screen.print(inert.orientation(yaw,degrees));
   Brain.Screen.newLine();
 }
@@ -211,34 +216,54 @@ void move(double dist, double inSpd,int ang, int angSpeed)
 {
     double volatile spd = inSpd;
 const double EncoderWheelDiameterInches = 4.37;
-const double DistanceUntilDecelerateInches = 20;
-const double DistanceUntilAccelerate = 7;
+double DistanceUntilDecelerateInches = 20;
+double DistanceUntilAccelerate = 7;
 const double DistanceUntilLinearInches = 4;
-const double AngleForMaxError = 60;
-const double LinearSpeed = 7;
-const double MinErrorInches = .1;
+const double AngleForMaxError = 80;
+//if final is greater than 20 risk of not finishing straight heighens
+const double finalSpeedForward = 20;
+//if init is great than 35 risk of not going straight heightens
+const double initialSpeedForward = 35;
+const double finalSpeedBackward = 24;
+const double initialSpeedBackward = 18;
+
+double finalSpeed = finalSpeedForward;
+double initialSpeed = initialSpeedForward;
+
+if(dist<0){
+  double temp = DistanceUntilDecelerateInches;
+  //DistanceUntilDecelerateInches = DistanceUntilAccelerate;
+  //DistanceUntilAccelerate = temp;
+  finalSpeed = finalSpeedBackward;
+  printf("final %f\n", finalSpeed);
+  initialSpeed = initialSpeedBackward;
+}
 const double NonMaxSpeedDist = DistanceUntilDecelerateInches + DistanceUntilLinearInches;
+//to give the bot time to slow over small distance
+if(fabs(dist)<NonMaxSpeedDist){
+  initialSpeed=finalSpeed;
+}
   Brain.Screen.print(inert.orientation(yaw,degrees));
   Brain.Screen.newLine();
   double oSpeed = spd;
-  spd = LinearSpeed;
+  spd = initialSpeed;
   distan.resetRotation();
   double firstAngle = inert.orientation(yaw,degrees);
   double currentAngle = inert.orientation(yaw,degrees);
   double error = dist;
-  //double kError = 1/DistanceUntilDecelerateInches;
-  double kAccel = (oSpeed/(LinearSpeed*DistanceUntilAccelerate))-(1/DistanceUntilAccelerate);
-  double kDecel = (oSpeed-LinearSpeed)/(oSpeed*DistanceUntilDecelerateInches);
+  double kAccel = (oSpeed/(initialSpeed*DistanceUntilAccelerate))-(1/DistanceUntilAccelerate);
+  double kDecel = (oSpeed-finalSpeed)/(oSpeed*DistanceUntilDecelerateInches);
   double leftSpeed = spd;
   double rightSpeed = spd;
 
    int i = 0;
    int j = 0;
-    //double prevDistan = 0;
-  while(fabs(error)>=MinErrorInches){
+  double distanceCovered =  0;
+
+  while(fabs(distanceCovered)<=fabs(dist)){
     bool isAccel = false;
     bool isDecel = false;
-    double distanceCovered =  ((distan.position(degrees)/360)*M_PI*EncoderWheelDiameterInches);
+     distanceCovered =  ((distan.position(degrees)/360)*M_PI*EncoderWheelDiameterInches);
     if(fabs(dist)<NonMaxSpeedDist){
       if(fabs(distanceCovered) < fabs(dist)*(DistanceUntilAccelerate/(NonMaxSpeedDist))){
         isAccel = true;
@@ -253,15 +278,12 @@ const double NonMaxSpeedDist = DistanceUntilDecelerateInches + DistanceUntilLine
       }  
     }
     if(isAccel){
-      spd = LinearSpeed*(1 + fabs(distanceCovered) * kAccel);
-      //printf("acceleration\n");
+      spd = initialSpeed*(1 + fabs(distanceCovered) * kAccel);
     }else if(isDecel){
       double distanceDecelerated = DistanceUntilDecelerateInches-fabs(error);
       spd = oSpeed*(1-fabs(distanceDecelerated)*kDecel);
-      //printf("deceleration\n");
     }else{
       spd = oSpeed;
-      //printf("constant\n");
     }
 
     currentAngle = inert.orientation(yaw,degrees);
@@ -274,41 +296,13 @@ const double NonMaxSpeedDist = DistanceUntilDecelerateInches + DistanceUntilLine
       leftSpeed = -rightSpeed;
       rightSpeed = -temp;
     }
-//          printf("\n\n\n");
-//          printf("encoder value: %ld", distan.value());
-//          printf("speed: %f\n", spd);
-//          printf("distance covered: %f\n", distanceCovered);
-//          printf("error: %f\n", error);
-//          printf("\n");
-    //Brain.Screen.print(distan.value());
-    //Brain.Screen.print(" ");
-    //if(i++ > 200000){
-      //leftDrive.stop();
-     // rightDrive.stop();
-      //return;
-    //}
     
     if(j<printerSize&&i%printerSamplingRate==0){
       printer[j][0] = distanceCovered;
       printer[j][1] = spd;
-    
-      
-        j++;
-
+            j++;
     }
     i ++;
-    /*double currentDistan = distanceCovered;
-    if (currentDistan > 5 && currentDistan < 7)
-    {
-      if (currentDistan != prevDistan)
-      {
-        Brain.Screen.print(currentDistan);
-        Brain.Screen.newLine();
-        prevDistan = currentDistan;
-      }
-    }
-*/
-
     
     LeftBack.spin(vex::directionType::fwd,leftSpeed,vex::velocityUnits::pct);
     RightBack.spin(vex::directionType::fwd,rightSpeed,vex::velocityUnits::pct);
@@ -369,20 +363,27 @@ void autonomous(void) {
   //Brain.Screen.print("calibrated");
   wait(2000,msec);
   Brain.Screen.print("Pressed");
-  move(27,80,0,40);
+  turn(-90,10);
+  wait(1,sec);
+  turn(-135,10);
+  wait(1,sec);
+  turn(-90,10);
+  wait(1,sec);
+  turn(0,10);
+  //move(-30,80,0,20);
   /*vex::thread([](){
     intakeL(fwd,60,100);
   }).detach();
   vex::thread([](){
     intakeR(fwd,60,100);
   }).detach();
-  move(28,80,-135,45);
+  move(28,80,-135,40);
   wait(.2,sec);
   move(29.25,80,-135,2);
   roller(.4,100);
-  move(-12,80,0,45);
+  move(-12,80,0,40);
   wait(.2,sec);
-  move(36,80,-90,45);
+  move(34,80,-90,40);
   //turn(-90,22);
   move(4.75,80,-90,2);
   roller(.5,100);
