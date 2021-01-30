@@ -202,15 +202,20 @@ const double AngleUntilLinear = fabs(error/6);
   Brain.Screen.print(inert.orientation(yaw,degrees));
   Brain.Screen.newLine();
 }
+static const int printerSize = 100;
+static const int numberIterations = 800000;
+static double printer[printerSize][2];
+static int printerSamplingRate = numberIterations/printerSize;
 
-void move(double dist, double spd,int ang, int angSpeed)
+void move(double dist, double inSpd,int ang, int angSpeed)
 {
+    double volatile spd = inSpd;
 const double EncoderWheelDiameterInches = 4.37;
 const double DistanceUntilDecelerateInches = 20;
 const double DistanceUntilAccelerate = 7;
 const double DistanceUntilLinearInches = 4;
 const double AngleForMaxError = 60;
-const double LinearSpeed = 5;
+const double LinearSpeed = 7;
 const double MinErrorInches = .1;
 const double NonMaxSpeedDist = DistanceUntilDecelerateInches + DistanceUntilLinearInches;
   Brain.Screen.print(inert.orientation(yaw,degrees));
@@ -226,10 +231,10 @@ const double NonMaxSpeedDist = DistanceUntilDecelerateInches + DistanceUntilLine
   double kDecel = (oSpeed-LinearSpeed)/(oSpeed*DistanceUntilDecelerateInches);
   double leftSpeed = spd;
   double rightSpeed = spd;
-  int printer[6000];
-  
+
    int i = 0;
-    double prevDistan = 0;
+   int j = 0;
+    //double prevDistan = 0;
   while(fabs(error)>=MinErrorInches){
     bool isAccel = false;
     bool isDecel = false;
@@ -251,7 +256,7 @@ const double NonMaxSpeedDist = DistanceUntilDecelerateInches + DistanceUntilLine
       spd = LinearSpeed*(1 + fabs(distanceCovered) * kAccel);
       //printf("acceleration\n");
     }else if(isDecel){
-      double distanceDecelerated = DistanceUntilDecelerateInches-error;
+      double distanceDecelerated = DistanceUntilDecelerateInches-fabs(error);
       spd = oSpeed*(1-fabs(distanceDecelerated)*kDecel);
       //printf("deceleration\n");
     }else{
@@ -282,9 +287,16 @@ const double NonMaxSpeedDist = DistanceUntilDecelerateInches + DistanceUntilLine
      // rightDrive.stop();
       //return;
     //}
-    if(i<6000){
-      printer[i]= distan.position(degrees);
+    
+    if(j<printerSize&&i%printerSamplingRate==0){
+      printer[j][0] = distanceCovered;
+      printer[j][1] = spd;
+    
+      
+        j++;
+
     }
+    i ++;
     /*double currentDistan = distanceCovered;
     if (currentDistan > 5 && currentDistan < 7)
     {
@@ -303,13 +315,6 @@ const double NonMaxSpeedDist = DistanceUntilDecelerateInches + DistanceUntilLine
     LeftFront.spin(vex::directionType::fwd,leftSpeed,vex::velocityUnits::pct);
     RightFront.spin(vex::directionType::fwd,rightSpeed,vex::velocityUnits::pct);
     error = dist - (distanceCovered);
-    //Brain.Screen.clearLine();
-    //Brain.Screen.print("distance till: ");
-    //Brain.Screen.print(error);
-
-  }
-  for(int l = 0; l<6000;l++){
-    printf("%d\n", printer[l]);
   }
   leftDrive.stop();
   rightDrive.stop();
@@ -318,6 +323,20 @@ const double NonMaxSpeedDist = DistanceUntilDecelerateInches + DistanceUntilLine
   Brain.Screen.print(inert.orientation(yaw,degrees));
   Brain.Screen.newLine();
   turn(ang,angSpeed);
+  printf("%d\n", i);
+  for(int l = 0; l<printerSize;l++){
+    printf("%f\n", printer[l][0]);
+    fflush(stdout);
+
+  }
+  printf("Encoder value: \n");
+  for(int l = 0; l<printerSize;l++){
+    printf("%f\n", printer[l][1]);
+    fflush(stdout);
+  }
+  fflush(stdout);
+  
+  
 }
 
 void intakeL(directionType dir, double time, double velocity){
@@ -347,10 +366,10 @@ void autonomous(void) {
   
   //TopRoller.spin(fwd,100,pct);
   inert.calibrate();
-  Brain.Screen.print("calibrated");
+  //Brain.Screen.print("calibrated");
   wait(2000,msec);
   Brain.Screen.print("Pressed");
-  move(22,80,0,40);
+  move(27,80,0,40);
   /*vex::thread([](){
     intakeL(fwd,60,100);
   }).detach();
