@@ -135,95 +135,160 @@ bool turnRight(int ang, double currentAng){
     return false;
   }
 }
-const double AngleUntilAccelerate = 5;
-const double TurnLinearSpeed = 1;
-const double MinErrorDegrees = .3;
+double calcAngNeeded(int ang, double currentAng){
+  double rtrn = ang-currentAng;
+  if(rtrn>=180){
+    rtrn-=360;
+  } else if(rtrn<=-180){
+    rtrn += 360;
+  }
+  return (rtrn);
+}
+//const double TurnLinearSpeed = 1;
 
-void turn(double ang, int spd)
+const double MinErrorDegrees = 1;
+static const int printerSize = 100;
+static const int numberIterations = 395623;
+static double printer[printerSize][2];
+static int printerSamplingRate = numberIterations/printerSize;
+
+
+void turn(double ang, double spd)
 {
   printf("Start: %f\n", inert.orientation(yaw,degrees));
 
   Brain.Screen.print(inert.orientation(yaw,degrees));
   Brain.Screen.newLine();
-  int oSpeed = spd;
-  spd = TurnLinearSpeed;
+  double oSpeed = spd;
+  double finalSpeed = 2;
+  double initialSpeed = fmin(15,spd);
+  spd = initialSpeed;
   double firstAngle = inert.orientation(yaw,degrees);
   double currentAngle = inert.orientation(yaw,degrees);
   double error =fabs(ang-currentAngle);
-  double angNeeded = fabs(ang-currentAngle);
-  const double AngleUntilDecelerate = fabs(error/2.2);
-const double AngleUntilLinear = fabs(error/5);
-  double kError = 1/AngleUntilDecelerate;
-  double kSlow = 1;
-  double kAccel = (oSpeed/(TurnLinearSpeed*AngleUntilAccelerate))-(1/AngleUntilAccelerate);
+  double switcher = ang-currentAngle;
+  double angNeeded = fabs(calcAngNeeded(ang,currentAngle));
+  const double AngleUntilDecelerate = 65.5;
+  double AngleUntilAccelerate = 10;
+// double AngleUntilLinear = fabs(error/5);
+ double NonMaxSpeedDist = AngleUntilDecelerate+AngleUntilAccelerate;
+
+  //double kError = 1/AngleUntilDecelerate;
+  //double kSlow = 1;
+  double kAccel = (oSpeed/(initialSpeed*AngleUntilAccelerate))-(1/AngleUntilAccelerate);
+  double kDecel = (oSpeed-finalSpeed)/(oSpeed*AngleUntilDecelerate);
   bool turnWhere = turnRight(ang,currentAngle);
-  
+  double leftSpeed = spd;
+  double rightSpeed = spd;
 
-  //Brain.Screen.clearLine();
-   // Brain.Screen.print("Angle till: ");
-    //Brain.Screen.print(error);
-    double distanceCovered =  fabs(inert.orientation(yaw,degrees)-firstAngle);
+  double distanceCovered =  fabs(inert.orientation(yaw,degrees)-firstAngle);
+  int i = 0;
+  int j = 0;
+  bool slept = false;
+  while(fabs(distanceCovered)<=angNeeded - MinErrorDegrees){
+    if(switcher>180||switcher<-180){
+      if(firstAngle*inert.orientation(yaw,degrees)<0){
+        if(inert.orientation(yaw,degrees)>0){
+          distanceCovered = fabs(inert.orientation(yaw,degrees)-360-firstAngle);
+        }else{
+          distanceCovered = fabs(inert.orientation(yaw,degrees)+360-firstAngle);
 
-  while(fabs(distanceCovered)<=angNeeded){
-  //while(fabs(error)>=MinErrorDegrees){
+        }
+      }else{
+        distanceCovered = fabs(inert.orientation(yaw,degrees)-firstAngle);
 
-    Brain.Screen.clearLine();
-    
-     distanceCovered =  fabs(inert.orientation(yaw,degrees)-firstAngle);
-    if(fabs(error)<=AngleUntilDecelerate){
-      spd = oSpeed*fabs(error)*kError*kSlow;
-      if(fabs(error)<=AngleUntilLinear){
-        spd = TurnLinearSpeed;
       }
-    }else if(fabs(distanceCovered)<=AngleUntilAccelerate){
-          Brain.Screen.print(fabs(distanceCovered));
-
-      spd = TurnLinearSpeed*(1 + fabs(distanceCovered) * kAccel);
+    }else{
+      distanceCovered = fabs(inert.orientation(yaw,degrees)-firstAngle);
     }
-    double leftSpeed = spd;
-    double rightSpeed = spd;
+    bool isAccel = false;
+    bool isDecel = false;
+    if(fabs(angNeeded)<NonMaxSpeedDist){
+      if(fabs(distanceCovered) < fabs(angNeeded)*(AngleUntilAccelerate/(NonMaxSpeedDist))){
+        isAccel = true;
+      }else{
+        isDecel = true;
+      }
+    }else{
+      if(fabs(distanceCovered)<=AngleUntilAccelerate){
+        isAccel = true;
+      }else if(fabs(error)<=AngleUntilDecelerate){
+        isDecel = true;
+      }  
+    }
+    if(isAccel){
+      spd = initialSpeed*(1 + fabs(distanceCovered) * kAccel);
+    }else if(isDecel){
+      double distanceDecelerated = AngleUntilDecelerate-fabs(error);
+      spd = oSpeed*(1-fabs(distanceDecelerated)*kDecel);
+    }else{
+      spd = oSpeed;
+    }
+    leftSpeed = spd;
+    rightSpeed = spd;
     if(turnWhere){
       rightSpeed *= -1;
     }else{
       leftSpeed *= -1;
     }
+    if(j<printerSize&&i%printerSamplingRate==0){
+      printer[j][0] = distanceCovered;
+      printer[j][1] = spd;
+            j++;
+    }
+    i ++;
     currentAngle = inert.orientation(yaw,degrees);    
     LeftBack.spin(vex::directionType::fwd,leftSpeed,vex::velocityUnits::pct);
     RightBack.spin(vex::directionType::fwd,rightSpeed,vex::velocityUnits::pct);
     LeftFront.spin(vex::directionType::fwd,leftSpeed,vex::velocityUnits::pct);
     RightFront.spin(vex::directionType::fwd,rightSpeed,vex::velocityUnits::pct);
     error = ang - (inert.orientation(yaw,degrees));
-    //Brain.Screen.clearLine();
-    //Brain.Screen.print("distance till: ");
-    //Brain.Screen.print(error);
 
   }
-
-  leftDrive.stop();
-  rightDrive.stop();
-  leftDrive.setStopping(brake);
-  rightDrive.setStopping(brake);
-  printf("End: %f\n\n", inert.orientation(yaw,degrees));
+  
+  leftDrive.stop(hold);
+  rightDrive.stop(hold);
+  LeftFront.setBrake(hold);
+  RightFront.setBrake(hold);
+  LeftBack.setBrake(hold);
+  RightBack.setBrake(hold);
+  
   Brain.Screen.print(inert.orientation(yaw,degrees));
   Brain.Screen.newLine();
+  printf("%d\n", i);
+  for(int l = 0; l<printerSize;l++){
+    if(printer[l][0]!=0){
+      printf("%f\n", printer[l][0]);
+      fflush(stdout);
+    }
+   
+
+  }
+  printf("Encoder value: \n");
+  for(int l = 0; l<printerSize;l++){
+    if(printer[l][1]!=0){
+      printf("%f\n", printer[l][1]);
+      fflush(stdout);
+    }
+  }
+  //printf("%f\n", inert.orientation(yaw,degrees));
+  //wait(1,sec);
+  //printf("%f\n", inert.orientation(yaw,degrees));
+  
 }
-static const int printerSize = 100;
-static const int numberIterations = 800000;
-static double printer[printerSize][2];
-static int printerSamplingRate = numberIterations/printerSize;
 
 void move(double dist, double inSpd,int ang, int angSpeed)
 {
     double volatile spd = inSpd;
-const double EncoderWheelDiameterInches = 4.37;
+const double EncoderWheelDiameterInches = 4.33;
 double DistanceUntilDecelerateInches = 20;
 double DistanceUntilAccelerate = 7;
 const double DistanceUntilLinearInches = 4;
-const double AngleForMaxError = 80;
+const double AngleForMaxError = 66;
 //if final is greater than 20 risk of not finishing straight heighens
 const double finalSpeedForward = 20;
 //if init is great than 35 risk of not going straight heightens
-const double initialSpeedForward = 35;
+const double initialSpeedForward = 20;
 const double finalSpeedBackward = 24;
 const double initialSpeedBackward = 18;
 
@@ -358,37 +423,43 @@ void roller(double time, double velocity){
 
 void autonomous(void) {
   
-  //TopRoller.spin(fwd,100,pct);
+  TopRoller.spin(fwd,100,pct);
   inert.calibrate();
   //Brain.Screen.print("calibrated");
   wait(2000,msec);
   Brain.Screen.print("Pressed");
+  //turn(-45,40);
+  //wait(.5,sec);
+  //turn(-90,40);
+ // wait(.5,sec);
+ // turn(-135,40);
+  //turn(0,40);
+
+  //wait(1,sec);
+  //printf("%f\n", inert.orientation(yaw,degrees));
+  /*turn(-135,10);
+  wait(1,sec);
   turn(-90,10);
   wait(1,sec);
-  turn(-135,10);
-  wait(1,sec);
-  turn(-90,10);
-  wait(1,sec);
-  turn(0,10);
-  //move(-30,80,0,20);
-  /*vex::thread([](){
+  turn(0,10);*/
+  vex::thread([](){
     intakeL(fwd,60,100);
   }).detach();
   vex::thread([](){
     intakeR(fwd,60,100);
   }).detach();
-  move(28,80,-135,40);
+  move(28,80,-133,40);
   wait(.2,sec);
-  move(29.25,80,-135,2);
+  move(27.25,80,-133,2);
   roller(.4,100);
-  move(-12,80,0,40);
+  move(-11,80,0,40);
   wait(.2,sec);
-  move(34,80,-90,40);
+  move(35,80,-90,40);
   //turn(-90,22);
   move(4.75,80,-90,2);
   roller(.5,100);
   wait(.25,sec);
-  roller(.5,100);*/
+  roller(.5,100);
   /*move(-15,30,-6,22);
   move(47,70,-52,12);
   move(21,40,-59,10);
