@@ -277,7 +277,7 @@ void turn(double ang, double spd)
   
 }
 
-void move(double dist, double inSpd,int ang, int angSpeed)
+void move(double dist, double inSpd,double ang, int angSpeed)
 {
     double volatile spd = inSpd;
 const double EncoderWheelDiameterInches = 4.33;
@@ -448,23 +448,34 @@ void autonomous(void) {
   vex::thread([](){
     intakeR(fwd,60,100);
   }).detach();
-  move(28,80,-133,40);
+  move(28.75,80,-133,40);
   wait(.2,sec);
   move(27.25,80,-133,2);
   roller(.4,100);
-  move(-11,80,0,40);
+  move(-9.95,80,-.5,40);
   wait(.2,sec);
-  move(35,80,-90,40);
+  move(44.75,80,-90,40);
   //turn(-90,22);
-  move(4.75,80,-90,2);
+  move(3.54,80,-90,2);
   roller(.5,100);
-  wait(.25,sec);
+  wait(.4,sec);
+  roller(.7,100);
+  move(-4.84,80,95,40);
+  move(20,80,-14.5,40);
+  vex::thread([](){
+    roller(.35,100);
+  }).detach();
+  move(42,80,-52.5,40);
+  move(23,80,-52.5,10);
   roller(.5,100);
-  /*move(-15,30,-6,22);
-  move(47,70,-52,12);
-  move(21,40,-59,10);
-  roller(1,100);
-  */
+  move(-3.5,80,123,40);
+  move(53,80,123,40);
+
+  /*move(-15,80,-0,40);
+  move(47,80,-60,40);
+  move(19,80,-60,10);
+  roller(.75,100);*/
+  
 
 
 
