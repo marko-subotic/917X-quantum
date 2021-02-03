@@ -284,7 +284,7 @@ const double EncoderWheelDiameterInches = 4.33;
 double DistanceUntilDecelerateInches = 20;
 double DistanceUntilAccelerate = 7;
 const double DistanceUntilLinearInches = 4;
-const double AngleForMaxError = 66;
+const double AngleForMaxError = 90;
 //if final is greater than 20 risk of not finishing straight heighens
 const double finalSpeedForward = 20;
 //if init is great than 35 risk of not going straight heightens
@@ -434,7 +434,8 @@ void autonomous(void) {
  // wait(.5,sec);
  // turn(-135,40);
   //turn(0,40);
-
+  
+  
   //wait(1,sec);
   //printf("%f\n", inert.orientation(yaw,degrees));
   /*turn(-135,10);
@@ -451,25 +452,33 @@ void autonomous(void) {
   move(28.75,80,-133,40);
   wait(.2,sec);
   move(27.25,80,-133,2);
-  roller(.4,100);
-  move(-9.95,80,-.5,40);
+  roller(.5,100);
+  move(-10.25,80,-.5,40);
   wait(.2,sec);
-  move(44.75,80,-90,40);
+  move(45.05,80,-90,40);
   //turn(-90,22);
-  move(3.54,80,-90,2);
+  move(3.04,80,-90,2);
   roller(.5,100);
   wait(.4,sec);
   roller(.7,100);
-  move(-4.84,80,95,40);
-  move(20,80,-14.5,40);
+  move(-4.94,80,95,40);
+  move(24.5,80,-15,40);
   vex::thread([](){
     roller(.35,100);
   }).detach();
   move(42,80,-52.5,40);
-  move(23,80,-52.5,10);
+  move(24.5,80,-52.5,10);
   roller(.5,100);
-  move(-3.5,80,123,40);
-  move(53,80,123,40);
+  move(-5,80,124,40);
+  move(55,80,3,40);
+  vex::thread([](){
+    roller(.25,100);
+  }).detach();
+  move(25,80,7,20);
+  roller(.5,100);
+  wait(.4,sec);
+  roller(.7,100);
+ // move(108,80,0,10);
 
   /*move(-15,80,-0,40);
   move(47,80,-60,40);
