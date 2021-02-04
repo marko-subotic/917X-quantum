@@ -3,6 +3,8 @@ using namespace vex;
 extern brain Brain;
 
 // VEXcode devices
+extern encoder distan;
+extern inertial inert;
 
 /**
  * Used to initialize code/tasks/devices added using tools in VEXcode Text.
