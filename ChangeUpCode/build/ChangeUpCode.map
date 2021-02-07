@@ -100,7 +100,7 @@ Discarded input sections
  .ARM.exidx.text._Z4turndd
                 0x00000000        0x8 build/src/main.o
  .text._Z4movedddi
-                0x00000000      0x560 build/src/main.o
+                0x00000000      0x658 build/src/main.o
  .ARM.exidx.text._Z4movedddi
                 0x00000000        0x8 build/src/main.o
  .text._Z7intakeLN3vex13directionTypeEdd

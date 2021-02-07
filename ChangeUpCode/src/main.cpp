@@ -205,7 +205,6 @@ void turn(double ang, double spd)
   double distanceCovered =  fabs(inert.orientation(yaw,degrees)-firstAngle);
   int i = 0;
   int j = 0;
-  bool slept = false;
   while(fabs(distanceCovered)<=angNeeded - MinErrorDegrees){
     if(switcher>180||switcher<-180){
       if(firstAngle*inert.orientation(yaw,degrees)<0){
@@ -213,11 +212,9 @@ void turn(double ang, double spd)
           distanceCovered = fabs(inert.orientation(yaw,degrees)-360-firstAngle);
         }else{
           distanceCovered = fabs(inert.orientation(yaw,degrees)+360-firstAngle);
-
         }
       }else{
         distanceCovered = fabs(inert.orientation(yaw,degrees)-firstAngle);
-
       }
     }else{
       distanceCovered = fabs(inert.orientation(yaw,degrees)-firstAngle);
@@ -388,6 +385,7 @@ if(fabs(dist)<NonMaxSpeedDist){
   double distanceCoveredL =  0;
   Point leftSide;
   Point rightSide;
+  Point mid;
   leftSide.x = 0- EncoderDist/2;
   leftSide.y = 0;
   rightSide.x = 0 + EncoderDist/2;
@@ -404,6 +402,12 @@ if(fabs(dist)<NonMaxSpeedDist){
     distanceCoveredL =  ((distanL.position(degrees)/360)*M_PI*EncoderWheelDiameterInches);
     distanceCoveredR =  ((distanR.position(degrees)/360)*M_PI*EncoderWheelDiameterInches);
     calculateNewPos(leftSide,rightSide,distanceCoveredL-prevDistanceL,distanceCoveredR-prevDistanceR,&newLeftSide,&newRightSide,EncoderDist);
+    leftSide = newLeftSide;
+    rightSide = newRightSide;
+    mid.x = (leftSide.x + rightSide.x)/2;
+    mid.y = (leftSide.y + rightSide.y)/2;
+    double alpha = atan((rightSide.y-leftSide.y)/(rightSide.x-leftSide.x));
+    double epsilon = atan(fabs(mid.x)/(dist-mid.y));
     prevDistanceL = distanceCoveredL;
     prevDistanceR = distanceCoveredR;
     if(fabs(dist)<NonMaxSpeedDist){
@@ -428,8 +432,8 @@ if(fabs(dist)<NonMaxSpeedDist){
       spd = oSpeed;
     }
 
-    double deltaY = distanL.position(degrees)-distanR.position(degrees);
-    double speedCorrection = (spd/DistanceForMaxError)*deltaY;
+    double deltaTheta = epsilon+alpha;
+    double speedCorrection = (spd/DistanceForMaxError)*deltaTheta;
     leftSpeed  = spd - speedCorrection;
     rightSpeed = spd + speedCorrection;
     if(dist < 0){
@@ -438,11 +442,11 @@ if(fabs(dist)<NonMaxSpeedDist){
       rightSpeed = -temp;
     }
     if(i==7){
-      printf("%f\n", deltaY);
+      printf("%f\n", deltaTheta);
     }
     if(j<printerSize&&i%printerSamplingRate==0){
-      printer[j][0] = distanceCoveredR;
-      printer[j][1] = deltaY;
+      printer[j][0] = error;
+      printer[j][1] = deltaTheta;
             j++;
     }
     i ++;
@@ -451,7 +455,7 @@ if(fabs(dist)<NonMaxSpeedDist){
     RightBack.spin(vex::directionType::fwd,rightSpeed,vex::velocityUnits::pct);
     LeftFront.spin(vex::directionType::fwd,leftSpeed,vex::velocityUnits::pct);
     RightFront.spin(vex::directionType::fwd,rightSpeed,vex::velocityUnits::pct);
-    error = dist - (distanceCoveredR+distanceCoveredL)/2;
+    error = sqrt(pow(mid.x,2)+pow(mid.y-dist,2));
   }
   leftDrive.stop();
   rightDrive.stop();
