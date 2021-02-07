@@ -68,6 +68,7 @@
 // EncoderA             encoder       A, B            
 // ---- END VEXCODE CONFIGURED DEVICES ----
 #include "vex.h"
+#include <Point.h>
 
 // ---- START VEXCODE CONFIGURED DEVICES ----
 // Robot Configuration:
@@ -296,7 +297,50 @@ void turn(double ang, double spd)
   //printf("%f\n", inert.orientation(yaw,degrees));
   
 }
+/*const double EncoderDist = 14;
+typedef struct _Point{
+  double x;
+  double y;
+} Point;
+Point calculateNewPoint(Point oldPoint, double alpha, double theta, double radius, int coefficient){
+  Point p2;
+  Point rotationCenter;
+  rotationCenter.x = oldPoint.x-(coefficient*(radius*cos(alpha)));
+  rotationCenter.y = oldPoint.y-(coefficient*(radius*sin(alpha)));
+  double beta = alpha + theta;
+  p2.x = oldPoint.x- coefficient*(oldPoint.x-(coefficient*(cos(beta)*radius)));
+  p2.y = oldPoint.y- coefficient*(oldPoint.y-(coefficient*(sin(beta)*radius)));
+  return p2;
+}
+void calculateNewPos(Point leftWheel, Point rightWheel, double leftDist, double rightDist,Point* leftWheelResult, Point* rightWheelResult){
+  if(leftDist==rightDist){
+    leftWheelResult->x = leftWheel.x;
+    leftWheelResult->y = leftWheel.y + leftDist;
+    rightWheelResult->x = rightWheel.x;
+    rightWheelResult->y = rightWheel.y + leftDist;
+    return;
+  }
+  int coefficient = 1;
+  double slope = (rightWheel.y-leftWheel.y)/(rightWheel.x-leftWheel.x);
+  double leftRad,rightRad,theta;
+  if(rightDist>leftDist){
+    leftRad = (leftDist*EncoderDist)/(rightDist-leftDist);
+    rightRad = leftRad+EncoderDist;
+    theta = leftRad/leftDist;
+  }else{
+    coefficient *= -1;
+    rightRad = (rightDist*EncoderDist)/(leftDist-rightDist);
+    leftRad = rightRad+EncoderDist;
+    theta = leftRad/leftDist;
+  }
+  *leftWheelResult = calculateNewPoint(leftWheel,atan(slope),theta,leftRad,coefficient);
+  *rightWheelResult = calculateNewPoint(rightWheel,atan(slope),theta,rightRad,coefficient);
 
+  
+  
+}*/
+const double EncoderDist = 13;
+void calculateNewPos(Point leftWheel, Point rightWheel, double leftDist, double rightDist,Point* leftWheelResult, Point* rightWheelResult, double EncoderDist);
 void move(double dist, double inSpd,double ang, int angSpeed)
 {
     double volatile spd = inSpd;
@@ -341,14 +385,26 @@ if(fabs(dist)<NonMaxSpeedDist){
    int j = 0;
   double distanceCoveredR =  0;
   double distanceCoveredL =  0;
+  Point leftSide;
+  Point rightSide;
+  leftSide.x = 0- EncoderDist/2;
+  leftSide.y = 0;
+  rightSide.x = 0 + EncoderDist/2;
+  rightSide.y = 0;
+  double prevDistanceL = 0;
+  double prevDistanceR = 0;
 
 
   while(fabs(distanceCoveredR)<=fabs(dist)){
+    Point newLeftSide;
+    Point newRightSide;
     bool isAccel = false;
     bool isDecel = false;
-    distanceCoveredR =  ((distanR.position(degrees)/360)*M_PI*EncoderWheelDiameterInches);
     distanceCoveredL =  ((distanL.position(degrees)/360)*M_PI*EncoderWheelDiameterInches);
-
+    distanceCoveredR =  ((distanR.position(degrees)/360)*M_PI*EncoderWheelDiameterInches);
+    calculateNewPos(leftSide,rightSide,distanceCoveredL-prevDistanceL,distanceCoveredR-prevDistanceR,&newLeftSide,&newRightSide,EncoderDist);
+    prevDistanceL = distanceCoveredL;
+    prevDistanceR = distanceCoveredR;
     if(fabs(dist)<NonMaxSpeedDist){
       if(fabs(distanceCoveredR) < fabs(dist)*(DistanceUntilAccelerate/(NonMaxSpeedDist))){
         isAccel = true;
@@ -445,10 +501,31 @@ void roller(double time, double velocity){
 void autonomous(void) {
   
   //TopRoller.spin(fwd,100,pct);
-  inert.calibrate();
+  //inert.calibrate();
   //Brain.Screen.print("calibrated");
-  wait(2000,msec);
+  //wait(2000,msec);
   Brain.Screen.print("Pressed");
+    Point left;
+    left.x = 0;
+    left.y = 0;
+    Point right;
+    right.x = 14;
+    right.y = 0;
+    Point newLeft;
+    newLeft.x = 0;
+    newLeft.y = 0;
+    Point newRight;
+    newRight.x = 0;
+    newRight.y = 0;
+    
+    
+    //calculateNewPos(left, right,5,5,&newLeft,&newRight);
+    printf("Left X: %f", newLeft.x);
+    printf(" Left Y: %f\n", newLeft.x);
+    printf("Right X: %f", newLeft.x);
+    printf(" Right Y: %f\n", newLeft.x);
+  
+
   //turn(-45,40);
   //wait(.5,sec);
   //turn(-90,40);
@@ -500,7 +577,7 @@ void autonomous(void) {
   wait(.4,sec);
   roller(.7,100);
   */
-  move(50,80,0,10);
+  //move(50,80,0,10);
 
   /*move(-15,80,-0,40);
   move(47,80,-60,40);
