@@ -69,6 +69,7 @@
 // ---- END VEXCODE CONFIGURED DEVICES ----
 #include "vex.h"
 #include <Point.h>
+#include "..\..\Shared\GeometryFunctions.cpp"
 
 // ---- START VEXCODE CONFIGURED DEVICES ----
 // Robot Configuration:
