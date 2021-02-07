@@ -3,7 +3,7 @@
 #include <vector>
 #include <string>
 #include "..\ChangeUpCode\include\Point.h"
-#include "..\ChangeUpCode\src\GeometryFunctions.cpp"
+#include "..\Shared\GeometryFunctions.cpp"
 
 # define M_PI           3.14159265358979323846  /* pi */
 
@@ -24,14 +24,14 @@ int main()
   newRight.y = 0;
   
   
-  calculateNewPos(left, right, M_PI / 4, M_PI / 2, &newLeft, &newRight);
+  calculateNewPos(left, right, M_PI / 4, M_PI / 2, &newLeft, &newRight,13);
   printf("Left X: %f", newLeft.x);
   printf(" Left Y: %f\n", newLeft.y);
   printf("Right X: %f", newRight.x);
   printf(" Right Y: %f\n\n", newRight.y);
   left = newLeft;
   right = newRight;
-  calculateNewPos(left,right, M_PI / 2, M_PI/4, &newLeft, &newRight);
+  calculateNewPos(left,right, M_PI / 2, M_PI/4, &newLeft, &newRight,13);
   printf("Left X: %f", newLeft.x);
   printf(" Left Y: %f\n", newLeft.y);
   printf("Right X: %f", newRight.x);
@@ -40,14 +40,14 @@ int main()
   left.y = 0;
   right.x = 1;
   right.y = 0;  
-  calculateNewPos(left, right, M_PI / 2,M_PI / 4, &newLeft, &newRight);
+  calculateNewPos(left, right, M_PI / 2,M_PI / 4, &newLeft, &newRight,13);
   printf("Left X: %f", newLeft.x);
   printf(" Left Y: %f\n", newLeft.y);
   printf("Right X: %f", newRight.x);
   printf(" Right Y: %f\n\n", newRight.y);
   left = newLeft;
   right = newRight;
-  calculateNewPos(left,right, M_PI / 4, M_PI/2, &newLeft, &newRight);
+  calculateNewPos(left,right, M_PI / 4, M_PI/2, &newLeft, &newRight,13);
   printf("Left X: %f", newLeft.x);
   printf(" Left Y: %f\n", newLeft.y);
   printf("Right X: %f", newRight.x);
@@ -56,14 +56,14 @@ int main()
   left.y = 0;
   right.x = 1;
   right.y = 0; 
-  calculateNewPos(left, right, M_PI / 8, M_PI / 4, &newLeft, &newRight);
+  calculateNewPos(left, right, M_PI / 8, M_PI / 4, &newLeft, &newRight,13);
   printf("Left X: %f", newLeft.x);
   printf(" Left Y: %f\n", newLeft.y);
   printf("Right X: %f", newRight.x);
   printf(" Right Y: %f\n\n", newRight.y);
   left = newLeft;
   right = newRight;
-  calculateNewPos(left,right, M_PI / 4, M_PI/8, &newLeft, &newRight);
+  calculateNewPos(left,right, M_PI / 4, M_PI/8, &newLeft, &newRight,13);
   printf("Left X: %f", newLeft.x);
   printf(" Left Y: %f\n", newLeft.y);
   printf("Right X: %f", newRight.x);
@@ -72,14 +72,14 @@ int main()
   left.y = 0;
   right.x = 1;
   right.y = 0; 
-  calculateNewPos(left, right, M_PI / 4, M_PI / 8, &newLeft, &newRight);
+  calculateNewPos(left, right, M_PI / 4, M_PI / 8, &newLeft, &newRight,13);
   printf("Left X: %f", newLeft.x);
   printf(" Left Y: %f\n", newLeft.y);
   printf("Right X: %f", newRight.x);
   printf(" Right Y: %f\n\n", newRight.y);
   left = newLeft;
   right = newRight;
-  calculateNewPos(left,right, M_PI / 8, M_PI/4, &newLeft, &newRight);
+  calculateNewPos(left,right, M_PI / 8, M_PI/4, &newLeft, &newRight,14);
   printf("Left X: %f", newLeft.x);
   printf(" Left Y: %f\n", newLeft.y);
   printf("Right X: %f", newRight.x);
