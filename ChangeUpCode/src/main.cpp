@@ -168,9 +168,9 @@ double calcAngNeeded(int ang, double currentAng){
 //const double TurnLinearSpeed = 1;
 
 const double MinErrorDegrees = 1;
-static const int printerSize = 100;
-static const int numberIterations = 526693;
-static double printer[printerSize][2];
+static const int printerSize = 10000;
+static const int numberIterations = 76941;
+static double printer[printerSize][4];
 static int printerSamplingRate = numberIterations/printerSize;
 
 
@@ -392,20 +392,31 @@ if(fabs(dist)<NonMaxSpeedDist){
   rightSide.y = 0;
   double prevDistanceL = 0;
   double prevDistanceR = 0;
+  double rightArcLength = 0;
+  double leftArcLength = 0;
 
-
-  while(fabs(distanceCoveredR)<=fabs(dist)){
+  while(fabs(error)>=abs(1)){
     Point newLeftSide;
     Point newRightSide;
     bool isAccel = false;
     bool isDecel = false;
     distanceCoveredL =  ((distanL.position(degrees)/360)*M_PI*EncoderWheelDiameterInches);
     distanceCoveredR =  ((distanR.position(degrees)/360)*M_PI*EncoderWheelDiameterInches);
-    calculateNewPos(leftSide,rightSide,distanceCoveredL-prevDistanceL,distanceCoveredR-prevDistanceR,&newLeftSide,&newRightSide,EncoderDist);
-    leftSide = newLeftSide;
-    rightSide = newRightSide;
+    leftArcLength = distanceCoveredL-prevDistanceL;
+    rightArcLength = distanceCoveredR-prevDistanceR;
+    if(distanceCoveredL!=prevDistanceL && distanceCoveredR!=prevDistanceR){
+      calculateNewPos(leftSide,rightSide,leftArcLength,rightArcLength,&newLeftSide,&newRightSide,EncoderDist);
+      leftSide = newLeftSide;
+      rightSide = newRightSide;
+    }
+    
     mid.x = (leftSide.x + rightSide.x)/2;
     mid.y = (leftSide.y + rightSide.y)/2;
+    printf("%f\n", mid.x);
+      printf("%f\n", mid.y);
+      printf("%f\n", leftArcLength);
+      printf("%f\n\n", rightArcLength);
+    fflush(stdout);
     double alpha = atan((rightSide.y-leftSide.y)/(rightSide.x-leftSide.x));
     double epsilon = atan(fabs(mid.x)/(dist-mid.y));
     prevDistanceL = distanceCoveredL;
@@ -445,8 +456,10 @@ if(fabs(dist)<NonMaxSpeedDist){
       printf("%f\n", deltaTheta);
     }
     if(j<printerSize&&i%printerSamplingRate==0){
-      printer[j][0] = error;
-      printer[j][1] = deltaTheta;
+      printer[j][0] = mid.x;
+      printer[j][1] = mid.y;
+      printer[j][2] = leftArcLength;
+      printer[j][3] = rightArcLength;
             j++;
     }
     i ++;
@@ -467,14 +480,17 @@ if(fabs(dist)<NonMaxSpeedDist){
   printf("%d\n", i);
   /*for(int l = 0; l<printerSize;l++){
     printf("%f\n", printer[l][0]);
+    printf("%f\n", printer[l][1]);
+    printf("%f\n", printer[l][2]);
+    printf("%f\n\n", printer[l][3]);
     fflush(stdout);
 
-  }*/
+  }
   printf("Encoder value: \n");
   for(int l = 0; l<printerSize;l++){
     printf("%f\n", printer[l][1]);
     fflush(stdout);
-  }
+  }*/
   fflush(stdout);
   
   
@@ -506,31 +522,11 @@ void roller(double time, double velocity){
 void autonomous(void) {
   
   //TopRoller.spin(fwd,100,pct);
-  //inert.calibrate();
+  inert.calibrate();
   //Brain.Screen.print("calibrated");
-  //wait(2000,msec);
-  Brain.Screen.print("Pressed");
-    Point left;
-    left.x = 0;
-    left.y = 0;
-    Point right;
-    right.x = 14;
-    right.y = 0;
-    Point newLeft;
-    newLeft.x = 0;
-    newLeft.y = 0;
-    Point newRight;
-    newRight.x = 0;
-    newRight.y = 0;
-    
-    
-    //calculateNewPos(left, right,5,5,&newLeft,&newRight);
-    printf("Left X: %f", newLeft.x);
-    printf(" Left Y: %f\n", newLeft.x);
-    printf("Right X: %f", newLeft.x);
-    printf(" Right Y: %f\n", newLeft.x);
-  
+  wait(2000,msec);
 
+  move(10,80,0,20);
   //turn(-45,40);
   //wait(.5,sec);
   //turn(-90,40);
