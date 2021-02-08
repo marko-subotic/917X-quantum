@@ -14,6 +14,8 @@ Point calculateNewPoint(Point oldPoint, double alpha, double theta, double radiu
   return p2;
 }
 void calculateNewPos(Point leftWheel, Point rightWheel, double leftDist, double rightDist,Point* leftWheelResult, Point* rightWheelResult,  double EncoderDist){
+	printf("&f\n", leftWheel.x);
+	printf("&")
   if(leftDist==rightDist){
     leftWheelResult->x = leftWheel.x;
     leftWheelResult->y = leftWheel.y + leftDist;
