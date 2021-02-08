@@ -404,18 +404,21 @@ if(fabs(dist)<NonMaxSpeedDist){
     distanceCoveredR =  ((distanR.position(degrees)/360)*M_PI*EncoderWheelDiameterInches);
     leftArcLength = distanceCoveredL-prevDistanceL;
     rightArcLength = distanceCoveredR-prevDistanceR;
-    if(distanceCoveredL!=prevDistanceL && distanceCoveredR!=prevDistanceR){
+    //if(distanceCoveredL!=prevDistanceL && distanceCoveredR!=prevDistanceR){
       calculateNewPos(leftSide,rightSide,leftArcLength,rightArcLength,&newLeftSide,&newRightSide,EncoderDist);
+      wait(500,msec);
       leftSide = newLeftSide;
-      rightSide = newRightSide;
-    }
+      rightSide = newRightSide; 
+    //}
     
     mid.x = (leftSide.x + rightSide.x)/2;
     mid.y = (leftSide.y + rightSide.y)/2;
-    printf("%f\n", mid.x);
-      printf("%f\n", mid.y);
-      printf("%f\n", leftArcLength);
-      printf("%f\n\n", rightArcLength);
+    printf("\n mid x : %f\n", mid.x);
+    printf("mid y : %f\n", mid.y);
+    //printf("%f\n", mid.x);
+    //  printf("%f\n", mid.y);
+     // printf("%f\n", leftArcLength);
+    //  printf("%f\n\n", rightArcLength);
     fflush(stdout);
     double alpha = atan((rightSide.y-leftSide.y)/(rightSide.x-leftSide.x));
     double epsilon = atan(fabs(mid.x)/(dist-mid.y));
