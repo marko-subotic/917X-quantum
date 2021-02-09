@@ -449,7 +449,25 @@ void autonomous(void) {
   vex::thread([](){
     intakeR(fwd,60,100);
   }).detach();
+  //15 second 2 tower auton
+  roller(.4,-100);
   move(28.75,80,-133,40);
+  wait(.2,sec);
+  move(27.25,80,-133,2);
+  roller(.5,100);
+  move(-10.25,80,94,40);
+  wait(.2,sec);
+  vex::thread([](){
+    roller(.4,100);
+  }).detach();
+  move(47.05,80,-179,20);
+  //turn(-90,22);
+  move(3.04,80,-179,20);
+  roller(.5,100);
+  //wait(.4,sec);
+  //roller(.7,100);
+  //4 tower auton
+  /*move(28.75,80,-133,40);
   wait(.2,sec);
   move(27.25,80,-133,2);
   roller(.5,100);
@@ -478,6 +496,7 @@ void autonomous(void) {
   roller(.5,100);
   wait(.4,sec);
   roller(.7,100);
+  */
  // move(108,80,0,10);
 
   /*move(-15,80,-0,40);
