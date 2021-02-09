@@ -461,7 +461,7 @@ if(fabs(dist)<NonMaxSpeedDist){
     if(j<printerSize&&i%printerSamplingRate==0){
       printer[j][0] = mid.x;
       printer[j][1] = mid.y;
-      printer[j][2] = leftArcLength;
+      printer[j][2] = leftArcLength; 
       printer[j][3] = rightArcLength;
             j++;
     }
