@@ -14,8 +14,22 @@ void newPointTester(double alpha, int coefficient, double endResultX, double end
   calcNew.y = 1;
   Point unitTest2Result = calculateNewPoint(calcNew,alpha,atan(1),sqrt(2),coefficient);
   if(fabs(unitTest2Result.x-endResultX)>.001||fabs(unitTest2Result.y-endResultY)>.001){
-    printf("wrong unit test %d\n", numTest);
+    printf("**********wrong unit test %d\n", numTest);
+  }else{
+    printf("passed unit test %d\n", numTest);
   }
+}
+void newPosTester(Point left, Point right, double leftDist, double rightDist, double encoderDist, Point expectedLeft, Point expectedRight, double numTest){
+  Point calcLeft;
+  Point calcRight;
+  calculateNewPos(left, right, leftDist, rightDist, &calcLeft, &calcRight, encoderDist);
+  if(fabs(expectedLeft.x-calcLeft.x)>.001||fabs(expectedLeft.y-calcLeft.y)>.001){
+    printf("***********wrong left point unit test %d\n", numTest);
+  }if(fabs(expectedRight.x-calcRight.x)>.001||fabs(expectedRight.y-calcRight.y)>.001){
+    printf("***********wrong right point unit test %d\n", numTest);
+  }else{
+    printf("passed unit test %d\n", numTest);
+}
 }
 int main()
 {
