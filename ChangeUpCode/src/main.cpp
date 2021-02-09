@@ -337,7 +337,7 @@ void calculateNewPos(Point leftWheel, Point rightWheel, double leftDist, double 
   
   
 }*/
-const double EncoderDist = 13;
+const double EncoderDist = 30;
 void calculateNewPos(Point leftWheel, Point rightWheel, double leftDist, double rightDist,Point* leftWheelResult, Point* rightWheelResult, double EncoderDist);
 void move(double dist, double inSpd,double ang, int angSpeed)
 {
@@ -346,7 +346,7 @@ const double EncoderWheelDiameterInches = 4.33;
 double DistanceUntilDecelerateInches = 20;
 double DistanceUntilAccelerate = 7;
 const double DistanceUntilLinearInches = 4;
-const double DistanceForMaxError = 750;
+const double DistanceForMaxError = 50;
 //if final is greater than 20 risk of not finishing straight heighens
 const double finalSpeedForward = 20;
 //if init is great than 35 risk of not going straight heightens
@@ -395,7 +395,7 @@ if(fabs(dist)<NonMaxSpeedDist){
   double rightArcLength = 0;
   double leftArcLength = 0;
 
-  while(fabs(error)>=abs(1)){
+  while(fabs(mid.y)<=fabs(dist)){
     Point newLeftSide;
     Point newRightSide;
     bool isAccel = false;
@@ -445,11 +445,16 @@ if(fabs(dist)<NonMaxSpeedDist){
     }else{
       spd = oSpeed;
     }
-
+    printf("\nepsilon: %f\n", epsilon);
+    printf("alpha: %f\n", alpha);
     double deltaTheta = epsilon+alpha;
     double speedCorrection = (spd/DistanceForMaxError)*deltaTheta;
     leftSpeed  = spd - speedCorrection;
     rightSpeed = spd + speedCorrection;
+    printf("\nLeft speed: %f\n", leftSpeed);
+    printf("right speed: %f\n", rightSpeed);
+    printf("\nLeft dist: %f\n", distanceCoveredL);
+    printf("right dist: %f\n", distanceCoveredR);
     if(dist < 0){
       double temp = leftSpeed;
       leftSpeed = -rightSpeed;
@@ -480,6 +485,10 @@ if(fabs(dist)<NonMaxSpeedDist){
   Brain.Screen.print(inert.orientation(yaw,degrees));
   Brain.Screen.newLine();
   //turn(ang,angSpeed);
+  distanceCoveredL =  ((distanL.position(degrees)/360)*M_PI*EncoderWheelDiameterInches);
+  distanceCoveredR =  ((distanR.position(degrees)/360)*M_PI*EncoderWheelDiameterInches);
+  printf("\nFInal Left dist: %f\n", distanceCoveredL);
+  printf("Finalright dist: %f\n", distanceCoveredR);
   printf("%d\n", i);
   /*for(int l = 0; l<printerSize;l++){
     printf("%f\n", printer[l][0]);
@@ -529,7 +538,7 @@ void autonomous(void) {
   //Brain.Screen.print("calibrated");
   wait(2000,msec);
 
-  move(10,80,0,20);
+  move(20,80,0,20);
   //turn(-45,40);
   //wait(.5,sec);
   //turn(-90,40);
