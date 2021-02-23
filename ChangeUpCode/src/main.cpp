@@ -76,9 +76,9 @@ motor_group   rightDrive( RightBack, RightFront);
 vex::motor IntakeLeft = vex::motor(vex::PORT3,true);
 vex::motor IntakeRight = vex::motor(vex::PORT4);
 
-vex::motor BottomRoller = vex::motor(vex::PORT1);
+vex::motor BottomRoller = vex::motor(vex::PORT1, true);
 
-vex::motor TopRoller = vex::motor(vex::PORT2, ratio6_1);
+vex::motor TopRoller = vex::motor(vex::PORT2, ratio6_1, true);
 
 ///////////////////////////////////////////////////////////////
 //                                                           //
@@ -92,6 +92,8 @@ int side=1;
 // Runs preauton sequnces
 void pre_auton(void) { 
   vexcodeInit(); 
+  inert.calibrate();
+
   
   }
 
@@ -424,9 +426,9 @@ void roller(double time, double velocity){
 void autonomous(void) {
   
   TopRoller.spin(fwd,100,pct);
-  inert.calibrate();
+  //inert.calibrate();
   //Brain.Screen.print("calibrated");
-  wait(2000,msec);
+  //wait(2000,msec);
   Brain.Screen.print("Pressed");
   //turn(-45,40);
   //wait(.5,sec);
@@ -443,6 +445,7 @@ void autonomous(void) {
   turn(-90,10);
   wait(1,sec);
   turn(0,10);*/
+  
   vex::thread([](){
     intakeL(fwd,60,100);
   }).detach();
@@ -450,20 +453,21 @@ void autonomous(void) {
     intakeR(fwd,60,100);
   }).detach();
   //15 second 2 tower auton
-  roller(.4,-100);
-  move(28.75,80,-133,40);
+  //roller(.4,-100);
+  move(27.75,80,-133,40);
   wait(.2,sec);
   move(27.25,80,-133,2);
-  roller(.5,100);
-  move(-10.25,80,94,40);
+  roller(.35,100);
+  move(-11.25,80,92,40);
   wait(.2,sec);
   vex::thread([](){
     roller(.4,100);
   }).detach();
-  move(47.05,80,-179,20);
+  move(45.05,80,-179,20);
   //turn(-90,22);
-  move(3.04,80,-179,20);
+  move(2,80,-179,20);
   roller(.5,100);
+  
   //wait(.4,sec);
   //roller(.7,100);
   //4 tower auton
@@ -523,7 +527,7 @@ void autonomous(void) {
 
 static int takein = 0;
 static int bottomRoller = 0;
-static int topRoller = 0;
+static int topRoller = 100;
 
 void topRollerInFunc() {
   if (topRoller != 100) {
@@ -589,7 +593,7 @@ void usercontrol(void) {
   Controller1.ButtonL1.pressed(rollerInFunc);
   Controller1.ButtonL2.pressed(rollerOutFunc);
   Controller1.ButtonX.pressed(topRollerInFunc);
-  Controller1.ButtonA.pressed(autonomous);
+  //Controller1.ButtonA.pressed(autonomous);
 
   Controller1.ButtonR1.pressed(intakeInFunc);
   Controller1.ButtonR2.pressed(intakeOutFunc);
@@ -623,7 +627,11 @@ void usercontrol(void) {
 
     BottomRoller.spin(vex::directionType::fwd, -bottomRoller, vex::velocityUnits::pct);
     TopRoller.spin(vex::directionType::fwd, topRoller, vex::velocityUnits::pct);
-    
+    if(Controller1.ButtonL1.pressing()){
+      BottomRoller.spin(vex::directionType::fwd, 100, vex::velocityUnits::pct);
+    } else if(Controller1.ButtonL2.pressing()){
+      BottomRoller.spin(vex::directionType::fwd, -100, vex::velocityUnits::pct);
+    }
 
     int LeftSide1 = Controller1.Axis3.value();
     int RightSide1 = Controller1.Axis2.value();
@@ -634,16 +642,16 @@ void usercontrol(void) {
     int LeftSide;
     int RightSide;
 
-    LeftSide = (LeftSide1 * LeftSide1 * LeftSide1) / (16629);
+    LeftSide = (LeftSide1 * LeftSide1 * LeftSide1) / (10000);
 
     if ((abs(LeftSide1) <= 10) and (abs(LeftSide2) >= 10)) {
-      LeftSide = (LeftSide2 * LeftSide2 * LeftSide2) / (16629);
+      LeftSide = (LeftSide2 * LeftSide2 * LeftSide2) / (10000);
     }
 
-    RightSide = (RightSide1 * RightSide1 * RightSide1) / (16629);
+    RightSide = (RightSide1 * RightSide1 * RightSide1) / (10000);
 
     if ((abs(RightSide1) <= 10) and (abs(RightSide2) >= 10)) {
-      RightSide = (RightSide2 * RightSide2 * RightSide2) / (16629);
+      RightSide = (RightSide2 * RightSide2 * RightSide2) / (10000);
     }
     if ((Controller1.ButtonRight.pressing())) {
       BottomRoller.spin(vex::directionType::fwd, 40, vex::velocityUnits::pct);
