@@ -78,7 +78,7 @@ vex::motor IntakeRight = vex::motor(vex::PORT4);
 
 vex::motor BottomRoller = vex::motor(vex::PORT1, true);
 
-vex::motor TopRoller = vex::motor(vex::PORT2, ratio6_1, true);
+vex::motor TopRoller = vex::motor(vex::PORT2, true);
 
 ///////////////////////////////////////////////////////////////
 //                                                           //
@@ -625,12 +625,14 @@ void usercontrol(void) {
     IntakeLeft.spin(vex::directionType::fwd, takein, vex::velocityUnits::pct);
     IntakeRight.spin(vex::directionType::fwd, takein, vex::velocityUnits::pct);
 
-    BottomRoller.spin(vex::directionType::fwd, -bottomRoller, vex::velocityUnits::pct);
+    //BottomRoller.spin(vex::directionType::fwd, -bottomRoller, vex::velocityUnits::pct);
     TopRoller.spin(vex::directionType::fwd, topRoller, vex::velocityUnits::pct);
     if(Controller1.ButtonL1.pressing()){
       BottomRoller.spin(vex::directionType::fwd, 100, vex::velocityUnits::pct);
     } else if(Controller1.ButtonL2.pressing()){
       BottomRoller.spin(vex::directionType::fwd, -100, vex::velocityUnits::pct);
+    } else{
+      BottomRoller.spin(vex::directionType::fwd, 0, vex::velocityUnits::pct);
     }
 
     int LeftSide1 = Controller1.Axis3.value();
