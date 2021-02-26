@@ -1,6 +1,20 @@
 // ---- START VEXCODE CONFIGURED DEVICES ----
 // Robot Configuration:
 // [Name]               [Type]        [Port(s)]
+// distanR              encoder       G, H            
+// inert                inertial      5               
+// distanL              encoder       E, F            
+// ---- END VEXCODE CONFIGURED DEVICES ----
+// ---- START VEXCODE CONFIGURED DEVICES ----
+// Robot Configuration:
+// [Name]               [Type]        [Port(s)]
+// distan               encoder       G, H            
+// inert                inertial      5               
+// distanL              encoder       E, F            
+// ---- END VEXCODE CONFIGURED DEVICES ----
+// ---- START VEXCODE CONFIGURED DEVICES ----
+// Robot Configuration:
+// [Name]               [Type]        [Port(s)]
 // distan               encoder       G, H            
 // inert                inertial      5               
 // ---- END VEXCODE CONFIGURED DEVICES ----
@@ -110,7 +124,7 @@ void pre_auton(void) {
 
 
 void encoderTest(){
-  distan.resetRotation();
+  distanR.resetRotation();
   while(true){
     Brain.Screen.clearLine();
 
@@ -150,7 +164,7 @@ double calcAngNeeded(int ang, double currentAng){
 
 const double MinErrorDegrees = 1;
 static const int printerSize = 100;
-static const int numberIterations = 395623;
+static const int numberIterations = 528484;
 static double printer[printerSize][2];
 static int printerSamplingRate = numberIterations/printerSize;
 
@@ -234,9 +248,9 @@ void turn(double ang, double spd)
       leftSpeed *= -1;
     }
     if(j<printerSize&&i%printerSamplingRate==0){
-      printer[j][0] = distanceCovered;
-      printer[j][1] = spd;
-            j++;
+      //printer[j][0] = distanceCovered;
+      //printer[j][1] = spd;
+      //      j++;
     }
     i ++;
     currentAngle = inert.orientation(yaw,degrees);    
@@ -257,8 +271,8 @@ void turn(double ang, double spd)
   
   Brain.Screen.print(inert.orientation(yaw,degrees));
   Brain.Screen.newLine();
-  printf("%d\n", i);
-  for(int l = 0; l<printerSize;l++){
+  //printf("%d\n", i);
+  /*for(int l = 0; l<printerSize;l++){
     if(printer[l][0]!=0){
       printf("%f\n", printer[l][0]);
       fflush(stdout);
@@ -272,7 +286,7 @@ void turn(double ang, double spd)
       printf("%f\n", printer[l][1]);
       fflush(stdout);
     }
-  }
+  }*/
   //printf("%f\n", inert.orientation(yaw,degrees));
   //wait(1,sec);
   //printf("%f\n", inert.orientation(yaw,degrees));
@@ -293,6 +307,7 @@ const double finalSpeedForward = 20;
 const double initialSpeedForward = 20;
 const double finalSpeedBackward = 24;
 const double initialSpeedBackward = 18;
+const double kDeltaX = 0.00000188;
 
 double finalSpeed = finalSpeedForward;
 double initialSpeed = initialSpeedForward;
@@ -302,7 +317,7 @@ if(dist<0){
   //DistanceUntilDecelerateInches = DistanceUntilAccelerate;
   //DistanceUntilAccelerate = temp;
   finalSpeed = finalSpeedBackward;
-  printf("final %f\n", finalSpeed);
+  //printf("final %f\n", finalSpeed);
   initialSpeed = initialSpeedBackward;
 }
 const double NonMaxSpeedDist = DistanceUntilDecelerateInches + DistanceUntilLinearInches;
@@ -314,7 +329,8 @@ if(fabs(dist)<NonMaxSpeedDist){
   Brain.Screen.newLine();
   double oSpeed = spd;
   spd = initialSpeed;
-  distan.resetRotation();
+  distanR.resetRotation();
+  distanL.resetRotation();
   double firstAngle = inert.orientation(yaw,degrees);
   double currentAngle = inert.orientation(yaw,degrees);
   double error = dist;
@@ -322,15 +338,28 @@ if(fabs(dist)<NonMaxSpeedDist){
   double kDecel = (oSpeed-finalSpeed)/(oSpeed*DistanceUntilDecelerateInches);
   double leftSpeed = spd;
   double rightSpeed = spd;
+  double prevAngle = currentAngle;
+  double prevR = 0;
+  double prevL = 0;
+  double deltaX = 0;
+
 
    int i = 0;
    int j = 0;
   double distanceCovered =  0;
+  double distanceCoveredR=  0;
+  double distanceCoveredL =  0;
 
   while(fabs(distanceCovered)<=fabs(dist)){
     bool isAccel = false;
     bool isDecel = false;
-     distanceCovered =  ((distan.position(degrees)/360)*M_PI*EncoderWheelDiameterInches);
+    prevL = distanceCoveredL;
+    prevR = distanceCoveredR;
+    distanceCoveredR =  ((distanR.position(degrees)/360)*M_PI*EncoderWheelDiameterInches);
+    distanceCoveredL =  ((distanL.position(degrees)/360)*M_PI*EncoderWheelDiameterInches);
+    distanceCovered = (distanceCoveredR+distanceCoveredL)/2;
+    double deltaDist = ((distanceCoveredL-prevL)+(distanceCoveredR-prevR))/2;
+
     if(fabs(dist)<NonMaxSpeedDist){
       if(fabs(distanceCovered) < fabs(dist)*(DistanceUntilAccelerate/(NonMaxSpeedDist))){
         isAccel = true;
@@ -352,12 +381,16 @@ if(fabs(dist)<NonMaxSpeedDist){
     }else{
       spd = oSpeed;
     }
-
+    prevAngle = currentAngle;
     currentAngle = inert.orientation(yaw,degrees);
+    double averageAng = (prevAngle + currentAngle)/2;
+    double alpha = averageAng-firstAngle;
+    //alpha *=-1;
     double deltaTheta = currentAngle-firstAngle;
-    double speedCorrection = (spd/AngleForMaxError)*deltaTheta;
-    leftSpeed  = spd - speedCorrection;
-    rightSpeed = spd + speedCorrection;
+    deltaX += sin(alpha*M_PI/180)*deltaDist;
+    double speedCorrection = (deltaX*kDeltaX);//*spd/oSpeed(spd/AngleForMaxError)*deltaTheta+;
+    leftSpeed  = 20- speedCorrection;//spd - speedCorrection;
+    rightSpeed = 20+ speedCorrection;//spd + speedCorrection;
     if(dist < 0){
       double temp = leftSpeed;
       leftSpeed = -rightSpeed;
@@ -366,7 +399,7 @@ if(fabs(dist)<NonMaxSpeedDist){
     
     if(j<printerSize&&i%printerSamplingRate==0){
       printer[j][0] = distanceCovered;
-      printer[j][1] = spd;
+      printer[j][1] = deltaX;
             j++;
     }
     i ++;
@@ -384,13 +417,13 @@ if(fabs(dist)<NonMaxSpeedDist){
   Brain.Screen.print(inert.orientation(yaw,degrees));
   Brain.Screen.newLine();
   turn(ang,angSpeed);
-  printf("%d\n", i);
-  for(int l = 0; l<printerSize;l++){
+  printf("i of move function: %d\n", i);
+  /*for(int l = 0; l<printerSize;l++){
     printf("%f\n", printer[l][0]);
     fflush(stdout);
 
-  }
-  printf("Encoder value: \n");
+  }*/
+  //printf("Encoder value: \n");
   for(int l = 0; l<printerSize;l++){
     printf("%f\n", printer[l][1]);
     fflush(stdout);
@@ -425,28 +458,24 @@ void roller(double time, double velocity){
 
 void autonomous(void) {
   
-  TopRoller.spin(fwd,100,pct);
-  //inert.calibrate();
+  //TopRoller.spin(fwd,100,pct);
+  inert.calibrate();
   //Brain.Screen.print("calibrated");
-  //wait(2000,msec);
+  wait(2000,msec);
   Brain.Screen.print("Pressed");
-  //turn(-45,40);
-  //wait(.5,sec);
-  //turn(-90,40);
- // wait(.5,sec);
- // turn(-135,40);
-  //turn(0,40);
+  
   
   
   //wait(1,sec);
   //printf("%f\n", inert.orientation(yaw,degrees));
+  move(50,80,0,10);
   /*turn(-135,10);
   wait(1,sec);
   turn(-90,10);
   wait(1,sec);
   turn(0,10);*/
-  
-  vex::thread([](){
+  //2 tower
+  /*vex::thread([](){
     intakeL(fwd,60,100);
   }).detach();
   vex::thread([](){
@@ -467,7 +496,7 @@ void autonomous(void) {
   //turn(-90,22);
   move(2,80,-179,20);
   roller(.5,100);
-  
+  */
   //wait(.4,sec);
   //roller(.7,100);
   //4 tower auton
