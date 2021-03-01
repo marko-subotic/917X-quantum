@@ -122,7 +122,13 @@ void pre_auton(void) {
 //move (in tiles; + forward, - backwards)
 
 
-
+bool hasCrashed(){
+  const double Threshold = 1.5;
+  if(fabs(inert.acceleration(yaxis))>Threshold){
+    return true;
+  }
+  return false;
+}
 void encoderTest(){
   distanR.resetRotation();
   while(true){
@@ -164,7 +170,7 @@ double calcAngNeeded(int ang, double currentAng){
 
 const double MinErrorDegrees = 1;
 static const int printerSize = 100;
-static const int numberIterations = 528484;
+static const int numberIterations = 397639;
 static double printer[printerSize][2];
 static int printerSamplingRate = numberIterations/printerSize;
 
@@ -202,6 +208,7 @@ void turn(double ang, double spd)
   int j = 0;
   bool slept = false;
   while(fabs(distanceCovered)<=angNeeded - MinErrorDegrees){
+    
     if(switcher>180||switcher<-180){
       if(firstAngle*inert.orientation(yaw,degrees)<0){
         if(inert.orientation(yaw,degrees)>0){
@@ -307,7 +314,7 @@ const double finalSpeedForward = 20;
 const double initialSpeedForward = 20;
 const double finalSpeedBackward = 24;
 const double initialSpeedBackward = 18;
-const double kDeltaX = 0.00000188;
+const double kDeltaX = .8;
 
 double finalSpeed = finalSpeedForward;
 double initialSpeed = initialSpeedForward;
@@ -351,6 +358,13 @@ if(fabs(dist)<NonMaxSpeedDist){
   double distanceCoveredL =  0;
 
   while(fabs(distanceCovered)<=fabs(dist)){
+    if(hasCrashed()){
+      leftDrive.stop();
+      rightDrive.stop();
+      leftDrive.setStopping(brake);
+      rightDrive.setStopping(brake);
+      return;
+    }
     bool isAccel = false;
     bool isDecel = false;
     prevL = distanceCoveredL;
@@ -388,9 +402,13 @@ if(fabs(dist)<NonMaxSpeedDist){
     //alpha *=-1;
     double deltaTheta = currentAngle-firstAngle;
     deltaX += sin(alpha*M_PI/180)*deltaDist;
-    double speedCorrection = (deltaX*kDeltaX);//*spd/oSpeed(spd/AngleForMaxError)*deltaTheta+;
-    leftSpeed  = 20- speedCorrection;//spd - speedCorrection;
-    rightSpeed = 20+ speedCorrection;//spd + speedCorrection;
+    double exp = 3;
+    double speedCorrection = (pow(deltaX,exp)*kDeltaX);//*spd/oSpeed(spd/AngleForMaxError)*deltaTheta+;
+    if(deltaX>1){
+      speedCorrection = (pow(deltaX,1/exp)*kDeltaX);
+    }
+    leftSpeed  = spd- speedCorrection;//spd - speedCorrection;
+    rightSpeed = spd+ speedCorrection;//spd + speedCorrection;
     if(dist < 0){
       double temp = leftSpeed;
       leftSpeed = -rightSpeed;
@@ -399,7 +417,7 @@ if(fabs(dist)<NonMaxSpeedDist){
     
     if(j<printerSize&&i%printerSamplingRate==0){
       printer[j][0] = distanceCovered;
-      printer[j][1] = deltaX;
+      printer[j][1] = inert.acceleration(yaxis);
             j++;
     }
     i ++;
@@ -468,6 +486,12 @@ void autonomous(void) {
   
   //wait(1,sec);
   //printf("%f\n", inert.orientation(yaw,degrees));
+  vex::thread([](){
+    intakeL(fwd,60,100);
+  }).detach();
+  vex::thread([](){
+    intakeR(fwd,60,100);
+  }).detach();
   move(50,80,0,10);
   /*turn(-135,10);
   wait(1,sec);
