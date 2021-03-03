@@ -81,8 +81,8 @@ vex::controller Controller2 = vex::controller();
 
 vex::motor LeftBack = vex::motor(vex::PORT19);
 vex::motor RightBack = vex::motor(vex::PORT20, true);
-vex::motor LeftFront = vex::motor(vex::PORT17);
-vex::motor RightFront = vex::motor(vex::PORT18,true);
+vex::motor LeftFront = vex::motor(vex::PORT17,true);
+vex::motor RightFront = vex::motor(vex::PORT18);
 motor_group   leftDrive( LeftBack, LeftFront);
 motor_group   rightDrive( RightBack, RightFront);
 //vex::encoder dist = vex::encoder(vex::PORTA,vex::PORTB)
@@ -359,11 +359,9 @@ if(fabs(dist)<NonMaxSpeedDist){
 
   while(fabs(distanceCovered)<=fabs(dist)){
     if(hasCrashed()){
-      leftDrive.stop();
-      rightDrive.stop();
-      leftDrive.setStopping(brake);
-      rightDrive.setStopping(brake);
-      return;
+      printf("Distance: %f\n", dist);
+      printf("Acceleration: %f\n", inert.acceleration(yaxis));
+      break;
     }
     bool isAccel = false;
     bool isDecel = false;
@@ -403,7 +401,7 @@ if(fabs(dist)<NonMaxSpeedDist){
     double deltaTheta = currentAngle-firstAngle;
     deltaX += sin(alpha*M_PI/180)*deltaDist;
     double exp = 3;
-    double speedCorrection = (pow(deltaX,exp)*kDeltaX);//*spd/oSpeed(spd/AngleForMaxError)*deltaTheta+;
+    double speedCorrection = (pow(deltaX,exp)*kDeltaX)*spd/oSpeed;//*spd/oSpeed(spd/AngleForMaxError)*deltaTheta+;
     if(deltaX>1){
       speedCorrection = (pow(deltaX,1/exp)*kDeltaX);
     }
@@ -440,12 +438,12 @@ if(fabs(dist)<NonMaxSpeedDist){
     printf("%f\n", printer[l][0]);
     fflush(stdout);
 
-  }*/
+  }
   //printf("Encoder value: \n");
   for(int l = 0; l<printerSize;l++){
     printf("%f\n", printer[l][1]);
     fflush(stdout);
-  }
+  }*/
   fflush(stdout);
   
   
@@ -476,7 +474,6 @@ void roller(double time, double velocity){
 
 void autonomous(void) {
   
-  //TopRoller.spin(fwd,100,pct);
   inert.calibrate();
   //Brain.Screen.print("calibrated");
   wait(2000,msec);
@@ -486,13 +483,22 @@ void autonomous(void) {
   
   //wait(1,sec);
   //printf("%f\n", inert.orientation(yaw,degrees));
+    TopRoller.spin(fwd,100,pct);
+
   vex::thread([](){
     intakeL(fwd,60,100);
   }).detach();
   vex::thread([](){
     intakeR(fwd,60,100);
   }).detach();
-  move(50,80,0,10);
+  wait(.5, sec);
+  move(22,80,-50,40);
+  vex::thread([](){
+    roller(5,-100);
+  }).detach();
+  move(80,80,inert.orientation(yaw,degrees),40);
+  wait(.3,sec);
+  move(-1,80,-70,40);
   /*turn(-135,10);
   wait(1,sec);
   turn(-90,10);
