@@ -73,11 +73,14 @@ using namespace vex;
 
 // A global instance of competition
 competition Competition;
+int X2 = 0;
+int Y1 = 0;
+int X1 = 0;
 
 // Declares all motors and the controller
 
 vex::controller Controller1 = vex::controller();
-vex::controller Controller2 = vex::controller();
+//vex::controller Controller2 = vex::controller();
 
 vex::motor LeftBack = vex::motor(vex::PORT19);
 vex::motor RightBack = vex::motor(vex::PORT20, true);
@@ -656,6 +659,7 @@ void usercontrol(void) {
 
   Controller1.ButtonR1.pressed(intakeInFunc);
   Controller1.ButtonR2.pressed(intakeOutFunc);
+  int threshold = 10;
   while (1) {
 
     ///////////////////////////////////////////////////////
@@ -694,41 +698,83 @@ void usercontrol(void) {
       BottomRoller.spin(vex::directionType::fwd, 0, vex::velocityUnits::pct);
     }
 
-    int LeftSide1 = Controller1.Axis3.value();
-    int RightSide1 = Controller1.Axis2.value();
+    int YSide1 = Controller1.Axis3.value();
+    int XSide1 = Controller1.Axis4.value();
+    int RSide1 = Controller1.Axis1.value();
+    int YM =0;
+    int XM =0;
+    int RM = 0;
+    int FLVal = 0;
+    int FRVal = 0;
+    int BLVal = 0;
+    int BRVal = 0;
+    //int RightSide1 = Controller1.Axis2.value();
 
-    int LeftSide2 = Controller2.Axis3.value();
-    int RightSide2 = Controller2.Axis2.value();
+    //int LeftSide2 = Controller2.Axis3.value();
+    //int RightSide2 = Controller2.Axis2.value();
 
-    int LeftSide;
-    int RightSide;
+    
 
-    LeftSide = (LeftSide1 * LeftSide1 * LeftSide1) / (10000);
-
-    if ((abs(LeftSide1) <= 10) and (abs(LeftSide2) >= 10)) {
-      LeftSide = (LeftSide2 * LeftSide2 * LeftSide2) / (10000);
+    //LeftSide = (LeftSide1 * LeftSide1 * LeftSide1) / (10000);
+    int cap = 100;
+    if ((abs(YSide1) <= threshold)) {
+      int val = (YSide1 * YSide1 * YSide1) / (10000);
+      /*FLVal += val;
+      FRVal += val;
+      BLVal += val;
+      BRVal += val;*/
+      YM = val;
+    } 
+    if ((abs(XSide1) <= threshold)) {
+      int val = (XSide1 * XSide1 * XSide1) / (10000);
+      /*FLVal += val;
+      FRVal -= val;
+      BLVal -= val;
+      BRVal += val;*/
+      XM = val;
     }
-
-    RightSide = (RightSide1 * RightSide1 * RightSide1) / (10000);
-
-    if ((abs(RightSide1) <= 10) and (abs(RightSide2) >= 10)) {
-      RightSide = (RightSide2 * RightSide2 * RightSide2) / (10000);
+    if ((abs(RSide1) <= threshold)) {
+      int val = (RSide1 * RSide1 * RSide1) / (10000);
+      /*FLVal += val;
+      FRVal -= val;
+      BLVal += val;
+      BRVal -= val;*/
+      RM = val;
+    }/*if(RM>cap){
+      RM = cap;
+    }if(FRVal>cap){
+      FRVal = cap;
+    }if(BLVal>cap){
+      BLVal = cap;
+    }if(BRVal>cap){
+      BRVal = cap;
+    }*/
+    
+    else{
+      RM = 0;
+      YM = 0;
+      XM = 0;
     }
-    if ((Controller1.ButtonRight.pressing())) {
+  FLVal = YM+XM+RM;
+  FRVal = YM-XM-RM;
+  BLVal = YM-XM+RM;
+  BRVal = YM+XM-RM;
+    
+    /*if ((Controller1.ButtonRight.pressing())) {
       BottomRoller.spin(vex::directionType::fwd, 40, vex::velocityUnits::pct);
 
     }else if ((Controller1.ButtonDown.pressing())) {
       BottomRoller.spin(vex::directionType::fwd, -40, vex::velocityUnits::pct);
       
-    }
-    else{
-    LeftBack.spin(vex::directionType::fwd, LeftSide, vex::velocityUnits::rpm);
-    LeftFront.spin(vex::directionType::fwd, LeftSide, vex::velocityUnits::rpm);
+    }*/
+    
+    LeftBack.spin(vex::directionType::fwd, BLVal, vex::velocityUnits::rpm);
+    LeftFront.spin(vex::directionType::fwd, FLVal, vex::velocityUnits::rpm);
 
-    RightBack.spin(vex::directionType::fwd, RightSide, vex::velocityUnits::rpm);
-    RightFront.spin(vex::directionType::fwd, RightSide, vex::velocityUnits::rpm);
+    RightBack.spin(vex::directionType::fwd, BRVal, vex::velocityUnits::rpm);
+    RightFront.spin(vex::directionType::fwd, FRVal, vex::velocityUnits::rpm);
 
-    }
+    
 
     
     //////////////////////////////////////////////////////////
@@ -757,15 +803,16 @@ void usercontrol(void) {
 // Main will set up the competition functions and callbacks.
 int main() {
   // Set up callbacks for autonomous and driver control periods.
+  pre_auton();
   Competition.autonomous(autonomous);
   Competition.drivercontrol(usercontrol);
   
 
   // Run the pre-autonomous function.
-  pre_auton();
+  
 
   // Prevent main from exiting with an infinite loop.
   while (true) {
-    wait(100, msec);
+    wait(20, msec);
   }
 }
