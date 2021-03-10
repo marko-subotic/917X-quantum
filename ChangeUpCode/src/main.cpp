@@ -84,8 +84,8 @@ vex::controller Controller1 = vex::controller();
 
 vex::motor LeftBack = vex::motor(vex::PORT19);
 vex::motor RightBack = vex::motor(vex::PORT20, true);
-vex::motor LeftFront = vex::motor(vex::PORT17,true);
-vex::motor RightFront = vex::motor(vex::PORT18);
+vex::motor LeftFront = vex::motor(vex::PORT17);
+vex::motor RightFront = vex::motor(vex::PORT18,true);
 motor_group   leftDrive( LeftBack, LeftFront);
 motor_group   rightDrive( RightBack, RightFront);
 //vex::encoder dist = vex::encoder(vex::PORTA,vex::PORTB)
@@ -698,16 +698,16 @@ void usercontrol(void) {
       BottomRoller.spin(vex::directionType::fwd, 0, vex::velocityUnits::pct);
     }
 
-    int YSide1 = Controller1.Axis3.value();
-    int XSide1 = Controller1.Axis4.value();
-    int RSide1 = Controller1.Axis1.value();
-    int YM =0;
-    int XM =0;
-    int RM = 0;
-    int FLVal = 0;
-    int FRVal = 0;
-    int BLVal = 0;
-    int BRVal = 0;
+    double YSide1 = Controller1.Axis3.value();
+    double XSide1 = Controller1.Axis4.value();
+    double RSide1 = Controller1.Axis1.value();
+    double YM =0;
+    double XM =0;
+    double RM = 0;
+    double FLVal = 0;
+    double FRVal = 0;
+    double BLVal = 0;
+    double BRVal = 0;
     //int RightSide1 = Controller1.Axis2.value();
 
     //int LeftSide2 = Controller2.Axis3.value();
@@ -716,25 +716,25 @@ void usercontrol(void) {
     
 
     //LeftSide = (LeftSide1 * LeftSide1 * LeftSide1) / (10000);
-    int cap = 100;
-    if ((abs(YSide1) <= threshold)) {
-      int val = (YSide1 * YSide1 * YSide1) / (10000);
+    double cap = 127;
+    if ((fabs(YSide1) >= threshold)) {
+      int val = (YSide1 * YSide1 * YSide1) / (20483.83);
       /*FLVal += val;
       FRVal += val;
       BLVal += val;
       BRVal += val;*/
       YM = val;
     } 
-    if ((abs(XSide1) <= threshold)) {
-      int val = (XSide1 * XSide1 * XSide1) / (10000);
+    if ((fabs(XSide1) >= threshold)) {
+      int val = (XSide1 * XSide1 * XSide1) / (20483.83);
       /*FLVal += val;
       FRVal -= val;
       BLVal -= val;
       BRVal += val;*/
       XM = val;
     }
-    if ((abs(RSide1) <= threshold)) {
-      int val = (RSide1 * RSide1 * RSide1) / (10000);
+    if ((fabs(RSide1) >= threshold)) {
+      int val = (RSide1 * RSide1 * RSide1) / (20483.83);
       /*FLVal += val;
       FRVal -= val;
       BLVal += val;
@@ -750,16 +750,11 @@ void usercontrol(void) {
       BRVal = cap;
     }*/
     
-    else{
-      RM = 0;
-      YM = 0;
-      XM = 0;
-    }
   FLVal = YM+XM+RM;
   FRVal = YM-XM-RM;
   BLVal = YM-XM+RM;
   BRVal = YM+XM-RM;
-    
+    printf("ym: %f\n", YSide1);
     /*if ((Controller1.ButtonRight.pressing())) {
       BottomRoller.spin(vex::directionType::fwd, 40, vex::velocityUnits::pct);
 
