@@ -718,7 +718,7 @@ void usercontrol(void) {
     //LeftSide = (LeftSide1 * LeftSide1 * LeftSide1) / (10000);
     double cap = 127;
     if ((fabs(YSide1) >= threshold)) {
-      int val = (YSide1 * YSide1 * YSide1) / (20483.83);
+      int val = (YSide1 * YSide1 * YSide1) / (10000);
       /*FLVal += val;
       FRVal += val;
       BLVal += val;
@@ -726,7 +726,7 @@ void usercontrol(void) {
       YM = val;
     } 
     if ((fabs(XSide1) >= threshold)) {
-      int val = (XSide1 * XSide1 * XSide1) / (20483.83);
+      int val = (XSide1 * XSide1 * XSide1) / (10000);
       /*FLVal += val;
       FRVal -= val;
       BLVal -= val;
