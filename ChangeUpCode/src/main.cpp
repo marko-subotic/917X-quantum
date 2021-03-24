@@ -187,14 +187,14 @@ double calcAngNeeded(int ang, double currentAng){
 
 const double MinErrorDegrees = 1;
 static const int printerSize = 100;
-static const int numberIterations = 397639;
+static const int numberIterations = 274922;
 static double printer[printerSize][2];
 static int printerSamplingRate = numberIterations/printerSize;
 
 
 void turn(double ang, double spd)
 {
-  printf("Start: %f\n", inert.orientation(yaw,degrees));
+  printf("Start: %f\n", inert.yaw(degrees));
 
   Brain.Screen.print(inert.orientation(yaw,degrees));
   Brain.Screen.newLine();
@@ -202,8 +202,8 @@ void turn(double ang, double spd)
   double finalSpeed = 2;
   double initialSpeed = fmin(15,spd);
   spd = initialSpeed;
-  double firstAngle = inert.orientation(yaw,degrees);
-  double currentAngle = inert.orientation(yaw,degrees);
+  double firstAngle = inert.yaw(degrees);
+  double currentAngle = inert.yaw(degrees);
   double error =fabs(ang-currentAngle);
   double switcher = ang-currentAngle;
   double angNeeded = fabs(calcAngNeeded(ang,currentAngle));
@@ -220,26 +220,26 @@ void turn(double ang, double spd)
   double leftSpeed = spd;
   double rightSpeed = spd;
 
-  double distanceCovered =  fabs(inert.orientation(yaw,degrees)-firstAngle);
+  double distanceCovered =  fabs(inert.yaw(degrees)-firstAngle);
   int i = 0;
   int j = 0;
   bool slept = false;
   while(fabs(distanceCovered)<=angNeeded - MinErrorDegrees){
     
     if(switcher>180||switcher<-180){
-      if(firstAngle*inert.orientation(yaw,degrees)<0){
-        if(inert.orientation(yaw,degrees)>0){
-          distanceCovered = fabs(inert.orientation(yaw,degrees)-360-firstAngle);
+      if(firstAngle*inert.yaw(degrees)<0){
+        if(inert.yaw(degrees)>0){
+          distanceCovered = fabs(inert.yaw(degrees)-360-firstAngle);
         }else{
-          distanceCovered = fabs(inert.orientation(yaw,degrees)+360-firstAngle);
+          distanceCovered = fabs(inert.yaw(degrees)+360-firstAngle);
 
         }
       }else{
-        distanceCovered = fabs(inert.orientation(yaw,degrees)-firstAngle);
+        distanceCovered = fabs(inert.yaw(degrees)-firstAngle);
 
       }
     }else{
-      distanceCovered = fabs(inert.orientation(yaw,degrees)-firstAngle);
+      distanceCovered = fabs(inert.yaw(degrees)-firstAngle);
     }
     bool isAccel = false;
     bool isDecel = false;
@@ -325,12 +325,12 @@ double DistanceUntilAccelerate = 7;
 const double DistanceUntilLinearInches = 4;
 const double AngleForMaxError = 90;
 //if final is greater than 20 risk of not finishing straight heighens
-const double finalSpeedForward = 20;
+const double finalSpeedForward = 30;
 //if init is great than 35 risk of not going straight heightens
 const double initialSpeedForward = 20;
 const double finalSpeedBackward = 24;
 const double initialSpeedBackward = 18;
-const double kDeltaX = .8;
+const double kDeltaX = 25;
 
 double finalSpeed = finalSpeedForward;
 double initialSpeed = initialSpeedForward;
@@ -374,6 +374,7 @@ if(fabs(dist)<NonMaxSpeedDist){
   double distanceCoveredL =  0;
 
   while(fabs(distanceCovered)<=fabs(dist)){
+    wait(10,msec);
     if(hasCrashed()){
       printf("Distance: %f\n", dist);
       printf("Acceleration: %f\n", inert.acceleration(yaxis));
@@ -410,14 +411,14 @@ if(fabs(dist)<NonMaxSpeedDist){
       spd = oSpeed;
     }
     prevAngle = currentAngle;
-    currentAngle = inert.orientation(yaw,degrees);
+    currentAngle = inert.yaw(degrees);
     double averageAng = (prevAngle + currentAngle)/2;
     double alpha = averageAng-firstAngle;
     //alpha *=-1;
     double deltaTheta = currentAngle-firstAngle;
     deltaX += sin(alpha*M_PI/180)*deltaDist;
     double exp = 3;
-    double speedCorrection = (pow(deltaX,exp)*kDeltaX)*spd/oSpeed;//*spd/oSpeed(spd/AngleForMaxError)*deltaTheta+;
+    double speedCorrection = spd/oSpeed*((pow(deltaX,exp)*kDeltaX)+ (spd/AngleForMaxError)*deltaTheta);
     if(deltaX>1){
       speedCorrection = (pow(deltaX,1/exp)*kDeltaX);
     }
@@ -430,7 +431,7 @@ if(fabs(dist)<NonMaxSpeedDist){
     }
     
     if(j<printerSize&&i%printerSamplingRate==0){
-      printer[j][0] = distanceCovered;
+      printer[j][0] = deltaX;
       printer[j][1] = inert.acceleration(yaxis);
             j++;
     }
@@ -450,10 +451,10 @@ if(fabs(dist)<NonMaxSpeedDist){
   Brain.Screen.newLine();
   turn(ang,angSpeed);
   printf("i of move function: %d\n", i);
-  /*for(int l = 0; l<printerSize;l++){
+  for(int l = 0; l<printerSize;l++){
     printf("%f\n", printer[l][0]);
     fflush(stdout);
-  }
+  }/*
   //printf("Encoder value: \n");
   for(int l = 0; l<printerSize;l++){
     printf("%f\n", printer[l][1]);
@@ -473,69 +474,8 @@ void intakeR(directionType dir, double time, double velocity){
 void roller(double time, double velocity){
   BottomRoller.spinFor(fwd, time, sec, velocity, vex::velocityUnits::pct);
 }
-//grab one cube and keep in robot, time in seconds, push for direction (+ for intake, - for pushing)
 
-
-
-
-
-/////////////////////////////////////////////////////
-//                                                 //
-//                                                 //
-//                     FULL AUTON                  //
-//                                                 //
-//                                                 //
-/////////////////////////////////////////////////////
-
-void autonomous(void) {
-  
-  TopRoller.spin(fwd,100,pct);
-  inert.calibrate();
-  //Brain.Screen.print("calibrated");
-  wait(2000,msec);
-  //move(30,80,0,40);
-  Brain.Screen.print("Pressed");
-  //turn(-45,40);
-  //wait(.5,sec);
-  //turn(-90,40);
- // wait(.5,sec);
- // turn(-135,40);
-  //turn(0,40);
-  
-  
-  //wait(1,sec);
-  //printf("%f\n", inert.orientation(yaw,degrees));
-  /*turn(-135,10);
-  wait(1,sec);
-  turn(-90,10);
-  wait(1,sec);
-  turn(0,10);*/
-  /*
-  vex::thread([](){
-    intakeL(fwd,60,100);
-  }).detach();
-  vex::thread([](){
-    intakeR(fwd,60,100);
-  }).detach();
-  //15 second 2 tower auton
-  //roller(.4,-100);
-  move(27.75,80,-133,40);
-  wait(.2,sec);
-  move(27.25,80,-133,2);
-  roller(.35,100);
-  move(-11.25,80,92,40);
-  wait(.2,sec);
-  vex::thread([](){
-    roller(.4,100);
-  }).detach();
-  move(45.05,80,-179,20);
-  //turn(-90,22);
-  move(2,80,-179,20);
-  roller(.5,100);
-  */
-  //wait(.4,sec);
-  //roller(.7,100);
-  //4 tower auton
+void skills(){
   vex::thread([](){
     intakeL(fwd,60,100);
   }).detach();
@@ -571,20 +511,77 @@ void autonomous(void) {
   roller(.5,100);
   wait(.4,sec);
   roller(.7,100);
+}
+
+void comp(){
+  vex::thread([](){
+    intakeL(fwd,60,100);
+  }).detach();
+  vex::thread([](){
+    intakeR(fwd,60,100);
+  }).detach();
+  //15 second 2 tower auton
+  //roller(.4,-100);
+  move(27.75,80,-133,40);
+  wait(.2,sec);
+  move(27.25,80,-133,2);
+  roller(.35,100);
+  move(-11.25,80,92,40);
+  wait(.2,sec);
+  vex::thread([](){
+    roller(.4,100);
+  }).detach();
+  move(45.05,80,-179,20);
+  //turn(-90,22);
+  move(2,80,-179,20);
+  roller(.5,100);
+}
+//grab one cube and keep in robot, time in seconds, push for direction (+ for intake, - for pushing)
+
+
+
+
+
+/////////////////////////////////////////////////////
+//                                                 //
+//                                                 //
+//                     FULL AUTON                  //
+//                                                 //
+//                                                 //
+/////////////////////////////////////////////////////
+
+void autonomous(void) {
   
- // move(108,80,0,10);
-
-  /*move(-15,80,-0,40);
-  move(47,80,-60,40);
-  move(19,80,-60,10);
-  roller(.75,100);*/
+  //TopRoller.spin(fwd,100,pct);
+  inert.calibrate();
+  while(inert.isCalibrating()){
+    wait(1,msec);
+  }
+  //inert.setRotation(45,degrees);
+  //Brain.Screen.print("calibrated");
+ // wait(2000,msec);
+  //turn(0,40);
+  move(30,80,0,40);
+  Brain.Screen.print("Pressed");
+  //skills();
+  //comp();
+  
+  
+  
+  //wait(1,sec);
+  //printf("%f\n", inert.orientation(yaw,degrees));
+  
+  
+  
+  
+  
+ 
   
 
 
 
 
-  //encoderTest();
-    Brain.Screen.print("Passed");
+  
 
 }
 
