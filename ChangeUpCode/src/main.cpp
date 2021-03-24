@@ -471,7 +471,7 @@ void intakeR(directionType dir, double time, double velocity){
   IntakeRight.spinFor(dir, time, sec, -velocity, vex::velocityUnits::pct);
 }
 void roller(double time, double velocity){
-  BottomRoller.spinFor(fwd, time, sec, -velocity, vex::velocityUnits::pct);
+  BottomRoller.spinFor(fwd, time, sec, velocity, vex::velocityUnits::pct);
 }
 //grab one cube and keep in robot, time in seconds, push for direction (+ for intake, - for pushing)
 
@@ -489,11 +489,11 @@ void roller(double time, double velocity){
 
 void autonomous(void) {
   
-  //TopRoller.spin(fwd,100,pct);
+  TopRoller.spin(fwd,100,pct);
   inert.calibrate();
   //Brain.Screen.print("calibrated");
   wait(2000,msec);
-  move(30,80,0,40);
+  //move(30,80,0,40);
   Brain.Screen.print("Pressed");
   //turn(-45,40);
   //wait(.5,sec);
@@ -536,19 +536,25 @@ void autonomous(void) {
   //wait(.4,sec);
   //roller(.7,100);
   //4 tower auton
-  /*move(28.75,80,-133,40);
+  vex::thread([](){
+    intakeL(fwd,60,100);
+  }).detach();
+  vex::thread([](){
+    intakeR(fwd,60,100);
+  }).detach();
+  move(28.75,80,-133,40);
   wait(.2,sec);
-  move(27.25,80,-133,2);
+  move(29.25,80,-133,2);
   roller(.5,100);
-  move(-10.25,80,-.5,40);
+  move(-13.25,80,-.5,40);
   wait(.2,sec);
   move(45.05,80,-90,40);
   //turn(-90,22);
-  move(3.04,80,-90,2);
+  move(4.04,80,-90,2);
   roller(.5,100);
   wait(.4,sec);
   roller(.7,100);
-  move(-4.94,80,95,40);
+  move(-5.94,80,95,40);
   move(24.5,80,-15,40);
   vex::thread([](){
     roller(.35,100);
@@ -565,7 +571,7 @@ void autonomous(void) {
   roller(.5,100);
   wait(.4,sec);
   roller(.7,100);
-  */
+  
  // move(108,80,0,10);
 
   /*move(-15,80,-0,40);
