@@ -500,7 +500,7 @@ void skills(){
   turn(-.5,40);
   intake(fwd, 100);
   wait(.2,sec);
-  move(45.05,80,-90,40);
+  move(42.05,80,-90,40);
   turn(-90,40);
   move(5.04,80,-90,2);
   turn(-90,40);
@@ -515,7 +515,7 @@ void skills(){
   vex::thread([](){
     roller(.5,-100);
   }).detach();
-  turn(95,40);
+  turn(92.5,40);
   intake(fwd, 100);
   move(24.5,80,-15,40);
   turn(-17,40);
@@ -524,27 +524,27 @@ void skills(){
   }).detach();
   move(44,80,-52.5,40);
   turn(-52.5,40);
-  move(26.5,80,-52.5,10);
+  move(29,80,-52.5,10);
   turn(-52.5,40);
   roller(.8,100);
-  move(-5,80,124,40);
+  move(-7.5,80,124,40);
 
 //t4
   /*vex::thread([](){
     roller(.25,-100);
   }).detach();  */
   intake(reverse, 20);
-  turn(124,40);
+  turn(122,40);
   intake(fwd, 100);
   vex::thread([](){
     roller(.25,-100);
   }).detach();
   move(60,80,3,40);
-  turn(3,40);
+  turn(-4,40);
   vex::thread([](){
     roller(.25,100);
   }).detach();
-  move(28,80,3,20);
+  move(30,80,3,20);
   turn(3,40);
   roller(.5,100);
   intake(fwd,0);
@@ -552,14 +552,14 @@ void skills(){
   roller(.7,100);
 
 //t5
-  move(-5.3,80,-90,2);
+  move(-3.3,80,-90,2);
   intake(reverse,20);
   vex::thread([](){
     roller(.5,-100);
   }).detach();
   turn(90,40);
   intake(fwd,100);
-  move(49.05,80, 90,40);
+  move(45.05,80, 90,40);
   vex::thread([](){
     roller(.25,100);
   }).detach();
@@ -610,9 +610,14 @@ void compMidTow(int startingAng){
   //wait(.2,sec);
   move(29,80,-80-startingAng,2);
   turn(-122-startingAng,50);
-
-  roller(1.2,100);
+  wait(.25,sec);
+  vex::thread([](){
+  roller(1.5,100);
+  }).detach();
+  intake(fwd,0);
+  wait(1.5,sec);
   move(-11.25,80,40-startingAng,40);
+
   turn(36-startingAng,50);
 
   wait(.2,sec);
@@ -646,14 +651,15 @@ void comp2Tow(int startingAng){
   move(27.75,80,-80-startingAng,40);
   turn(-122-startingAng,50);
   //wait(.2,sec);
-  move(29,80,-80-startingAng,2);
+  move(30,80,-80-startingAng,2);
   turn(-122-startingAng,50);
-  wait(.25,sec);
+  wait(.5,sec);
   vex::thread([](){
   roller(1.5,100);
   }).detach();
   intake(fwd,0);
   wait(1.5,sec);
+  intake(reverse,40);
   move(-11.25,80,40-startingAng,40);
 
 }
