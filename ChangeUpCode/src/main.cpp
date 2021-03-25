@@ -140,7 +140,7 @@ void pre_auton(void) {
 
 
 bool hasCrashed(){
-  const double Threshold = 1.5;
+  const double Threshold = 4;
   if(fabs(inert.acceleration(yaxis))>Threshold){
     return true;
   }
@@ -330,7 +330,7 @@ const double finalSpeedForward = 30;
 const double initialSpeedForward = 20;
 const double finalSpeedBackward = 24;
 const double initialSpeedBackward = 18;
-const double kDeltaX = 25;
+const double kDeltaX = 1;
 
 double finalSpeed = finalSpeedForward;
 double initialSpeed = initialSpeedForward;
@@ -449,7 +449,7 @@ if(fabs(dist)<NonMaxSpeedDist){
   rightDrive.setStopping(brake);
   Brain.Screen.print(inert.orientation(yaw,degrees));
   Brain.Screen.newLine();
-  turn(ang,angSpeed);
+  //turn(ang,angSpeed);
   printf("i of move function: %d\n", i);
   for(int l = 0; l<printerSize;l++){
     printf("%f\n", printer[l][0]);
@@ -465,79 +465,198 @@ if(fabs(dist)<NonMaxSpeedDist){
   
 }
 
-void intakeL(directionType dir, double time, double velocity){
-  IntakeLeft.spinFor(dir, time, sec, -velocity, vex::velocityUnits::pct);
+void intake(directionType dir, double velocity){
+  if(velocity==0){
+    IntakeLeft.stop();
+    IntakeRight.stop();
+  }
+  IntakeLeft.spin(dir, -velocity, vex::velocityUnits::pct);
+  IntakeRight.spin(dir, -velocity, vex::velocityUnits::pct);
+
 }
-void intakeR(directionType dir, double time, double velocity){
-  IntakeRight.spinFor(dir, time, sec, -velocity, vex::velocityUnits::pct);
-}
+/*void intakeR(directionType dir, double velocity){
+  IntakeRight.spin(dir, -velocity, vex::velocityUnits::pct);
+}*/
 void roller(double time, double velocity){
   BottomRoller.spinFor(fwd, time, sec, velocity, vex::velocityUnits::pct);
 }
 
 void skills(){
-  vex::thread([](){
-    intakeL(fwd,60,100);
-  }).detach();
-  vex::thread([](){
-    intakeR(fwd,60,100);
-  }).detach();
-  move(28.75,80,-133,40);
+
+  //t1
+  intake(fwd,100);
+  wait(.3,sec);
+  //intakeR(fwd,100);
+  move(25.75,80,-133,40);
+  turn(-133,40);
   wait(.2,sec);
   move(29.25,80,-133,2);
+  turn(-133,40);
   roller(.5,100);
-  move(-13.25,80,-.5,40);
+  move(-12.25,80,-.5,40);
+
+//t2
+  intake(reverse, 60);
+  turn(-.5,40);
+  intake(fwd, 100);
   wait(.2,sec);
   move(45.05,80,-90,40);
-  //turn(-90,22);
-  move(4.04,80,-90,2);
+  turn(-90,40);
+  move(5.04,80,-90,2);
+  turn(-90,40);
   roller(.5,100);
+  intake(fwd,0);
   wait(.4,sec);
   roller(.7,100);
-  move(-5.94,80,95,40);
+  move(-6.94,80,95,40);
+
+//t3
+  intake(reverse, 20);
+  vex::thread([](){
+    roller(.5,-100);
+  }).detach();
+  turn(95,40);
+  intake(fwd, 100);
   move(24.5,80,-15,40);
+  turn(-17,40);
   vex::thread([](){
     roller(.35,100);
   }).detach();
-  move(42,80,-52.5,40);
-  move(24.5,80,-52.5,10);
-  roller(.5,100);
+  move(44,80,-52.5,40);
+  turn(-52.5,40);
+  move(26.5,80,-52.5,10);
+  turn(-52.5,40);
+  roller(.8,100);
   move(-5,80,124,40);
-  move(55,80,3,40);
+
+//t4
+  /*vex::thread([](){
+    roller(.25,-100);
+  }).detach();  */
+  intake(reverse, 20);
+  turn(124,40);
+  intake(fwd, 100);
+  vex::thread([](){
+    roller(.25,-100);
+  }).detach();
+  move(60,80,3,40);
+  turn(3,40);
   vex::thread([](){
     roller(.25,100);
   }).detach();
-  move(25,80,7,20);
+  move(28,80,3,20);
+  turn(3,40);
   roller(.5,100);
+  intake(fwd,0);
   wait(.4,sec);
   roller(.7,100);
+
+//t5
+  move(-5.3,80,-90,2);
+  intake(reverse,20);
+  vex::thread([](){
+    roller(.5,-100);
+  }).detach();
+  turn(90,40);
+  intake(fwd,100);
+  move(49.05,80, 90,40);
+  vex::thread([](){
+    roller(.25,100);
+  }).detach();
+  turn(47,40);
+  move(13.25,80,47,40);
+  turn(47,40);
+  roller(1,100);
+  move(-13.25,80,47,40);
+  intake(reverse, 50);
+  vex::thread([](){
+    roller(2,-100);
+  }).detach();
+  
+  
+  
 }
 
-void comp(){
-  vex::thread([](){
-    intakeL(fwd,60,100);
-  }).detach();
-  vex::thread([](){
-    intakeR(fwd,60,100);
-  }).detach();
+
+
+void compHomeRow(int startingAng){
+  
+  intake(fwd,100);
   //15 second 2 tower auton
   //roller(.4,-100);
-  move(27.75,80,-133,40);
+  move(27.75,80,-133-startingAng,40);
   wait(.2,sec);
-  move(27.25,80,-133,2);
+  move(27.25,80,-133-startingAng,2);
   roller(.35,100);
-  move(-11.25,80,92,40);
+  move(-11.25,80,92-startingAng,40);
   wait(.2,sec);
   vex::thread([](){
     roller(.4,100);
   }).detach();
-  move(45.05,80,-179,20);
+  move(45.05,80,-179-startingAng,20);
   //turn(-90,22);
-  move(2,80,-179,20);
+  move(2,80,-179-startingAng,20);
   roller(.5,100);
 }
-//grab one cube and keep in robot, time in seconds, push for direction (+ for intake, - for pushing)
 
+void compMidTow(int startingAng){
+  
+  intake(fwd,100);
+  wait(.25,sec);
+  //15 second 2 tower auton
+  //roller(.4,-100);
+  move(27.75,80,-80-startingAng,40);
+  turn(-122-startingAng,50);
+  //wait(.2,sec);
+  move(29,80,-80-startingAng,2);
+  turn(-122-startingAng,50);
+
+  roller(1.2,100);
+  move(-11.25,80,40-startingAng,40);
+  turn(36-startingAng,50);
+
+  wait(.2,sec);
+  move(50,100,0-startingAng,40);
+  turn(0-startingAng,50);
+
+  vex::thread([](){
+    roller(.4,100);
+  }).detach();
+  move(-7,80,45-startingAng,40);
+  intake(fwd,0);
+  turn(42-startingAng,50); 
+
+  move(8,80,45-startingAng,50);
+  vex::thread([](){
+  roller(1,100);
+  }).detach();
+  //turn(45,50);
+  //turn(45-startingAng,40);
+  //turn(-90,22);
+  //move(2,80,-179-startingAng,20);
+  
+}
+
+void comp2Tow(int startingAng){
+  
+  intake(fwd,100);
+  wait(.25,sec);
+  //15 second 2 tower auton
+  //roller(.4,-100);
+  move(27.75,80,-80-startingAng,40);
+  turn(-122-startingAng,50);
+  //wait(.2,sec);
+  move(29,80,-80-startingAng,2);
+  turn(-122-startingAng,50);
+  wait(.25,sec);
+  vex::thread([](){
+  roller(1.5,100);
+  }).detach();
+  intake(fwd,0);
+  wait(1.5,sec);
+  move(-11.25,80,40-startingAng,40);
+
+}
 
 
 
@@ -552,7 +671,7 @@ void comp(){
 
 void autonomous(void) {
   
-  //TopRoller.spin(fwd,100,pct);
+  
   inert.calibrate();
   while(inert.isCalibrating()){
     wait(1,msec);
@@ -561,10 +680,11 @@ void autonomous(void) {
   //Brain.Screen.print("calibrated");
  // wait(2000,msec);
   //turn(0,40);
-  move(30,80,0,40);
+  //move(30,80,0,40);
+  TopRoller.spin(fwd,100,pct);
   Brain.Screen.print("Pressed");
-  //skills();
-  //comp();
+  skills();
+  //comp2Tow(-45);
   
   
   
