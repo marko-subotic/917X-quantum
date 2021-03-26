@@ -830,6 +830,8 @@ void usercontrol(void) {
       BottomRoller.spin(vex::directionType::fwd, 100, vex::velocityUnits::pct);
     } else if(Controller1.ButtonL2.pressing()){
       BottomRoller.spin(vex::directionType::fwd, -100, vex::velocityUnits::pct);
+      IntakeLeft.spin(vex::directionType::fwd, 100, vex::velocityUnits::pct);
+      IntakeRight.spin(vex::directionType::fwd, 100, vex::velocityUnits::pct);
     } else{
       BottomRoller.spin(vex::directionType::fwd, 0, vex::velocityUnits::pct);
     }
