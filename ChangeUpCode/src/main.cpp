@@ -140,7 +140,7 @@ void pre_auton(void) {
 
 
 bool hasCrashed(){
-  const double Threshold = 4;
+  const double Threshold = 5;
   if(fabs(inert.acceleration(yaxis))>Threshold){
     return true;
   }
@@ -319,7 +319,7 @@ void turn(double ang, double spd)
 void move(double dist, double inSpd,double ang, int angSpeed)
 {
     double volatile spd = inSpd;
-const double EncoderWheelDiameterInches = 4.33;
+const double EncoderWheelDiameterInches = 8.55;
 double DistanceUntilDecelerateInches = 20;
 double DistanceUntilAccelerate = 7;
 const double DistanceUntilLinearInches = 4;
@@ -487,27 +487,32 @@ void skills(){
   intake(fwd,100);
   wait(.3,sec);
   //intakeR(fwd,100);
-  move(25.75,80,-133,40);
+  move(26.75,80,-133,40);
   turn(-133,40);
   wait(.2,sec);
-  move(29.25,80,-133,2);
+  move(31.25,80,-133,2);
   turn(-133,40);
   roller(.5,100);
-  move(-12.25,80,-.5,40);
+  intake(fwd,0);
+  move(-14.25,80,-.5,40);
 
 //t2
-  intake(reverse, 60);
+  intake(reverse, 20);
   turn(-.5,40);
   intake(fwd, 100);
   wait(.2,sec);
   move(42.05,80,-90,40);
+   vex::thread([](){
+    roller(.3,100);
+  }).detach();
+
   turn(-90,40);
   move(5.04,80,-90,2);
   turn(-90,40);
-  roller(.5,100);
+  roller(.2,100);
   intake(fwd,0);
   wait(.4,sec);
-  roller(.7,100);
+  roller(.4,100);
   move(-6.94,80,95,40);
 
 //t3
@@ -522,9 +527,9 @@ void skills(){
   vex::thread([](){
     roller(.35,100);
   }).detach();
-  move(44,80,-52.5,40);
-  turn(-52.5,40);
-  move(29,80,-52.5,10);
+  move(49,80,-52.5,40);
+  turn(-53.5,40);
+  move(25.5,80,-52.5,10);
   turn(-52.5,40);
   roller(.8,100);
   move(-7.5,80,124,40);
@@ -540,7 +545,7 @@ void skills(){
     roller(.25,-100);
   }).detach();
   move(60,80,3,40);
-  turn(-4,40);
+  turn(3,40);
   vex::thread([](){
     roller(.25,100);
   }).detach();
