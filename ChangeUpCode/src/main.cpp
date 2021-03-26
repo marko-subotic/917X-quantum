@@ -365,7 +365,7 @@ if(fabs(dist)<NonMaxSpeedDist){
   double prevR = 0;
   double prevL = 0;
   double deltaX = 0;
-
+  double threshold = 0.1;
 
    int i = 0;
    int j = 0;
@@ -375,11 +375,7 @@ if(fabs(dist)<NonMaxSpeedDist){
 
   while(fabs(distanceCovered)<=fabs(dist)){
     wait(10,msec);
-    if(hasCrashed()){
-      printf("Distance: %f\n", dist);
-      printf("Acceleration: %f\n", inert.acceleration(yaxis));
-      break;
-    }
+    
     bool isAccel = false;
     bool isDecel = false;
     prevL = distanceCoveredL;
@@ -388,7 +384,11 @@ if(fabs(dist)<NonMaxSpeedDist){
     distanceCoveredL =  ((distanL.position(degrees)/360)*M_PI*EncoderWheelDiameterInches);
     distanceCovered = (distanceCoveredR+distanceCoveredL)/2;
     double deltaDist = ((distanceCoveredL-prevL)+(distanceCoveredR-prevR))/2;
-
+    if(deltaDist<threshold){
+      printf("Distance: %f\n", dist);
+      printf("Acceleration: %f\n", inert.acceleration(yaxis));
+      break;
+    }
     if(fabs(dist)<NonMaxSpeedDist){
       if(fabs(distanceCovered) < fabs(dist)*(DistanceUntilAccelerate/(NonMaxSpeedDist))){
         isAccel = true;
