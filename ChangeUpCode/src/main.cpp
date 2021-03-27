@@ -319,7 +319,7 @@ void turn(double ang, double spd)
 void move(double dist, double inSpd,double ang, int angSpeed)
 {
     double volatile spd = inSpd;
-const double EncoderWheelDiameterInches = 8.55;
+const double EncoderWheelDiameterInches = 8.75;
 double DistanceUntilDecelerateInches = 20;
 double DistanceUntilAccelerate = 7;
 const double DistanceUntilLinearInches = 4;
@@ -365,17 +365,29 @@ if(fabs(dist)<NonMaxSpeedDist){
   double prevR = 0;
   double prevL = 0;
   double deltaX = 0;
-  double threshold = 0.1;
-
+  
    int i = 0;
    int j = 0;
   double distanceCovered =  0;
   double distanceCoveredR=  0;
   double distanceCoveredL =  0;
-
+  int counter = 1;
+  double threshold = 0.015;
+  bool bThresh = false;
+  double deltaDist = threshold+1;
+  double addingDeltaD = deltaDist;
   while(fabs(distanceCovered)<=fabs(dist)){
     wait(10,msec);
-    
+    counter ++;
+    if(counter%20==0){
+      if(fabs(addingDeltaD)<threshold){
+        //printf("Distance: %f\n", dist);
+        fflush(stdout);
+        bThresh=true;
+      }
+      addingDeltaD = 0;
+    }
+      
     bool isAccel = false;
     bool isDecel = false;
     prevL = distanceCoveredL;
@@ -383,12 +395,14 @@ if(fabs(dist)<NonMaxSpeedDist){
     distanceCoveredR =  ((distanR.position(degrees)/360)*M_PI*EncoderWheelDiameterInches);
     distanceCoveredL =  ((distanL.position(degrees)/360)*M_PI*EncoderWheelDiameterInches);
     distanceCovered = (distanceCoveredR+distanceCoveredL)/2;
-    double deltaDist = ((distanceCoveredL-prevL)+(distanceCoveredR-prevR))/2;
-    if(deltaDist<threshold){
-      printf("Distance: %f\n", dist);
-      printf("Acceleration: %f\n", inert.acceleration(yaxis));
+    deltaDist = ((distanceCoveredL-prevL)+(distanceCoveredR-prevR))/2;
+    addingDeltaD+=deltaDist;
+    if(bThresh){
+      //printf("Distance: %f\n", dist);
+      //printf("Acceleration: %f\n", inert.acceleration(yaxis));
       break;
     }
+    //bThresh = true;
     if(fabs(dist)<NonMaxSpeedDist){
       if(fabs(distanceCovered) < fabs(dist)*(DistanceUntilAccelerate/(NonMaxSpeedDist))){
         isAccel = true;
@@ -448,13 +462,17 @@ if(fabs(dist)<NonMaxSpeedDist){
   leftDrive.setStopping(brake);
   rightDrive.setStopping(brake);
   Brain.Screen.print(inert.orientation(yaw,degrees));
+  if(bThresh){
+    printf("Crashed: %f\n", inert.acceleration(yaxis));
+
+  }
   Brain.Screen.newLine();
   //turn(ang,angSpeed);
-  printf("i of move function: %d\n", i);
+  /*printf("i of move function: %d\n", i);
   for(int l = 0; l<printerSize;l++){
     printf("%f\n", printer[l][0]);
     fflush(stdout);
-  }/*
+  }
   //printf("Encoder value: \n");
   for(int l = 0; l<printerSize;l++){
     printf("%f\n", printer[l][1]);
@@ -482,7 +500,7 @@ void roller(double time, double velocity){
 }
 
 void skills(){
-
+  double bft = .5;
   //t1
   intake(fwd,100);
   wait(.3,sec);
@@ -490,88 +508,98 @@ void skills(){
   move(26.75,80,-133,40);
   turn(-133,40);
   wait(.2,sec);
-  move(31.25,80,-133,2);
+  move(33.25,80,-133,2);
+  move(-bft,80,0,0);
   turn(-133,40);
-  roller(.5,100);
-  intake(fwd,0);
-  move(-14.25,80,-.5,40);
+  roller(.4,50);
+  //intake(fwd,0);
+  //roller(.3,50);
+  move(-9.25,80,-.5,40);
 
 //t2
   intake(reverse, 20);
   turn(-.5,40);
   intake(fwd, 100);
   wait(.2,sec);
-  move(42.05,80,-90,40);
+  move(47.5,80,-90,40);
    vex::thread([](){
     roller(.3,100);
   }).detach();
 
   turn(-90,40);
-  move(5.04,80,-90,2);
+  move(10.04,80,-90,2);
+  move(-bft,80,0,0);
+
   turn(-90,40);
   roller(.2,100);
   intake(fwd,0);
   wait(.4,sec);
   roller(.4,100);
-  move(-6.94,80,95,40);
+  move(-9.94,80,95,40);
 
 //t3
   intake(reverse, 20);
   vex::thread([](){
     roller(.5,-100);
   }).detach();
-  turn(92.5,40);
+  turn(-95,40);
+  turn(95,40);
   intake(fwd, 100);
-  move(24.5,80,-15,40);
+  move(22.5,80,-15,40);
   turn(-17,40);
   vex::thread([](){
     roller(.35,100);
   }).detach();
   move(49,80,-52.5,40);
   turn(-53.5,40);
-  move(25.5,80,-52.5,10);
+  move(27.5,80,-52.5,10);
+  move(-bft,80,0,0);
+
   turn(-52.5,40);
-  roller(.8,100);
+  roller(.45,100);
   move(-7.5,80,124,40);
 
 //t4
-  /*vex::thread([](){
-    roller(.25,-100);
-  }).detach();  */
-  intake(reverse, 20);
-  turn(122,40);
-  intake(fwd, 100);
   vex::thread([](){
-    roller(.25,-100);
-  }).detach();
+    roller(.20,-30);
+  }).detach();  
+  intake(reverse, 20);
+  turn(128,40);
+  intake(fwd, 100);
+  //vex::thread([](){
+  //  roller(.35,-100);
+  //}).detach();
   move(60,80,3,40);
-  turn(3,40);
+  turn(2,40);
   vex::thread([](){
     roller(.25,100);
   }).detach();
-  move(30,80,3,20);
+  move(33,80,3,20);
+  move(-bft,80,0,0);
+
   turn(3,40);
-  roller(.5,100);
+  roller(.3,100);
   intake(fwd,0);
   wait(.4,sec);
-  roller(.7,100);
+  roller(.5,100);
 
 //t5
   move(-3.3,80,-90,2);
-  intake(reverse,20);
+  intake(reverse,40);
   vex::thread([](){
     roller(.5,-100);
   }).detach();
   turn(90,40);
   intake(fwd,100);
-  move(45.05,80, 90,40);
+  move(47.5,80, 90,40);
   vex::thread([](){
     roller(.25,100);
   }).detach();
   turn(47,40);
-  move(13.25,80,47,40);
+  move(15.25,80,47,40);
+  move(-bft,80,0,0);
   turn(47,40);
-  roller(1,100);
+  roller(.8,100);
   move(-13.25,80,47,40);
   intake(reverse, 50);
   vex::thread([](){
