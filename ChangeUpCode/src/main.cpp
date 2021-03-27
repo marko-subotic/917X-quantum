@@ -682,14 +682,15 @@ void comp2Tow(int startingAng){
   //15 second 2 tower auton
   //roller(.4,-100);
   move(27.75,80,-80-startingAng,40);
-  turn(-122-startingAng,50);
+  turn(-131-startingAng,50);
   //wait(.2,sec);
-  move(30,80,-80-startingAng,2);
-  turn(-122-startingAng,50);
-  wait(.5,sec);
+  move(35,80,-80-startingAng,2);
+  turn(-131-startingAng,50);
+  wait(.3,sec);
   vex::thread([](){
   roller(1.5,100);
   }).detach();
+  wait(.8,sec);
   intake(fwd,0);
   wait(1.5,sec);
   intake(reverse,40);
@@ -722,8 +723,8 @@ void autonomous(void) {
   //move(30,80,0,40);
   TopRoller.spin(fwd,100,pct);
   Brain.Screen.print("Pressed");
-  skills();
-  //comp2Tow(-45);
+  //skills();
+  comp2Tow(-45);
   
   
   
