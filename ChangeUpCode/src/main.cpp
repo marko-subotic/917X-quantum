@@ -124,6 +124,10 @@ int side=1;
 void pre_auton(void) { 
   vexcodeInit(); 
   inert.calibrate();
+  while(inert.isCalibrating()){
+    wait(1,msec);
+  }
+  Controller1.Screen.print("Calibrated");
 
   
   }
@@ -319,7 +323,7 @@ void turn(double ang, double spd)
 void move(double dist, double inSpd,double ang, int angSpeed)
 {
     double volatile spd = inSpd;
-const double EncoderWheelDiameterInches = 8.75;
+const double EncoderWheelDiameterInches = 8.85;
 double DistanceUntilDecelerateInches = 20;
 double DistanceUntilAccelerate = 7;
 const double DistanceUntilLinearInches = 4;
@@ -372,7 +376,7 @@ if(fabs(dist)<NonMaxSpeedDist){
   double distanceCoveredR=  0;
   double distanceCoveredL =  0;
   int counter = 1;
-  double threshold = 0.015;
+  double threshold = 0.013;
   bool bThresh = false;
   double deltaDist = threshold+1;
   double addingDeltaD = deltaDist;
@@ -505,37 +509,42 @@ void skills(){
   intake(fwd,100);
   wait(.3,sec);
   //intakeR(fwd,100);
-  move(26.75,80,-133,40);
+  move(25.25,80,-133,40);
   turn(-133,40);
   wait(.2,sec);
   move(33.25,80,-133,2);
   move(-bft,80,0,0);
   turn(-133,40);
-  roller(.4,50);
+  roller(.3,100);
   //intake(fwd,0);
   //roller(.3,50);
+  vex::thread([](){
+    wait(.5,sec);
+    roller(.2,-50);
+  }).detach();
   move(-9.25,80,-.5,40);
 
 //t2
+ 
   intake(reverse, 20);
-  turn(-.5,40);
+  turn(2,40);
   intake(fwd, 100);
   wait(.2,sec);
-  move(47.5,80,-90,40);
-   vex::thread([](){
-    roller(.3,100);
-  }).detach();
+  move(46.8,80,-90,40);
+  // vex::thread([](){
+   // roller(.3,100);
+  //}).detach();
 
   turn(-90,40);
   move(10.04,80,-90,2);
   move(-bft,80,0,0);
 
   turn(-90,40);
-  roller(.2,100);
+  roller(.4,100);
   intake(fwd,0);
   wait(.4,sec);
   roller(.4,100);
-  move(-9.94,80,95,40);
+  move(-9.64,80,95,40);
 
 //t3
   intake(reverse, 20);
@@ -551,20 +560,23 @@ void skills(){
     roller(.35,100);
   }).detach();
   move(49,80,-52.5,40);
-  turn(-53.5,40);
+  vex::thread([](){
+    roller(.3,30);
+  }).detach();
+  turn(-52,40);
   move(27.5,80,-52.5,10);
   move(-bft,80,0,0);
 
-  turn(-52.5,40);
+  //turn(-52.5,40);
   roller(.45,100);
   move(-7.5,80,124,40);
 
 //t4
   vex::thread([](){
-    roller(.20,-30);
+    roller(.20,-60);
   }).detach();  
-  intake(reverse, 20);
-  turn(128,40);
+  intake(reverse, 40);
+  turn(126.5,40);
   intake(fwd, 100);
   //vex::thread([](){
   //  roller(.35,-100);
@@ -572,13 +584,13 @@ void skills(){
   move(60,80,3,40);
   turn(2,40);
   vex::thread([](){
-    roller(.25,100);
+    roller(.25,30);
   }).detach();
   move(33,80,3,20);
   move(-bft,80,0,0);
 
-  turn(3,40);
-  roller(.3,100);
+  //turn(3,40);
+  roller(.5,100);
   intake(fwd,0);
   wait(.4,sec);
   roller(.5,100);
@@ -589,9 +601,9 @@ void skills(){
   vex::thread([](){
     roller(.5,-100);
   }).detach();
-  turn(90,40);
+  turn(95,40);
   intake(fwd,100);
-  move(47.5,80, 90,40);
+  move(48.5,80, 90,40);
   vex::thread([](){
     roller(.25,100);
   }).detach();
@@ -599,7 +611,7 @@ void skills(){
   move(15.25,80,47,40);
   move(-bft,80,0,0);
   turn(47,40);
-  roller(.8,100);
+  roller(.5,100);
   move(-13.25,80,47,40);
   intake(reverse, 50);
   vex::thread([](){
@@ -681,19 +693,24 @@ void comp2Tow(int startingAng){
   wait(.25,sec);
   //15 second 2 tower auton
   //roller(.4,-100);
-  move(27.75,80,-80-startingAng,40);
-  turn(-131-startingAng,50);
+  move(26.75,80,-80-startingAng,40);
+  turn(-120-startingAng,40);
   //wait(.2,sec);
-  move(35,80,-80-startingAng,2);
-  turn(-131-startingAng,50);
-  wait(.3,sec);
+  move(100.5,80,-80-startingAng,2);
+  //turn(-131-startingAng,50);
+  move(-.5,80,0,0);
   vex::thread([](){
-  roller(1.5,100);
+  roller(.4,100);
+  wait(.5,sec);
+  roller(.9,50);
+
   }).detach();
-  wait(.8,sec);
+  wait(.7,sec);
   intake(fwd,0);
+  
+  //wait(.8,sec);
   wait(1.5,sec);
-  intake(reverse,40);
+  intake(reverse,20);
   move(-11.25,80,40-startingAng,40);
 
 }
@@ -723,8 +740,8 @@ void autonomous(void) {
   //move(30,80,0,40);
   TopRoller.spin(fwd,100,pct);
   Brain.Screen.print("Pressed");
-  //skills();
-  comp2Tow(-45);
+  skills();
+  //comp2Tow(0);
   
   
   
