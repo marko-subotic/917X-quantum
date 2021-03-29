@@ -123,11 +123,11 @@ int side=1;
 // Runs preauton sequnces
 void pre_auton(void) { 
   vexcodeInit(); 
-  inert.calibrate();
-  while(inert.isCalibrating()){
-    wait(1,msec);
-  }
-  Controller1.Screen.print("Calibrated");
+  //inert.calibrate();
+  //while(inert.isCalibrating()){
+    //wait(1,msec);
+  //}
+  //Controller1.Screen.print("Calibrated");
 
   
   }
@@ -191,7 +191,7 @@ double calcAngNeeded(int ang, double currentAng){
 
 const double MinErrorDegrees = 1;
 static const int printerSize = 100;
-static const int numberIterations = 274922;
+static const int numberIterations = 269857;
 static double printer[printerSize][2];
 static int printerSamplingRate = numberIterations/printerSize;
 
@@ -369,6 +369,7 @@ if(fabs(dist)<NonMaxSpeedDist){
   double prevR = 0;
   double prevL = 0;
   double deltaX = 0;
+  double deltaY = 0;
   
    int i = 0;
    int j = 0;
@@ -381,16 +382,16 @@ if(fabs(dist)<NonMaxSpeedDist){
   double deltaDist = threshold+1;
   double addingDeltaD = deltaDist;
   while(fabs(distanceCovered)<=fabs(dist)){
-    wait(10,msec);
+    //wait(10,msec);
     counter ++;
-    if(counter%20==0){
+    /*if(counter%20==0){
       if(fabs(addingDeltaD)<threshold){
         //printf("Distance: %f\n", dist);
         fflush(stdout);
         bThresh=true;
       }
       addingDeltaD = 0;
-    }
+    }*/
       
     bool isAccel = false;
     bool isDecel = false;
@@ -435,6 +436,8 @@ if(fabs(dist)<NonMaxSpeedDist){
     //alpha *=-1;
     double deltaTheta = currentAngle-firstAngle;
     deltaX += sin(alpha*M_PI/180)*deltaDist;
+    deltaY += cos(alpha*M_PI/180)*deltaDist;
+
     double exp = 3;
     double speedCorrection = spd/oSpeed*((pow(deltaX,exp)*kDeltaX)+ (spd/AngleForMaxError)*deltaTheta);
     if(deltaX>1){
@@ -450,7 +453,7 @@ if(fabs(dist)<NonMaxSpeedDist){
     
     if(j<printerSize&&i%printerSamplingRate==0){
       printer[j][0] = deltaX;
-      printer[j][1] = inert.acceleration(yaxis);
+      printer[j][1] = deltaY;
             j++;
     }
     i ++;
@@ -472,16 +475,17 @@ if(fabs(dist)<NonMaxSpeedDist){
   }
   Brain.Screen.newLine();
   //turn(ang,angSpeed);
-  /*printf("i of move function: %d\n", i);
+  printf("i of move function: %d\n", i);
   for(int l = 0; l<printerSize;l++){
     printf("%f\n", printer[l][0]);
     fflush(stdout);
   }
+  printf("now to y:\n");
   //printf("Encoder value: \n");
   for(int l = 0; l<printerSize;l++){
     printf("%f\n", printer[l][1]);
     fflush(stdout);
-  }*/
+  }
   fflush(stdout);
   
   
@@ -737,10 +741,10 @@ void autonomous(void) {
   //Brain.Screen.print("calibrated");
  // wait(2000,msec);
   //turn(0,40);
-  //move(30,80,0,40);
-  TopRoller.spin(fwd,100,pct);
+  move(30,80,0,40);
+  //TopRoller.spin(fwd,100,pct);
   Brain.Screen.print("Pressed");
-  skills();
+  //skills();
   //comp2Tow(0);
   
   
