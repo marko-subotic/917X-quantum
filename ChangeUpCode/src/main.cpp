@@ -515,22 +515,24 @@ void skills(){
   move(33.25,80,-133,2);
   move(-bft,80,0,0);
   turn(-133,40);
-  roller(.3,100);
+  roller(.4,100);
+  intake(fwd,0);
+
   //intake(fwd,0);
   //roller(.3,50);
   vex::thread([](){
     wait(.5,sec);
     roller(.2,-50);
   }).detach();
-  move(-9.25,80,-.5,40);
+  move(-10.25,80,-.5,40);
 
 //t2
  
-  intake(reverse, 20);
+  intake(reverse, 80);
   turn(2,40);
   intake(fwd, 100);
   wait(.2,sec);
-  move(46.8,80,-90,40);
+  move(49,80,-90,40);
   // vex::thread([](){
    // roller(.3,100);
   //}).detach();
@@ -555,15 +557,15 @@ void skills(){
   turn(95,40);
   intake(fwd, 100);
   move(22.5,80,-15,40);
-  turn(-17,40);
-  vex::thread([](){
-    roller(.35,100);
-  }).detach();
+  turn(-12,40);
+  //vex::thread([](){
+   // roller(.35,100);
+  //}).detach();
   move(49,80,-52.5,40);
   vex::thread([](){
-    roller(.3,30);
+    roller(.3,50);
   }).detach();
-  turn(-52,40);
+  turn(-54,40);
   move(27.5,80,-52.5,10);
   move(-bft,80,0,0);
 
@@ -576,21 +578,21 @@ void skills(){
     roller(.20,-60);
   }).detach();  
   intake(reverse, 40);
-  turn(126.5,40);
+  turn(124.5,40);
   intake(fwd, 100);
   //vex::thread([](){
   //  roller(.35,-100);
   //}).detach();
-  move(60,80,3,40);
+  move(59,80,3,40);
   turn(2,40);
   vex::thread([](){
     roller(.25,30);
   }).detach();
-  move(33,80,3,20);
+  move(35,80,3,20);
   move(-bft,80,0,0);
 
   //turn(3,40);
-  roller(.5,100);
+  roller(.4,100);
   intake(fwd,0);
   wait(.4,sec);
   roller(.5,100);
@@ -601,9 +603,114 @@ void skills(){
   vex::thread([](){
     roller(.5,-100);
   }).detach();
+  turn(-35,40);
   turn(95,40);
   intake(fwd,100);
-  move(48.5,80, 90,40);
+  move(47,80, 90,40);
+  vex::thread([](){
+    roller(.25,100);
+  }).detach();
+  turn(47,40);
+  move(17.25,80,47,40);
+  move(-bft,80,0,0);
+  turn(47,40);
+  roller(.5,100);
+  //move(-13.25,80,47,40);
+  
+
+  //intake(fwd,0);
+  //roller(.3,50);
+  wait(.5, sec);
+  move(-10.25,80,-.5,40);
+  intake(reverse, 50);
+  vex::thread([](){
+    wait(.5,sec);
+    roller(2,-100);
+  }).detach();
+  
+  //intake(fwd,0);
+
+//t6
+ 
+  intake(reverse, 80);
+  turn(-4+180,40);
+  intake(fwd, 100);
+  wait(.2,sec);
+  move(49,80,-90,40);
+  // vex::thread([](){
+   // roller(.3,100);
+  //}).detach();
+
+  turn(-90+180,40);
+  move(10.04,80,-90,2);
+  move(-bft,80,0,0);
+
+  turn(-90+180,40);
+  roller(.4,100);
+  intake(fwd,0);
+  wait(.4,sec);
+  roller(.4,100);
+  move(-9.64,80,95,40);
+
+//t7
+  intake(reverse, 20);
+  vex::thread([](){
+    roller(.5,-100);
+  }).detach();
+  turn(-95+180,40);
+  turn(95-180,40);
+  intake(fwd, 100);
+  move(22.5,80,-15,40);
+  turn(-12+180,40);
+  //vex::thread([](){
+   // roller(.35,100);
+  //}).detach();
+  move(49,80,-52.5,40);
+  vex::thread([](){
+    roller(.3,50);
+  }).detach();
+  turn(-54+180,40);
+  move(27.5,80,-52.5,10);
+  move(-bft,80,0,0);
+
+  //turn(-52.5,40);
+  roller(.45,100);
+  move(-7.5,80,124,40);
+
+//t8
+  vex::thread([](){
+    roller(.20,-60);
+  }).detach();  
+  intake(reverse, 40);
+  turn(124.5-180,40);
+  intake(fwd, 100);
+  //vex::thread([](){
+  //  roller(.35,-100);
+  //}).detach();
+  move(59,80,3,40);
+  turn(2-180,40);
+  vex::thread([](){
+    roller(.25,30);
+  }).detach();
+  move(35,80,3,20);
+  move(-bft,80,0,0);
+
+  //turn(3,40);
+  roller(.4,100);
+  intake(fwd,0);
+  wait(.4,sec);
+  roller(.5,100);
+
+//t5
+ /* move(-3.3,80,-90,2);
+  intake(reverse,40);
+  vex::thread([](){
+    roller(.5,-100);
+  }).detach();
+  turn(-35,40);
+  turn(95,40);
+  intake(fwd,100);
+  move(47,80, 90,40);
   vex::thread([](){
     roller(.25,100);
   }).detach();
@@ -616,9 +723,7 @@ void skills(){
   intake(reverse, 50);
   vex::thread([](){
     roller(2,-100);
-  }).detach();
-  
-  
+  }).detach();*/
   
 }
 
