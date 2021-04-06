@@ -96,10 +96,10 @@ vex::controller Controller1 = vex::controller();
 vex::controller Controller2 = vex::controller();
 //vex::controller Controller2 = vex::controller();
 
-vex::motor LeftBack = vex::motor(vex::PORT19);
-vex::motor RightBack = vex::motor(vex::PORT20, true);
-vex::motor LeftFront = vex::motor(vex::PORT17);
-vex::motor RightFront = vex::motor(vex::PORT18,true);
+vex::motor LeftBack = vex::motor(vex::PORT16, true);
+vex::motor RightBack = vex::motor(vex::PORT15);
+vex::motor LeftFront = vex::motor(vex::PORT14, true);
+vex::motor RightFront = vex::motor(vex::PORT13);
 motor_group   leftDrive( LeftBack, LeftFront);
 motor_group   rightDrive( RightBack, RightFront);
 //vex::encoder dist = vex::encoder(vex::PORTA,vex::PORTB)
@@ -191,7 +191,7 @@ double calcAngNeeded(int ang, double currentAng){
 
 const double MinErrorDegrees = 1;
 static const int printerSize = 100;
-static const int numberIterations = 269857;
+static const int numberIterations = 216868;
 static double printer[printerSize][2];
 static int printerSamplingRate = numberIterations/printerSize;
 
@@ -323,13 +323,13 @@ void turn(double ang, double spd)
 void move(double dist, double inSpd,double ang, int angSpeed)
 {
     double volatile spd = inSpd;
-const double EncoderWheelDiameterInches = 8.85;
+const double EncoderWheelDiameterInches = 2.877;
 double DistanceUntilDecelerateInches = 20;
 double DistanceUntilAccelerate = 7;
 const double DistanceUntilLinearInches = 4;
 const double AngleForMaxError = 90;
 //if final is greater than 20 risk of not finishing straight heighens
-const double finalSpeedForward = 30;
+const double finalSpeedForward = 10;
 //if init is great than 35 risk of not going straight heightens
 const double initialSpeedForward = 20;
 const double finalSpeedBackward = 24;
@@ -425,6 +425,8 @@ if(fabs(dist)<NonMaxSpeedDist){
       spd = initialSpeed*(1 + fabs(distanceCovered) * kAccel);
     }else if(isDecel){
       double distanceDecelerated = DistanceUntilDecelerateInches-fabs(error);
+      //double gapSpeed = inSpd-finalSpeedForward;
+      //spd = error*gapSpeed/DistanceUntilDecelerateInches+finalSpeedForward;
       spd = oSpeed*(1-fabs(distanceDecelerated)*kDecel);
     }else{
       spd = oSpeed;
@@ -452,7 +454,8 @@ if(fabs(dist)<NonMaxSpeedDist){
     }
     
     if(j<printerSize&&i%printerSamplingRate==0){
-      printer[j][0] = deltaX;
+      printer[j][0] = spd;
+      //printf("speed = %f\n", spd);
       printer[j][1] = deltaY;
             j++;
     }
@@ -480,12 +483,12 @@ if(fabs(dist)<NonMaxSpeedDist){
     printf("%f\n", printer[l][0]);
     fflush(stdout);
   }
-  printf("now to y:\n");
+  /*printf("now to y:\n");
   //printf("Encoder value: \n");
   for(int l = 0; l<printerSize;l++){
     printf("%f\n", printer[l][1]);
     fflush(stdout);
-  }
+  }*/
   fflush(stdout);
   
   
@@ -741,7 +744,7 @@ void autonomous(void) {
   //Brain.Screen.print("calibrated");
  // wait(2000,msec);
   //turn(0,40);
-  move(30,80,0,40);
+  move(40,80,0,40);
   //TopRoller.spin(fwd,100,pct);
   Brain.Screen.print("Pressed");
   //skills();
