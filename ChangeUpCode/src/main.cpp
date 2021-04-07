@@ -191,7 +191,7 @@ double calcAngNeeded(int ang, double currentAng){
 
 const double MinErrorDegrees = 1;
 static const int printerSize = 100;
-static const int numberIterations = 216868;
+static const int numberIterations = 250265;
 static double printer[printerSize][2];
 static int printerSamplingRate = numberIterations/printerSize;
 
@@ -323,8 +323,8 @@ void turn(double ang, double spd)
 void move(double dist, double inSpd,double ang, int angSpeed)
 {
     double volatile spd = inSpd;
-const double EncoderWheelDiameterInches = 2.877;
-double DistanceUntilDecelerateInches = 20;
+const double EncoderWheelDiameterInches = 2.795;
+double DistanceUntilDecelerateInches = 23;
 double DistanceUntilAccelerate = 7;
 const double DistanceUntilLinearInches = 4;
 const double AngleForMaxError = 90;
@@ -381,6 +381,8 @@ if(fabs(dist)<NonMaxSpeedDist){
   bool bThresh = false;
   double deltaDist = threshold+1;
   double addingDeltaD = deltaDist;
+  double kParabola = (finalSpeedForward-inSpd)/(pow(DistanceUntilDecelerateInches,2));
+  double highestSpd = 0;
   while(fabs(distanceCovered)<=fabs(dist)){
     //wait(10,msec);
     counter ++;
@@ -423,14 +425,19 @@ if(fabs(dist)<NonMaxSpeedDist){
     }
     if(isAccel){
       spd = initialSpeed*(1 + fabs(distanceCovered) * kAccel);
+      highestSpd=spd;
+      kParabola = (finalSpeedForward-spd)/(pow(DistanceUntilDecelerateInches,2));
     }else if(isDecel){
-      double distanceDecelerated = DistanceUntilDecelerateInches-fabs(error);
+      //double distanceDecelerated = DistanceUntilDecelerateInches-fabs(error);
       //double gapSpeed = inSpd-finalSpeedForward;
       //spd = error*gapSpeed/DistanceUntilDecelerateInches+finalSpeedForward;
-      spd = oSpeed*(1-fabs(distanceDecelerated)*kDecel);
+      spd = kParabola*(pow(DistanceUntilDecelerateInches-error,2))+highestSpd;
     }else{
       spd = oSpeed;
+      highestSpd=spd;
+      kParabola = (finalSpeedForward-spd)/(pow(DistanceUntilDecelerateInches,2));
     }
+    
     prevAngle = currentAngle;
     currentAngle = inert.yaw(degrees);
     double averageAng = (prevAngle + currentAngle)/2;
@@ -455,7 +462,7 @@ if(fabs(dist)<NonMaxSpeedDist){
     
     if(j<printerSize&&i%printerSamplingRate==0){
       printer[j][0] = spd;
-      //printf("speed = %f\n", spd);
+   //   printf("speed = %f\n", spd);
       printer[j][1] = deltaY;
             j++;
     }
@@ -744,7 +751,7 @@ void autonomous(void) {
   //Brain.Screen.print("calibrated");
  // wait(2000,msec);
   //turn(0,40);
-  move(40,80,0,40);
+  move(20,80,0,40);
   //TopRoller.spin(fwd,100,pct);
   Brain.Screen.print("Pressed");
   //skills();
