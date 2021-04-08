@@ -191,7 +191,7 @@ double calcAngNeeded(int ang, double currentAng){
 
 const double MinErrorDegrees = 1;
 static const int printerSize = 100;
-static const int numberIterations = 250265;
+static const int numberIterations = 301032;
 static double printer[printerSize][2];
 static int printerSamplingRate = numberIterations/printerSize;
 
@@ -383,6 +383,8 @@ if(fabs(dist)<NonMaxSpeedDist){
   double addingDeltaD = deltaDist;
   double kParabola = (finalSpeedForward-inSpd)/(pow(DistanceUntilDecelerateInches,2));
   double highestSpd = 0;
+  double kEpsilon = 0;
+  double kCorrection = 1.25;
   while(fabs(distanceCovered)<=fabs(dist)){
     //wait(10,msec);
     counter ++;
@@ -446,12 +448,12 @@ if(fabs(dist)<NonMaxSpeedDist){
     double deltaTheta = currentAngle-firstAngle;
     deltaX += sin(alpha*M_PI/180)*deltaDist;
     deltaY += cos(alpha*M_PI/180)*deltaDist;
-
-    double exp = 3;
-    double speedCorrection = spd/oSpeed*((pow(deltaX,exp)*kDeltaX)+ (spd/AngleForMaxError)*deltaTheta);
-    if(deltaX>1){
-      speedCorrection = (pow(deltaX,1/exp)*kDeltaX);
-    }
+    double epsilon = atan((deltaX)/(dist-deltaY));
+    //double exp = 3;
+    double speedCorrection = (epsilon*kEpsilon+deltaTheta)*kCorrection; //*spd/oSpeed;
+    //if(deltaX>1){
+     // speedCorrection = (pow(deltaX,1/exp)*kDeltaX);
+    //}
     leftSpeed  = spd- speedCorrection;//spd - speedCorrection;
     rightSpeed = spd+ speedCorrection;//spd + speedCorrection;
     if(dist < 0){
@@ -461,7 +463,7 @@ if(fabs(dist)<NonMaxSpeedDist){
     }
     
     if(j<printerSize&&i%printerSamplingRate==0){
-      printer[j][0] = spd;
+      printer[j][0] = deltaTheta;
    //   printf("speed = %f\n", spd);
       printer[j][1] = deltaY;
             j++;
@@ -490,12 +492,12 @@ if(fabs(dist)<NonMaxSpeedDist){
     printf("%f\n", printer[l][0]);
     fflush(stdout);
   }
-  /*printf("now to y:\n");
+  printf("now to y:\n");
   //printf("Encoder value: \n");
   for(int l = 0; l<printerSize;l++){
     printf("%f\n", printer[l][1]);
     fflush(stdout);
-  }*/
+  }
   fflush(stdout);
   
   
@@ -751,7 +753,7 @@ void autonomous(void) {
   //Brain.Screen.print("calibrated");
  // wait(2000,msec);
   //turn(0,40);
-  move(20,80,0,40);
+  move(40,80,0,40);
   //TopRoller.spin(fwd,100,pct);
   Brain.Screen.print("Pressed");
   //skills();
