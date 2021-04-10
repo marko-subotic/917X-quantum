@@ -191,7 +191,7 @@ double calcAngNeeded(int ang, double currentAng){
 
 const double MinErrorDegrees = 1;
 static const int printerSize = 100;
-static const int numberIterations = 301032;
+static const int numberIterations = 334422;
 static double printer[printerSize][2];
 static int printerSamplingRate = numberIterations/printerSize;
 
@@ -385,6 +385,10 @@ if(fabs(dist)<NonMaxSpeedDist){
   double highestSpd = 0;
   double kEpsilon = 0;
   double kCorrection = 1.25;
+  double kUsedCorrect = 0;
+  const double kAccelCorrect = 2.5;
+  const double kConstCorrect = .75;
+  const double kDecelCorrect = .25;
   while(fabs(distanceCovered)<=fabs(dist)){
     //wait(10,msec);
     counter ++;
@@ -427,6 +431,7 @@ if(fabs(dist)<NonMaxSpeedDist){
     }
     if(isAccel){
       spd = initialSpeed*(1 + fabs(distanceCovered) * kAccel);
+      kUsedCorrect = kCorrection*kAccelCorrect;
       highestSpd=spd;
       kParabola = (finalSpeedForward-spd)/(pow(DistanceUntilDecelerateInches,2));
     }else if(isDecel){
@@ -434,10 +439,14 @@ if(fabs(dist)<NonMaxSpeedDist){
       //double gapSpeed = inSpd-finalSpeedForward;
       //spd = error*gapSpeed/DistanceUntilDecelerateInches+finalSpeedForward;
       spd = kParabola*(pow(DistanceUntilDecelerateInches-error,2))+highestSpd;
+      kUsedCorrect = kCorrection*kDecelCorrect;
+
     }else{
       spd = oSpeed;
       highestSpd=spd;
       kParabola = (finalSpeedForward-spd)/(pow(DistanceUntilDecelerateInches,2));
+      kUsedCorrect = kCorrection*kConstCorrect;
+
     }
     
     prevAngle = currentAngle;
@@ -450,7 +459,7 @@ if(fabs(dist)<NonMaxSpeedDist){
     deltaY += cos(alpha*M_PI/180)*deltaDist;
     double epsilon = atan((deltaX)/(dist-deltaY));
     //double exp = 3;
-    double speedCorrection = (epsilon*kEpsilon+deltaTheta)*kCorrection; //*spd/oSpeed;
+    double speedCorrection = (epsilon*kEpsilon+deltaTheta)*kUsedCorrect; //*spd/oSpeed;
     //if(deltaX>1){
      // speedCorrection = (pow(deltaX,1/exp)*kDeltaX);
     //}
@@ -666,16 +675,23 @@ void compMidTow(int startingAng){
   wait(.25,sec);
   //15 second 2 tower auton
   //roller(.4,-100);
-  move(27.75,80,-80-startingAng,40);
-  turn(-122-startingAng,50);
+  turn(140-startingAng,40);
+  wait(.2, sec);
+  move(6,80,-80-startingAng,40);
+  roller(1,100);
+  intake(fwd,0);
+  move(-6,80,-80-startingAng,40);
+  intake(reverse, 50);
+  turn(-90-startingAng,40);
+  move(50,80,0,0);
+
   //wait(.2,sec);
-  move(29,80,-80-startingAng,2);
+  /*move(29,80,-80-startingAng,2);
   turn(-122-startingAng,50);
   wait(.25,sec);
   vex::thread([](){
   roller(1.5,100);
   }).detach();
-  intake(fwd,0);
   wait(1.5,sec);
   move(-11.25,80,40-startingAng,40);
 
@@ -700,7 +716,7 @@ void compMidTow(int startingAng){
   //turn(45-startingAng,40);
   //turn(-90,22);
   //move(2,80,-179-startingAng,20);
-  
+  */
 }
 
 void comp2Tow(int startingAng){
@@ -753,11 +769,11 @@ void autonomous(void) {
   //Brain.Screen.print("calibrated");
  // wait(2000,msec);
   //turn(0,40);
-  move(40,80,0,40);
-  //TopRoller.spin(fwd,100,pct);
+  //move(40,80,0,40);
+  TopRoller.spin(fwd,100,pct);
   Brain.Screen.print("Pressed");
   //skills();
-  //comp2Tow(0);
+  compMidTow(90);
   
   
   
