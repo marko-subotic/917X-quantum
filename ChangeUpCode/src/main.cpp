@@ -323,7 +323,7 @@ void turn(double ang, double spd)
 void move(double dist, double inSpd,double ang, int angSpeed)
 {
     double volatile spd = inSpd;
-const double EncoderWheelDiameterInches = 8.99;
+const double EncoderWheelDiameterInches = 2.795;
 double DistanceUntilDecelerateInches = 20;
 double DistanceUntilAccelerate = 7;
 const double DistanceUntilLinearInches = 4;
@@ -755,16 +755,58 @@ void compMidTow(int startingAng){
   wait(.25,sec);
   //15 second 2 tower auton
   //roller(.4,-100);
-  move(27.75,80,-80-startingAng,40);
-  turn(-122-startingAng,50);
+  turn(140-startingAng,40);
+  wait(.2, sec);
+  move(3.87,80,-80-startingAng,40);
+  vex::thread([](){
+    wait(.97,sec);
+    intake(fwd,0);
+    }).detach();
+  roller(.99,100);
+  
+  move(-3.87,80,-80-startingAng,40);
+  
+  wait(.3,sec);
+  
+  turn(-89-startingAng,40);
+  intake(reverse, 30);
+  vex::thread([](){
+    wait(.4,sec);
+    roller(.4,-100);
+  }).detach();
+  move(31,80,0,0);
+  wait(.2,sec);
+  turn(130,40);
+  intake(fwd,100);
+  move(20.7,80,0,0);
+  move(-.5,80,0,0);
+  roller(.8,100);
+  intake(reverse,100);
+  move(-7,80,0,0);
+  vex::thread([](){
+    roller(.4,-100);
+  }).detach();
+  turn(38-startingAng,40);
+  intake(fwd,100);
+  move(54,80,0,0);
+  move(-3,80,0,0);
+  turn(45-startingAng,40);
+  vex::thread([](){
+    wait(.4,sec);
+    roller(1,100);
+  }).detach();
+  move(14,80,0,0);
+  move(-40,80,0,0);
+
+
+
   //wait(.2,sec);
-  move(29,80,-80-startingAng,2);
+  /*move(29,80,-80-startingAng,2);
   turn(-122-startingAng,50);
   wait(.25,sec);
   vex::thread([](){
   roller(1.5,100);
   }).detach();
-  intake(fwd,0);
   wait(1.5,sec);
   move(-11.25,80,40-startingAng,40);
 
@@ -789,7 +831,7 @@ void compMidTow(int startingAng){
   //turn(45-startingAng,40);
   //turn(-90,22);
   //move(2,80,-179-startingAng,20);
-  
+  */
 }
 
 void comp2Tow(int startingAng){
@@ -842,8 +884,8 @@ void autonomous(void) {
   //move(30,80,0,40);
   TopRoller.spin(fwd,100,pct);
   Brain.Screen.print("Pressed");
-  skills();
-  //comp2Tow(0);
+  //skills();
+  compMidTow(90);
   
   
   
