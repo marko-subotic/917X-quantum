@@ -96,10 +96,10 @@ vex::controller Controller1 = vex::controller();
 vex::controller Controller2 = vex::controller();
 //vex::controller Controller2 = vex::controller();
 
-vex::motor LeftBack = vex::motor(vex::PORT19);
-vex::motor RightBack = vex::motor(vex::PORT20, true);
-vex::motor LeftFront = vex::motor(vex::PORT17);
-vex::motor RightFront = vex::motor(vex::PORT18,true);
+vex::motor LeftBack = vex::motor(vex::PORT16,true);
+vex::motor RightBack = vex::motor(vex::PORT15);
+vex::motor LeftFront = vex::motor(vex::PORT14,true);
+vex::motor RightFront = vex::motor(vex::PORT13);
 motor_group   leftDrive( LeftBack, LeftFront);
 motor_group   rightDrive( RightBack, RightFront);
 //vex::encoder dist = vex::encoder(vex::PORTA,vex::PORTB)
@@ -323,7 +323,7 @@ void turn(double ang, double spd)
 void move(double dist, double inSpd,double ang, int angSpeed)
 {
     double volatile spd = inSpd;
-const double EncoderWheelDiameterInches = 8.85;
+const double EncoderWheelDiameterInches = 8.99;
 double DistanceUntilDecelerateInches = 20;
 double DistanceUntilAccelerate = 7;
 const double DistanceUntilLinearInches = 4;
@@ -614,7 +614,7 @@ void skills(){
   move(17.25,80,47,40);
   move(-bft,80,0,0);
   turn(47,40);
-  roller(.5,100);
+  roller(.8,100);
   //move(-13.25,80,47,40);
   
 
@@ -805,9 +805,9 @@ void comp2Tow(int startingAng){
   //turn(-131-startingAng,50);
   move(-.5,80,0,0);
   vex::thread([](){
-  roller(.4,100);
+  roller(.6,100);
   wait(.5,sec);
-  roller(.9,50);
+  roller(.5,100);
 
   }).detach();
   wait(.7,sec);
@@ -834,10 +834,7 @@ void comp2Tow(int startingAng){
 void autonomous(void) {
   
   
-  inert.calibrate();
-  while(inert.isCalibrating()){
-    wait(1,msec);
-  }
+  
   //inert.setRotation(45,degrees);
   //Brain.Screen.print("calibrated");
  // wait(2000,msec);
@@ -875,7 +872,7 @@ void autonomous(void) {
 //                                                   //
 ///////////////////////////////////////////////////////
 
-static int takein = 0;
+static int takein = -100;
 static int bottomRoller = 0;
 static int topRoller = 100;
 
@@ -1008,7 +1005,7 @@ void usercontrol(void) {
       RightSide = (RightSide2 * RightSide2 * RightSide2) / (10000);
     }
     if ((Controller1.ButtonRight.pressing())) {
-      BottomRoller.spin(vex::directionType::fwd, 40, vex::velocityUnits::pct);
+      TopRoller.spin(vex::directionType::fwd, -40, vex::velocityUnits::pct);
 
     }else if ((Controller1.ButtonDown.pressing())) {
       BottomRoller.spin(vex::directionType::fwd, -40, vex::velocityUnits::pct);
