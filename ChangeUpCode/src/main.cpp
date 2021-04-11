@@ -323,7 +323,7 @@ void turn(double ang, double spd)
 void move(double dist, double inSpd,double ang, int angSpeed)
 {
     double volatile spd = inSpd;
-const double EncoderWheelDiameterInches = 2.795;
+const double EncoderWheelDiameterInches = 2.795*1.95;
 double DistanceUntilDecelerateInches = 20;
 double DistanceUntilAccelerate = 7;
 const double DistanceUntilLinearInches = 4;
@@ -757,45 +757,46 @@ void compMidTow(int startingAng){
   //roller(.4,-100);
   turn(140-startingAng,40);
   wait(.2, sec);
-  move(3.87,80,-80-startingAng,40);
+  move(3.97,80,-80-startingAng,40);
   vex::thread([](){
-    wait(.97,sec);
+    wait(.99,sec);
     intake(fwd,0);
     }).detach();
-  roller(.99,100);
+  roller(.96,100);
   
-  move(-3.87,80,-80-startingAng,40);
+  move(-3.97,80,-80-startingAng,40);
   
   wait(.3,sec);
   
-  turn(-89-startingAng,40);
+  turn(-89-startingAng,45);
   intake(reverse, 30);
   vex::thread([](){
     wait(.4,sec);
     roller(.4,-100);
   }).detach();
-  move(31,80,0,0);
+  move(33,80,0,0);
   wait(.2,sec);
-  turn(130,40);
+  turn(130,45);
   intake(fwd,100);
-  move(20.7,80,0,0);
-  move(-.5,80,0,0);
-  roller(.8,100);
-  intake(reverse,100);
+  move(23,80,0,0);
+  move(-.3,80,0,0);
+  roller(.89,100);
   move(-7,80,0,0);
+  intake(reverse,100);
   vex::thread([](){
     roller(.4,-100);
   }).detach();
-  turn(38-startingAng,40);
+  turn(38.8-startingAng,45);
   intake(fwd,100);
-  move(54,80,0,0);
-  move(-3,80,0,0);
-  turn(45-startingAng,40);
+  move(55.5,85,0,0);
+  turn(-10-startingAng,45);
+  move(-5.5,80,0,0);
+  turn(43-startingAng,45);
   vex::thread([](){
-    wait(.4,sec);
+    wait(.35,sec);
     roller(1,100);
   }).detach();
-  move(14,80,0,0);
+  move(13,80,0,0);
   move(-40,80,0,0);
 
 
@@ -883,6 +884,8 @@ void autonomous(void) {
   //turn(0,40);
   //move(30,80,0,40);
   TopRoller.spin(fwd,100,pct);
+    //move(33,80,0,0);
+
   Brain.Screen.print("Pressed");
   //skills();
   compMidTow(90);
