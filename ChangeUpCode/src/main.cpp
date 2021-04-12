@@ -996,16 +996,16 @@ void usercontrol(void) {
     int LeftSide;
     int RightSide;
 
-    LeftSide = (LeftSide1 * LeftSide1 * LeftSide1) / (10000);
+    //LeftSide = (LeftSide1 * LeftSide1 * LeftSide1) / (10000);
 
     if ((abs(LeftSide1) <= 10) and (abs(LeftSide2) >= 10)) {
-      LeftSide = (LeftSide2 * LeftSide2 * LeftSide2) / (10000);
+      LeftSide = Controller1.Axis3.value();;
     }
 
-    RightSide = (RightSide1 * RightSide1 * RightSide1) / (10000);
+    //RightSide = (RightSide1 * RightSide1 * RightSide1) / (10000);
 
     if ((abs(RightSide1) <= 10) and (abs(RightSide2) >= 10)) {
-      RightSide = (RightSide2 * RightSide2 * RightSide2) / (10000);
+      RightSide = Controller1.Axis2.value();;
     }
     if ((Controller1.ButtonRight.pressing())) {
       BottomRoller.spin(vex::directionType::fwd, 40, vex::velocityUnits::pct);
