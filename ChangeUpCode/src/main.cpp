@@ -323,7 +323,7 @@ void turn(double ang, double spd)
 void move(double dist, double inSpd,double ang, int angSpeed)
 {
     double volatile spd = inSpd;
-const double EncoderWheelDiameterInches = 2.795*1.95;
+const double EncoderWheelDiameterInches = 2.795*1.4;
 double DistanceUntilDecelerateInches = 20;
 double DistanceUntilAccelerate = 7;
 const double DistanceUntilLinearInches = 4;
@@ -755,16 +755,17 @@ void compMidTow(int startingAng){
   wait(.25,sec);
   //15 second 2 tower auton
   //roller(.4,-100);
-  turn(140-startingAng,40);
+  turn(130-startingAng,40);
   wait(.2, sec);
-  move(3.97,80,-80-startingAng,40);
+  move(3.47,80,-80-startingAng,40);
+  move(-.5,80,0,0);
   vex::thread([](){
     wait(.99,sec);
     intake(fwd,0);
     }).detach();
-  roller(.96,100);
+  roller(.75,100);
   
-  move(-3.97,80,-80-startingAng,40);
+  move(-4.97,80,-80-startingAng,40);
   
   wait(.3,sec);
   
@@ -774,24 +775,24 @@ void compMidTow(int startingAng){
     wait(.4,sec);
     roller(.4,-100);
   }).detach();
-  move(33,80,0,0);
+  move(30,80,0,0);
   wait(.2,sec);
-  turn(130,45);
+  turn(138,45);
   intake(fwd,100);
   move(23,80,0,0);
   move(-.3,80,0,0);
-  roller(.89,100);
+  roller(.75,100);
   move(-7,80,0,0);
   intake(reverse,100);
   vex::thread([](){
     roller(.4,-100);
   }).detach();
-  turn(38.8-startingAng,45);
+  turn(36.5-startingAng,45);
   intake(fwd,100);
-  move(55.5,85,0,0);
+  move(54.5,85,0,0);
   turn(-10-startingAng,45);
   move(-5.5,80,0,0);
-  turn(43-startingAng,45);
+  turn(28-startingAng,45);
   vex::thread([](){
     wait(.35,sec);
     roller(1,100);
