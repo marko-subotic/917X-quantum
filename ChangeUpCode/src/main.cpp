@@ -191,14 +191,14 @@ double calcAngNeeded(int ang, double currentAng){
 
 const double MinErrorDegrees = 1;
 static const int printerSize = 100;
-static const int numberIterations = 274922;
+static const int numberIterations = 273331;
 static double printer[printerSize][2];
 static int printerSamplingRate = numberIterations/printerSize;
 
 
 void turn(double ang, double spd)
 {
-  printf("Start: %f\n", inert.yaw(degrees));
+  //printf("Start: %f\n", inert.yaw(degrees));
 
   Brain.Screen.print(inert.orientation(yaw,degrees));
   Brain.Screen.newLine();
@@ -210,7 +210,8 @@ void turn(double ang, double spd)
   double currentAngle = inert.yaw(degrees);
   double error =fabs(ang-currentAngle);
   double switcher = ang-currentAngle;
-  double angNeeded = fabs(calcAngNeeded(ang,currentAngle));
+  double angNeeded = calcAngNeeded(ang,currentAngle);
+  printf("ajng needed : %f\n: ", angNeeded);
   const double AngleUntilDecelerate = 65.5;
   double AngleUntilAccelerate = 10;
 // double AngleUntilLinear = fabs(error/5);
@@ -228,7 +229,7 @@ void turn(double ang, double spd)
   int i = 0;
   int j = 0;
   bool slept = false;
-  while(fabs(distanceCovered)<=angNeeded - MinErrorDegrees){
+  while(fabs(distanceCovered)<=fabs(angNeeded) - MinErrorDegrees){
     
     if(switcher>180||switcher<-180){
       if(firstAngle*inert.yaw(degrees)<0){
@@ -276,9 +277,9 @@ void turn(double ang, double spd)
       leftSpeed *= -1;
     }
     if(j<printerSize&&i%printerSamplingRate==0){
-      //printer[j][0] = distanceCovered;
-      //printer[j][1] = spd;
-      //      j++;
+      printer[j][0] = error;
+      printer[j][1] = inert.yaw(degrees);
+      j++;
     }
     i ++;
     currentAngle = inert.orientation(yaw,degrees);    
@@ -286,7 +287,11 @@ void turn(double ang, double spd)
     RightBack.spin(vex::directionType::fwd,rightSpeed,vex::velocityUnits::pct);
     LeftFront.spin(vex::directionType::fwd,leftSpeed,vex::velocityUnits::pct);
     RightFront.spin(vex::directionType::fwd,rightSpeed,vex::velocityUnits::pct);
-    error = ang - (inert.orientation(yaw,degrees));
+    if(angNeeded<0){
+      error = angNeeded+distanceCovered;
+    }else{
+      error = angNeeded-distanceCovered;
+    }
 
   }
   
@@ -299,21 +304,21 @@ void turn(double ang, double spd)
   
   Brain.Screen.print(inert.orientation(yaw,degrees));
   Brain.Screen.newLine();
-  //printf("%d\n", i);
-  /*for(int l = 0; l<printerSize;l++){
+  printf("i: %d\n", i);
+  for(int l = 0; l<printerSize;l++){
     if(printer[l][0]!=0){
       printf("%f\n", printer[l][0]);
       fflush(stdout);
     }
    
   }
-  printf("Encoder value: \n");
+  printf("angle value: \n");
   for(int l = 0; l<printerSize;l++){
     if(printer[l][1]!=0){
       printf("%f\n", printer[l][1]);
       fflush(stdout);
     }
-  }*/
+  }
   //printf("%f\n", inert.orientation(yaw,degrees));
   //wait(1,sec);
   //printf("%f\n", inert.orientation(yaw,degrees));
@@ -323,7 +328,7 @@ void turn(double ang, double spd)
 void move(double dist, double inSpd,double ang, int angSpeed)
 {
     double volatile spd = inSpd;
-const double EncoderWheelDiameterInches = 2.795*1.4;
+const double EncoderWheelDiameterInches = 2.795;
 double DistanceUntilDecelerateInches = 20;
 double DistanceUntilAccelerate = 7;
 const double DistanceUntilLinearInches = 4;
@@ -434,6 +439,14 @@ if(fabs(dist)<NonMaxSpeedDist){
     double alpha = averageAng-firstAngle;
     //alpha *=-1;
     double deltaTheta = currentAngle-firstAngle;
+    if(firstAngle*currentAngle<0){
+        if(inert.yaw(degrees)>0){
+          deltaTheta = fabs(currentAngle-360-firstAngle);
+        }else{
+          deltaTheta = fabs(currentAngle+360-firstAngle);
+
+        }
+      }
     deltaX += sin(alpha*M_PI/180)*deltaDist;
     double exp = 3;
     double speedCorrection = spd/oSpeed*((pow(deltaX,exp)*kDeltaX)+ (spd/AngleForMaxError)*deltaTheta);
@@ -769,7 +782,7 @@ void compMidTow(int startingAng){
   
   wait(.3,sec);
   
-  turn(-89-startingAng,45);
+  turn(-89-startingAng,40);
   intake(reverse, 30);
   vex::thread([](){
     wait(.4,sec);
@@ -777,7 +790,7 @@ void compMidTow(int startingAng){
   }).detach();
   move(30,80,0,0);
   wait(.2,sec);
-  turn(138,45);
+  turn(138,40);
   intake(fwd,100);
   move(23,80,0,0);
   move(-.3,80,0,0);
@@ -787,12 +800,12 @@ void compMidTow(int startingAng){
   vex::thread([](){
     roller(.4,-100);
   }).detach();
-  turn(36.5-startingAng,45);
+  turn(36.5-startingAng,40);
   intake(fwd,100);
   move(54.5,85,0,0);
-  turn(-10-startingAng,45);
+  turn(-10-startingAng,40);
   move(-5.5,80,0,0);
-  turn(28-startingAng,45);
+  turn(28-startingAng,40);
   vex::thread([](){
     wait(.35,sec);
     roller(1,100);
@@ -884,12 +897,30 @@ void autonomous(void) {
  // wait(2000,msec);
   //turn(0,40);
   //move(30,80,0,40);
-  TopRoller.spin(fwd,100,pct);
+  //TopRoller.spin(fwd,100,pct);
     //move(33,80,0,0);
-
+inert.calibrate();
+  while(inert.isCalibrating()){
+    wait(1,msec);
+  }
   Brain.Screen.print("Pressed");
   //skills();
-  compMidTow(90);
+  //compMidTow(90);
+  turn(130-90,40);
+  //wait(.2, sec);
+  //move(3.47,80,-80-90,40);
+  //move(-.5,80,0,0);
+  
+  
+  //move(-4.97,80,-80-90,40);
+  
+  wait(.3,sec);
+  
+  turn(-89-90,40);
+  
+ // move(30,80,0,0);
+  wait(.2,sec);
+ // turn(138,40);
   
   
   
