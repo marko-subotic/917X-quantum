@@ -203,7 +203,7 @@ void turn(double ang, double spd)
   Brain.Screen.print(inert.orientation(yaw,degrees));
   Brain.Screen.newLine();
   double oSpeed = spd;
-  double finalSpeed = 2;
+  double finalSpeed = 10;
   double initialSpeed = fmin(15,spd);
   spd = initialSpeed;
   double firstAngle = inert.yaw(degrees);
@@ -211,7 +211,7 @@ void turn(double ang, double spd)
   double error =fabs(ang-currentAngle);
   double switcher = ang-currentAngle;
   double angNeeded = calcAngNeeded(ang,currentAngle);
-  printf("ajng needed : %f\n: ", angNeeded);
+  //printf("ajng needed : %f\n: ", angNeeded);
   const double AngleUntilDecelerate = 65.5;
   double AngleUntilAccelerate = 10;
 // double AngleUntilLinear = fabs(error/5);
@@ -229,9 +229,12 @@ void turn(double ang, double spd)
   int i = 0;
   int j = 0;
   bool slept = false;
+  double kParabola = (finalSpeed-spd)/(pow(AngleUntilDecelerate,2));
+  double highestSpd = 0;
+
   while(fabs(distanceCovered)<=fabs(angNeeded) - MinErrorDegrees){
     
-    if(switcher>180||switcher<-180){
+    if(switcher>=180||switcher<=-180){
       if(firstAngle*inert.yaw(degrees)<0){
         if(inert.yaw(degrees)>0){
           distanceCovered = fabs(inert.yaw(degrees)-360-firstAngle);
@@ -263,11 +266,17 @@ void turn(double ang, double spd)
     }
     if(isAccel){
       spd = initialSpeed*(1 + fabs(distanceCovered) * kAccel);
+      highestSpd=spd;
+      kParabola = (fabs(finalSpeed)-fabs(spd))/(pow(AngleUntilDecelerate,2));
     }else if(isDecel){
       double distanceDecelerated = AngleUntilDecelerate-fabs(error);
       spd = oSpeed*(1-fabs(distanceDecelerated)*kDecel);
+      //spd = kParabola*(pow(AngleUntilDecelerate-fabs(error),2))+highestSpd;
+
     }else{
       spd = oSpeed;
+      highestSpd=spd;
+      kParabola = (fabs(finalSpeed)-fabs(spd))/(pow(AngleUntilDecelerate,2));
     }
     leftSpeed = spd;
     rightSpeed = spd;
@@ -304,8 +313,8 @@ void turn(double ang, double spd)
   
   Brain.Screen.print(inert.orientation(yaw,degrees));
   Brain.Screen.newLine();
-  printf("i: %d\n", i);
-  for(int l = 0; l<printerSize;l++){
+  //printf("i: %d\n", i);
+  /*for(int l = 0; l<printerSize;l++){
     if(printer[l][0]!=0){
       printf("%f\n", printer[l][0]);
       fflush(stdout);
@@ -318,7 +327,7 @@ void turn(double ang, double spd)
       printf("%f\n", printer[l][1]);
       fflush(stdout);
     }
-  }
+  }*/
   //printf("%f\n", inert.orientation(yaw,degrees));
   //wait(1,sec);
   //printf("%f\n", inert.orientation(yaw,degrees));
@@ -328,17 +337,17 @@ void turn(double ang, double spd)
 void move(double dist, double inSpd,double ang, int angSpeed)
 {
     double volatile spd = inSpd;
-const double EncoderWheelDiameterInches = 2.795;
-double DistanceUntilDecelerateInches = 20;
+const double EncoderWheelDiameterInches = 2.8;
+double DistanceUntilDecelerateInches = 23;
 double DistanceUntilAccelerate = 7;
-const double DistanceUntilLinearInches = 4;
+//const double DistanceUntilLinearInches = 4;
 const double AngleForMaxError = 90;
 //if final is greater than 20 risk of not finishing straight heighens
-const double finalSpeedForward = 30;
+const double finalSpeedForward = 10;
 //if init is great than 35 risk of not going straight heightens
-const double initialSpeedForward = 20;
-const double finalSpeedBackward = 24;
-const double initialSpeedBackward = 18;
+const double initialSpeedForward = 35;
+const double finalSpeedBackward = 40;
+const double initialSpeedBackward = 30;
 const double kDeltaX = 1;
 
 double finalSpeed = finalSpeedForward;
@@ -352,7 +361,7 @@ if(dist<0){
   //printf("final %f\n", finalSpeed);
   initialSpeed = initialSpeedBackward;
 }
-const double NonMaxSpeedDist = DistanceUntilDecelerateInches + DistanceUntilLinearInches;
+const double NonMaxSpeedDist = DistanceUntilDecelerateInches;
 //to give the bot time to slow over small distance
 if(fabs(dist)<NonMaxSpeedDist){
   initialSpeed=finalSpeed;
@@ -381,16 +390,19 @@ if(fabs(dist)<NonMaxSpeedDist){
   double distanceCoveredR=  0;
   double distanceCoveredL =  0;
   int counter = 1;
-  double threshold = 0.013;
+  double threshold = 0.000561;
   bool bThresh = false;
   double deltaDist = threshold+1;
   double addingDeltaD = deltaDist;
+  double highestSpd = 0;
+  double kParabola = (finalSpeedForward-inSpd)/(pow(DistanceUntilDecelerateInches,2));
+
   while(fabs(distanceCovered)<=fabs(dist)){
-    wait(10,msec);
+    wait(.01,msec);
     counter ++;
-    if(counter%20==0){
+    if(counter%20000==0){
       if(fabs(addingDeltaD)<threshold){
-        //printf("Distance: %f\n", dist);
+        printf("crashed: %f\n", distanceCovered);
         fflush(stdout);
         bThresh=true;
       }
@@ -427,11 +439,18 @@ if(fabs(dist)<NonMaxSpeedDist){
     }
     if(isAccel){
       spd = initialSpeed*(1 + fabs(distanceCovered) * kAccel);
+      highestSpd=spd;
+      kParabola = (fabs(finalSpeed)-fabs(spd))/(pow(DistanceUntilDecelerateInches,2));
     }else if(isDecel){
-      double distanceDecelerated = DistanceUntilDecelerateInches-fabs(error);
-      spd = oSpeed*(1-fabs(distanceDecelerated)*kDecel);
+      //double distanceDecelerated = DistanceUntilDecelerateInches-fabs(error);
+      //double gapSpeed = inSpd-finalSpeedForward;
+      //spd = error*gapSpeed/DistanceUntilDecelerateInches+finalSpeedForward;
+      spd = kParabola*(pow(DistanceUntilDecelerateInches-fabs(error),2))+highestSpd;
+
     }else{
       spd = oSpeed;
+      highestSpd=spd;
+      kParabola = (fabs(finalSpeed)-fabs(spd))/(pow(DistanceUntilDecelerateInches,2));
     }
     prevAngle = currentAngle;
     currentAngle = inert.yaw(degrees);
@@ -439,14 +458,16 @@ if(fabs(dist)<NonMaxSpeedDist){
     double alpha = averageAng-firstAngle;
     //alpha *=-1;
     double deltaTheta = currentAngle-firstAngle;
-    if(firstAngle*currentAngle<0){
+    if(currentAngle-firstAngle>180||currentAngle-firstAngle<-180){
+      if(firstAngle*currentAngle<0){
         if(inert.yaw(degrees)>0){
-          deltaTheta = fabs(currentAngle-360-firstAngle);
-        }else{
-          deltaTheta = fabs(currentAngle+360-firstAngle);
+            deltaTheta = fabs(currentAngle-360-firstAngle);
+          }else{
+            deltaTheta = fabs(currentAngle+360-firstAngle);
 
-        }
+          }
       }
+    }
     deltaX += sin(alpha*M_PI/180)*deltaDist;
     double exp = 3;
     double speedCorrection = spd/oSpeed*((pow(deltaX,exp)*kDeltaX)+ (spd/AngleForMaxError)*deltaTheta);
@@ -462,8 +483,8 @@ if(fabs(dist)<NonMaxSpeedDist){
     }
     
     if(j<printerSize&&i%printerSamplingRate==0){
-      printer[j][0] = deltaX;
-      printer[j][1] = inert.acceleration(yaxis);
+      printer[j][0] = spd;
+      //printer[j][1] = inert.acceleration(yaxis);
             j++;
     }
     i ++;
@@ -480,7 +501,7 @@ if(fabs(dist)<NonMaxSpeedDist){
   rightDrive.setStopping(brake);
   Brain.Screen.print(inert.orientation(yaw,degrees));
   if(bThresh){
-    printf("Crashed: %f\n", inert.acceleration(yaxis));
+    //printf("Crashed: %f\n", inert.acceleration(yaxis));
 
   }
   Brain.Screen.newLine();
@@ -490,6 +511,7 @@ if(fabs(dist)<NonMaxSpeedDist){
     printf("%f\n", printer[l][0]);
     fflush(stdout);
   }
+  
   //printf("Encoder value: \n");
   for(int l = 0; l<printerSize;l++){
     printf("%f\n", printer[l][1]);
@@ -766,52 +788,55 @@ void compMidTow(int startingAng){
   
   intake(fwd,100);
   wait(.25,sec);
+  intake(fwd,0);
+  //move(2,80,0,0);
   //15 second 2 tower auton
   //roller(.4,-100);
-  turn(130-startingAng,40);
+  turn(131-startingAng,40);
+  intake(fwd,100);
   wait(.2, sec);
-  move(3.47,80,-80-startingAng,40);
-  move(-.5,80,0,0);
+  move(5.1,80,-80-startingAng,40);
+  //move(-.2,80,0,0);
   vex::thread([](){
     wait(.99,sec);
     intake(fwd,0);
     }).detach();
-  roller(.75,100);
+  roller(.85,100);
   
   move(-4.97,80,-80-startingAng,40);
   
   wait(.3,sec);
   
-  turn(-89-startingAng,40);
-  intake(reverse, 30);
+  turn(-85-startingAng,40);
+  intake(reverse, 50);
   vex::thread([](){
     wait(.4,sec);
     roller(.4,-100);
   }).detach();
-  move(30,80,0,0);
+  move(38,80,0,0);
   wait(.2,sec);
   turn(138,40);
   intake(fwd,100);
-  move(23,80,0,0);
-  move(-.3,80,0,0);
-  roller(.75,100);
+  move(16.2,80,0,0);
+  //move(-.3,80,0,0);
+  roller(.79,100);
   move(-7,80,0,0);
-  intake(reverse,100);
+  intake(reverse,40);
   vex::thread([](){
     roller(.4,-100);
   }).detach();
-  turn(36.5-startingAng,40);
+  turn(34.5-startingAng,40);
   intake(fwd,100);
-  move(54.5,85,0,0);
-  turn(-10-startingAng,40);
-  move(-5.5,80,0,0);
-  turn(28-startingAng,40);
+  move(56.7,85,0,0);
+  turn(-8-startingAng,40);
+  move(-3.9,80,0,0);
+  turn(18-startingAng,40);
   vex::thread([](){
     wait(.35,sec);
     roller(1,100);
   }).detach();
-  move(13,80,0,0);
-  move(-40,80,0,0);
+  move(8.5,80,0,0);
+  move(-20,80,0,0);
 
 
 
@@ -892,53 +917,15 @@ void autonomous(void) {
   
   
   
-  //inert.setRotation(45,degrees);
-  //Brain.Screen.print("calibrated");
- // wait(2000,msec);
-  //turn(0,40);
-  //move(30,80,0,40);
-  //TopRoller.spin(fwd,100,pct);
-    //move(33,80,0,0);
-inert.calibrate();
-  while(inert.isCalibrating()){
-    wait(1,msec);
-  }
+  TopRoller.spin(fwd,100,pct);
   Brain.Screen.print("Pressed");
   //skills();
-  //compMidTow(90);
-  turn(130-90,40);
+  compMidTow(90);
+  //turn(130-90,40);
   //wait(.2, sec);
-  //move(3.47,80,-80-90,40);
-  //move(-.5,80,0,0);
+  //move(40,80,0,0);
+  //move(-10.5,80,0,0);
   
-  
-  //move(-4.97,80,-80-90,40);
-  
-  wait(.3,sec);
-  
-  turn(-89-90,40);
-  
- // move(30,80,0,0);
-  wait(.2,sec);
- // turn(138,40);
-  
-  
-  
-  //wait(1,sec);
-  //printf("%f\n", inert.orientation(yaw,degrees));
-  
-  
-  
-  
-  
- 
-  
-
-
-
-
-  
-
 }
 
 ///////////////////////////////////////////////////////
@@ -1064,23 +1051,28 @@ void usercontrol(void) {
     int LeftSide1 = Controller1.Axis3.value();
     int RightSide1 = Controller1.Axis2.value();
 
-    int LeftSide2 = Controller2.Axis3.value();
-    int RightSide2 = Controller2.Axis2.value();
+    //int LeftSide2 = Controller2.Axis3.value();
+    //int RightSide2 = Controller2.Axis2.value();
 
     int LeftSide;
     int RightSide;
 
-    //LeftSide = (LeftSide1 * LeftSide1 * LeftSide1) / (10000);
+    
 
-    if ((abs(LeftSide1) <= 10) and (abs(LeftSide2) >= 10)) {
-      LeftSide = Controller1.Axis3.value();;
+    if ((abs(LeftSide1) >= 10)) {
+      LeftSide = (LeftSide1 * LeftSide1 * LeftSide1) / (10000);
+    }else{
+      LeftSide = 0;
     }
 
-    //RightSide = (RightSide1 * RightSide1 * RightSide1) / (10000);
+    
 
-    if ((abs(RightSide1) <= 10) and (abs(RightSide2) >= 10)) {
-      RightSide = Controller1.Axis2.value();;
+    if ((abs(RightSide1) >= 10)) {
+      RightSide = (RightSide1 * RightSide1 * RightSide1) / (10000);
+    } else{
+      RightSide = 0;
     }
+
     if ((Controller1.ButtonRight.pressing())) {
       TopRoller.spin(vex::directionType::fwd, -40, vex::velocityUnits::pct);
 
@@ -1088,12 +1080,16 @@ void usercontrol(void) {
       BottomRoller.spin(vex::directionType::fwd, -40, vex::velocityUnits::pct);
       
     }
+    if(RightSide==0 && LeftSide==0){
+      leftDrive.stop();
+      rightDrive.stop();
+    }
     else{
-    LeftBack.spin(vex::directionType::fwd, LeftSide, vex::velocityUnits::rpm);
-    LeftFront.spin(vex::directionType::fwd, LeftSide, vex::velocityUnits::rpm);
+    LeftBack.spin(vex::directionType::fwd, LeftSide, vex::velocityUnits::pct);
+    LeftFront.spin(vex::directionType::fwd, LeftSide, vex::velocityUnits::pct);
 
-    RightBack.spin(vex::directionType::fwd, RightSide, vex::velocityUnits::rpm);
-    RightFront.spin(vex::directionType::fwd, RightSide, vex::velocityUnits::rpm);
+    RightBack.spin(vex::directionType::fwd, RightSide, vex::velocityUnits::pct);
+    RightFront.spin(vex::directionType::fwd, RightSide, vex::velocityUnits::pct);
 
     }
 
