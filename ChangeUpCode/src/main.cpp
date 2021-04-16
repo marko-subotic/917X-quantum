@@ -203,9 +203,10 @@ double calcInertAngle(double targetAng){
 }
 //const double TurnLinearSpeed = 1;
 
-const double MinErrorDegrees = 2;
+//measured that minerrordegrees should be 3 for a turn speed of 7 due to gyro sensor inertia
+const double MinErrorDegrees = 3;
 static const int printerSize = 100;
-static const int numberIterations = 179752;
+static const int numberIterations = 404026;
 static double printer[printerSize][2];
 static int printerSamplingRate = numberIterations/printerSize;
 
@@ -216,7 +217,7 @@ void turn(double ang, double spd)
 
   Brain.Screen.print(inert.orientation(yaw,degrees));
   Brain.Screen.newLine();
-  double oSpeed = spd;
+  double oSpeed = 100;
   //double finalSpeed = 10;
   //double initialSpeed = fmin(15,spd);
   spd = oSpeed;
@@ -227,7 +228,7 @@ void turn(double ang, double spd)
   double angNeeded = calcAngNeeded(ang,currentAngle);
   double linSpd = 7;
   //printf("ajng needed : %f\n: ", angNeeded);
-  const double AngleUntilDecelerate = 5;
+  const double AngleUntilDecelerate = 7;
   //double AngleUntilAccelerate = 10;
 // double AngleUntilLinear = fabs(error/5);
 
@@ -293,14 +294,20 @@ void turn(double ang, double spd)
       kParabola = (fabs(finalSpeed)-fabs(spd))/(pow(AngleUntilDecelerate,2));
     }*/
     //spd = oSpeed*(1+cos(distanceCovered*(M_PI/angNeeded)));
-    if(fabs(angNeeded)<AngleUntilDecelerate){
-      spd = linSpd;
-    }else{
+    double alpha = 180-fabs(angNeeded);
+    
       if(fabs(error)<AngleUntilDecelerate){
+        //printf("entered into the linear zone");
         spd = linSpd;
       }else {
-        spd = (oSpeed-linSpd)/2*(1+cos(distanceCovered*M_PI/(fabs(angNeeded)-AngleUntilDecelerate)))+linSpd;
+        spd = (oSpeed-linSpd)/2*(1+cos((alpha+distanceCovered)*M_PI/(180-AngleUntilDecelerate)))+linSpd;
       }
+    if(i==0){
+      printf("first SPeed; %f\n", spd);
+      printf("alpha: %f\n", alpha);
+      printf("distance covered; %f\n", distanceCovered);
+      printf("angle needed; %f\n", angNeeded);
+
     }
     error = ang-calcInertAngle(ang);
     leftSpeed = spd;
@@ -312,24 +319,21 @@ void turn(double ang, double spd)
     }
     if(j<printerSize&&i%printerSamplingRate==0){
       printer[j][0] = spd;
-      printer[j][1] = inert.yaw(degrees);
+      printer[j][1] = distanceCovered;
       j++;
     }
     i ++;
-    currentAngle = inert.orientation(yaw,degrees);    
+    //currentAngle = inert.orientation(yaw,degrees);    
     LeftBack.spin(vex::directionType::fwd,leftSpeed,vex::velocityUnits::pct);
     RightBack.spin(vex::directionType::fwd,rightSpeed,vex::velocityUnits::pct);
     LeftFront.spin(vex::directionType::fwd,leftSpeed,vex::velocityUnits::pct);
     RightFront.spin(vex::directionType::fwd,rightSpeed,vex::velocityUnits::pct);
-    if(angNeeded<0){
-      distanceCovered = angNeeded+fabs(error);
-    }else{
-      distanceCovered = angNeeded-fabs(error);
-    }
+    distanceCovered = fabs(angNeeded)-fabs(error);
 
   }
-  printf("distance covered: %f\n", distanceCovered);
-  
+    printf("error: %f\n", error);
+    printf("switcher: %f\n", switcher);
+
   leftDrive.stop(hold);
   rightDrive.stop(hold);
   LeftFront.setBrake(hold);
@@ -345,14 +349,15 @@ void turn(double ang, double spd)
       printf("%f\n", printer[l][0]);
       fflush(stdout);  
   }
-  /*
+  
   printf("angle value: \n");
   for(int l = 0; l<printerSize;l++){
-    if(printer[l][1]!=0){
-      printf("%f\n", printer[l][1]);
-      fflush(stdout);
-    }
-  }*/
+    printer[l][0] = 0;
+    //(printer[l][1]!=0){
+     printf("%f\n", printer[l][1]);
+    //  fflush(stdout);
+    //}
+  }
   //printf("%f\n", inert.orientation(yaw,degrees));
   //wait(1,sec);
   //printf("%f\n", inert.orientation(yaw,degrees));
@@ -953,9 +958,14 @@ void autonomous(void) {
   //wait(.2, sec);
   //move(40,80,0,0);
   //move(-10.5,80,0,0);
-  turn(45,40);
+  turn(20,100);
   wait(1,sec);
-  turn(0,40);
+  printf("exit angle: %f\n", inert.yaw(degrees));
+  turn(0,100);
+
+  wait(1,sec);
+  //turn(0,100);
+  //printf("exit angle: %f\n", inert.yaw(degrees));
   //wait(1,sec);
   //turn(-90,25);
   //wait(1,sec);
