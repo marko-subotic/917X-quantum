@@ -368,7 +368,7 @@ void turn(double ang)
 void move(double dist, double inSpd,double ang, int angSpeed)
 {
     double volatile spd = inSpd;
-const double EncoderWheelDiameterInches = 2.8*1;
+const double EncoderWheelDiameterInches = 2.8*.98;
 double DistanceUntilDecelerateInches = 23;
 double DistanceUntilAccelerate = 7;
 //const double DistanceUntilLinearInches = 4;
@@ -797,25 +797,28 @@ void skills(){
 
 void compHomeRow(int startingAng){
   //wait(.25,sec);
+  intake(fwd,100);
+  wait(.25,sec);
+  intake(fwd,0);
   turn(-115-startingAng);
   intake(fwd,100);
-  move(12.5,80,0,0);
+  move(11.35,80,0,0);
   vex::thread([](){
-    wait(.9,sec);
+    wait(.98,sec);
     intake(fwd,0);
   }).detach();
-  roller(1,100);
+  roller(1.2,100);
   move(-16,80,0,0);
   turn(-93-startingAng);
   vex::thread([](){
     roller(.4,-100);
   }).detach();
   intake(reverse,40);
-  move(-35.5,80,0,0);
+  move(-34.5,80,0,0);
   intake(fwd,100);
   turn(179-startingAng);
-  move(6,80,0,0);
-  roller(.5,100);
+  move(6.15,80,0,0);
+  roller(.64,100);
   move(-4,80,0,0);
   turn(85-startingAng);
   intake(reverse,40);
@@ -826,8 +829,8 @@ void compHomeRow(int startingAng){
   turn(133-startingAng);
   intake(fwd,100);
 
-  move(26,80,0,0);
-  roller(.8,100);
+  move(23.6,80,0,0);
+  roller(.95,100);
   move(-5,80,0,0);
 
 
@@ -927,28 +930,38 @@ void comp2Tow(int startingAng){
   
   intake(fwd,100);
   wait(.25,sec);
-  //15 second 2 tower auton
-  //roller(.4,-100);
-  move(26.75,80,-80-startingAng,40);
-  turn(-120-startingAng);
-  //wait(.2,sec);
-  move(100.5,80,-80-startingAng,2);
-  //turn(-131-startingAng,50);
-  move(-.5,80,0,0);
-  vex::thread([](){
-  roller(.6,100);
-  wait(.5,sec);
-  roller(.5,100);
-
-  }).detach();
-  wait(.7,sec);
   intake(fwd,0);
-  
-  //wait(.8,sec);
-  wait(1.5,sec);
-  intake(reverse,20);
-  move(-11.25,80,40-startingAng,40);
-
+  turn(115-startingAng);
+  intake(fwd,100);
+  vex::thread([](){
+    wait(.78,sec);
+  roller(.87,100);
+  }).detach();
+  move(12.85,80,0,0);
+  vex::thread([](){
+    wait(.77,sec);
+    intake(fwd,0);
+  }).detach();
+  wait(1, sec);
+  move(-16,80,0,0);
+  turn(96-startingAng);
+  vex::thread([](){
+    roller(.4,-100);
+  }).detach();
+  intake(reverse,40);
+  move(-35,80,0,0);
+  intake(fwd,100);
+  turn(179-startingAng);
+  move(8,80,0,0);
+  vex::thread([](){
+    roller(.55,100);
+  }).detach();
+  vex::thread([](){
+    wait(.5,sec);
+    intake(fwd,0);
+  }).detach();
+  wait(.65,sec);
+  move(-6,80,0,0);
 }
 
 
@@ -967,7 +980,8 @@ void autonomous(void) {
   TopRoller.spin(fwd,100,pct);
   Brain.Screen.print("Pressed");
   //skills();
-  compHomeRow(-90);
+  //compHomeRow(-90);
+  comp2Tow(90);
   //move(40,80,00,0);
   //turn(0,100);
   //printf("exit angle: %f\n", inert.yaw(degrees));
