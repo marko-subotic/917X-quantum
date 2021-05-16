@@ -17,19 +17,23 @@ const char* btnarr_map[] = { "Home Row", "10B Grind", "\n",
 
 void initialize()
 {
-    lv_obj_t* bot = lv_led_create(lv_scr_act(), NULL);
+    /*lv_obj_t* bot = lv_led_create(lv_scr_act(), NULL);
+    lv_led_on(bot);
     lv_style_t styleBot;
     lv_style_copy(&styleBot, &lv_style_plain);
+    styleBot.body.border.color = LV_COLOR_WHITE;
     styleBot.body.main_color = LV_COLOR_RED;
     styleBot.body.grad_color = LV_COLOR_RED;
+    styleBot.body.radius = LV_RADIUS_CIRCLE;
     lv_obj_set_pos(bot, 0, 0);
     lv_obj_set_size(bot, lv_obj_get_width(lv_scr_act()) / 2, lv_obj_get_height(lv_scr_act()) / 2);
     lv_led_set_style(bot,&styleBot);
+    lv_led_on(bot);
     lv_obj_set_drag(bot, true);
     inert.reset();
     while (inert.is_calibrating()) {
         pros::delay(10);
-    }
+    }*/
 }
 
 /**
