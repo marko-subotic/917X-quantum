@@ -8,10 +8,11 @@ class OdomDebug {
 		lv_obj_t*  field = nullptr;
 		lv_obj_t* bot = nullptr;
 		lv_obj_t* container = nullptr;
-		lv_style_t cStyle;
-		lv_style_t fStyle;
+		lv_obj_t* statusLabel = nullptr;
+		lv_style_t* cStyle = nullptr;
+		lv_style_t* fStyle = nullptr;
 	public:
 		OdomDebug(lv_obj_t* parent);
 		OdomDebug(lv_obj_t* parent, lv_color_t color);
-		void setState(Point state);
+		void setState(Point state, double theta);
 };
