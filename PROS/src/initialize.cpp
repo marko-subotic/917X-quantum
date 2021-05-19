@@ -13,27 +13,39 @@ const char* btnarr_map[] = { "Home Row", "10B Grind", "\n",
                                "Skills", "None", "" };
 
 
-
+void initTask(void* p) {
+    lv_obj_t* led = lv_led_create(lv_scr_act(), NULL);
+    lv_obj_set_pos(led, 50, 50);
+    lv_style_t* ledStyle = lv_obj_get_style(led);
+    ledStyle->body.radius = LV_RADIUS_CIRCLE;
+    ledStyle->body.main_color = LV_COLOR_RED;
+    ledStyle->body.grad_color = LV_COLOR_RED;
+    ledStyle->body.border.color = LV_COLOR_WHITE;
+    ledStyle->body.border.width = 2;
+    ledStyle->body.border.opa = LV_OPA_100;
+    lv_obj_t* label = lv_label_create(lv_scr_act(), NULL);
+    std::string text = CURRENT_TASK ? "not null" : "null";
+    lv_label_set_text(label, text.c_str());
+    pros::delay(1000);
+    text = "calibrating";
+    lv_label_set_text(label, text.c_str());
+    //inert.reset();
+    while(inert.is_calibrating()) {
+        std::string text = "calibrating";
+        lv_label_set_text(label, text.c_str());
+       pros::delay(20);
+    }
+    ledStyle->body.main_color = LV_COLOR_NAVY;
+    ledStyle->body.grad_color = LV_COLOR_NAVY;
+    lv_led_on(led);
+    lv_obj_invalidate(led);
+    //lv_obj_del(led);
+}
 
 void initialize()
-{
-    /*lv_obj_t* bot = lv_led_create(lv_scr_act(), NULL);
-    lv_led_on(bot);
-    lv_style_t styleBot;
-    lv_style_copy(&styleBot, &lv_style_plain);
-    styleBot.body.border.color = LV_COLOR_WHITE;
-    styleBot.body.main_color = LV_COLOR_RED;
-    styleBot.body.grad_color = LV_COLOR_RED;
-    styleBot.body.radius = LV_RADIUS_CIRCLE;
-    lv_obj_set_pos(bot, 0, 0);
-    lv_obj_set_size(bot, lv_obj_get_width(lv_scr_act()) / 2, lv_obj_get_height(lv_scr_act()) / 2);
-    lv_led_set_style(bot,&styleBot);
-    lv_led_on(bot);
-    lv_obj_set_drag(bot, true);
-    inert.reset();
-    while (inert.is_calibrating()) {
-        pros::delay(10);
-    }*/
+{   
+    pros::Task initer(initTask);
+    
 }
 
 /**
@@ -41,7 +53,9 @@ void initialize()
  * the VEX Competition Switch, following either autonomous or opcontrol. When
  * the robot is enabled, this task will exit.
  */
-void disabled() {}
+void disabled() {
+    
+}
 
 /**
  * Runs after initialize(), and before autonomous when connected to the Field
