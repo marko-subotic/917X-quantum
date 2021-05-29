@@ -18,6 +18,7 @@ void autonomous() {
     double deltaMid = covMid-prevMid;
     double deltaTheta = covTheta - prevTheta;
     double theta = inert.get_yaw();
+    DriveTrainState state = DriveTrainState(50, 50, theta);
     while (1) {
         prevRight = covRight, prevLeft = covLeft, prevMid = covMid;
         covRight = rightEnc.get_value(), covLeft = leftEnc.get_value(), covMid = horEnc.get_value();
@@ -25,9 +26,9 @@ void autonomous() {
         prevTheta = covTheta;
         covTheta = inert.get_heading();
         deltaTheta = covTheta - prevTheta;
-        theta = inert.get_yaw();
         state.step(deltaLeft, deltaRight, deltaMid, deltaTheta, theta);
-        //display.setState(state.getPos(), theta);
+        display.setState(state.getPos(), theta);
+        theta = inert.get_yaw();
         pros::delay(20);
     }
     
