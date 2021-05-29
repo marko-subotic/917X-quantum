@@ -11,6 +11,8 @@ class OdomDebug {
 		lv_obj_t* statusLabel = nullptr;
 		lv_style_t* cStyle = nullptr;
 		lv_style_t fStyle;
+		double fieldScreenDim;
+		double fieldDim;
 	public:
 		OdomDebug(lv_obj_t* parent);
 		OdomDebug(lv_obj_t* parent, lv_color_t color);
