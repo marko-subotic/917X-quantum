@@ -1,33 +1,26 @@
 #include "main.h"
 
 void autonomous() {
-    pros::delay(100);
     lv_obj_clean(lv_scr_act());
     OdomDebug display(lv_scr_act());
     double prevRight = 0;
     double prevLeft = 0;
     double prevMid = 0;
-    double prevTheta = 0;
     double covRight = rightEnc.get_value();
     double covLeft = leftEnc.get_value();
     double covMid = horEnc.get_value();
-    double covTheta = inert.get_heading();
     double deltaRight = covRight-prevRight;
     double deltaLeft = covLeft-prevLeft;
-    double deltaMid = covMid-prevMid;
-    double deltaTheta = covTheta - prevTheta;
-    double theta = inert.get_yaw();
+    double deltaMid = covMid - prevMid;
+    double theta = 0;
     DriveTrainState state = DriveTrainState(25, 25, theta);
     while (1) {
         prevRight = covRight, prevLeft = covLeft, prevMid = covMid;
         covRight = rightEnc.get_value(), covLeft = leftEnc.get_value(), covMid = horEnc.get_value();
-        deltaRight = covRight - prevRight, deltaLeft = covLeft - prevLeft, deltaMid = covMid - prevMid;
-        prevTheta = covTheta;
-        covTheta = inert.get_heading();
-        deltaTheta = covTheta - prevTheta;
-        state.step(deltaLeft, deltaRight, deltaMid, deltaTheta, theta);
+        deltaRight = covRight - prevRight, deltaLeft = covLeft - prevLeft, deltaMid = covRight-prevMid;
+        state.step(deltaLeft, deltaRight, deltaMid);
         display.setState(state.getPos(), theta);
-        theta = inert.get_yaw();
+        theta = state.getTheta();
         pros::delay(20);
     }
     
