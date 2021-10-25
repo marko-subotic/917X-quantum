@@ -20,7 +20,7 @@ OdomDebug::OdomDebug(lv_obj_t* parent, lv_color_t color) {
     lv_obj_set_size(field, lv_obj_get_height(container), lv_obj_get_height(container));
     lv_obj_align(field, NULL, LV_ALIGN_IN_RIGHT_MID, 0, 0);
     fieldScreenDim = lv_obj_get_height(field);
-    fieldDim = 144;
+    fieldDim = 50;
     //field styles
     lv_style_copy(&fStyle, cStyle);
     //lv_style_copy(fStyle, cStyle);

@@ -12,10 +12,10 @@ class DriveTrainState{
         double m_theta;
         const double encWheelSize = 2.783;
         const double distanceYs = 11.875;
+        const double distanceX = 7.125;
         const Point leftEnc = Point(-distanceYs/2, distanceX);
         const Point rightEnc = Point(distanceYs/2,distanceX);
         const Point bottomEnc = Point(0,0);
-        const double distanceX = 7.125;
         const double minimumForRotation = .1;
         //This converts the reading of the gyro from -180 to 180 into radians.
         double thetaConverter(double thetaDeg);
@@ -23,7 +23,7 @@ class DriveTrainState{
         //to the point calculated
         double distance2Points(Point first, Point second);
         //rotate point B around point A for theta radians, return new point B
-        Point rotateAroundPoint(Point pointA, Point pointB, double theta);
+        Point rotateAroundPoint(Point pointOfRotation, Point pointRotating, double theta);
         //sets the the x and y to the param point vals and theta to param theta, used to reset/special cases
         //for testing
         void setState(Point resetPoint, double theta);

@@ -4,7 +4,6 @@ void autonomous() {
     pros::delay(100);
     lv_obj_clean(lv_scr_act());
     OdomDebug display(lv_scr_act());
-    DriveTrainState state = DriveTrainState(50, 50, 0);
     double prevRight = 0;
     double prevLeft = 0;
     double prevMid = 0;
@@ -18,7 +17,7 @@ void autonomous() {
     double deltaMid = covMid-prevMid;
     double deltaTheta = covTheta - prevTheta;
     double theta = inert.get_yaw();
-    DriveTrainState state = DriveTrainState(50, 50, theta);
+    DriveTrainState state = DriveTrainState(25, 25, theta);
     while (1) {
         prevRight = covRight, prevLeft = covLeft, prevMid = covMid;
         covRight = rightEnc.get_value(), covLeft = leftEnc.get_value(), covMid = horEnc.get_value();

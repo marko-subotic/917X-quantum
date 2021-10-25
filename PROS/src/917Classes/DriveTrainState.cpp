@@ -32,8 +32,8 @@ Point DriveTrainState::rotateAroundPoint(Point pointOfRotation, Point pointRotat
     pointRotating.y -= pointOfRotation.y;
     double xTemp = pointRotating.x;
     double yTemp = pointRotating.y;
-    pointRotating.x = (xTemp * cosT) + (yTemp * sinT);
-    pointRotating.y = -(xTemp * sinT) + (yTemp * cosT);
+    pointRotating.x = (xTemp * cosT) - (yTemp * sinT);
+    pointRotating.y = (xTemp * sinT) + (yTemp * cosT);
     pointRotating.x += pointOfRotation.x;
     pointRotating.y += pointOfRotation.y;
     return pointRotating;
@@ -81,14 +81,14 @@ void DriveTrainState::step(double dLeftEnc, double dRightEnc, double dBottomEnc,
 		shiftX = dBottomEnc;
     } else{
         double centerRotateY;
-        double centerRotateRX = rightEnc.x+dRightEnc/dTheta;
-        double centerRotateLX = leftEnc.x+dLeftEnc/dTheta;
+        double centerRotateRX = rightEnc.x-dRightEnc/dTheta;
+        double centerRotateLX = leftEnc.x-dLeftEnc/dTheta;
         Point centerRotation;
-        Point calcPoint = rightEnc;
+        Point calcPoint((rightEnc.x + leftEnc.x) / 2, (rightEnc.y + leftEnc.y) / 2);
         double encDist =dRightEnc;
         //These 2 if statements are to set the calculation point to either the left or right encoder
         //because the encoder further from the center of rotation is more accurate
-        if(fabs(dRightEnc)>fabs(dLeftEnc)){
+        if(fabs(dRightEnc)>=fabs(dLeftEnc)){
             //if the center of rotation is to the right, the default setting is for the bottom encoder to
             //have a positive direction of right, so there have to be adjustments to where the center of
             //rotation will be if it is to the left or to the right.
@@ -99,6 +99,7 @@ void DriveTrainState::step(double dLeftEnc, double dRightEnc, double dBottomEnc,
             centerRotation = Point(centerRotateLX, centerRotateY);
 
         }
+        /*
         double radius = distance2Points(centerRotation,calcPoint);
         double alpha = acos(encDist/(dTheta*radius));
         double mu = (M_PI-fabs(dTheta))/2;
@@ -127,6 +128,10 @@ void DriveTrainState::step(double dLeftEnc, double dRightEnc, double dBottomEnc,
         }else{
             shiftY += distanceYs/2*sin(fabs(dTheta));
         }
+        */
+        Point lastPoint = rotateAroundPoint(centerRotation, calcPoint, dTheta);
+        shiftX = lastPoint.x - calcPoint.x;
+        shiftY = lastPoint.y - calcPoint.y;
     }
     m_y += shiftX*sin(m_theta) + shiftY * cos(m_theta);
     m_x += shiftX*cos(m_theta) - shiftY * sin(m_theta);
