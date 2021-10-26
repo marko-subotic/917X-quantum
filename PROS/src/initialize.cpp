@@ -41,10 +41,6 @@ void competition_initialize() {
     
 }
 
-static lv_res_t btnm_action(lv_obj_t* btnm, const char* txt) {
-    selectedAuton = txt;
-    return LV_RES_OK;
-}
 
 
 /**

@@ -11,7 +11,7 @@ int ScaleRawJoystick(int raw)
     return(ScaledVal);
 }
 
-void tankDrive() {
+void tankDrive(void* p) {
     int leftY = cont.get_analog(ANALOG_LEFT_Y);
     int rightY = cont.get_analog(ANALOG_RIGHT_Y);
     
@@ -35,9 +35,40 @@ void tankDrive() {
         pros::delay(20);
     }
 }
-void opcontrol() {
 
-    
+void miscFunctions(void* p) {
+    intake.set_brake_mode(MOTOR_BRAKE_BRAKE);
+    frontLift.set_brake_mode(MOTOR_BRAKE_BRAKE);
+    while (true) {
+        bool R2 = cont.get_digital(E_CONTROLLER_DIGITAL_R2);
+        bool R1 = cont.get_digital(E_CONTROLLER_DIGITAL_R1);
+        bool L2 = cont.get_digital(E_CONTROLLER_DIGITAL_L2);
+        bool L1 = cont.get_digital(E_CONTROLLER_DIGITAL_L1);
+        if (R2) {
+            intake.move(127);
+        }else if (R1) {
+            intake.move(-127);
+        }else {
+            intake.set_brake_mode(MOTOR_BRAKE_BRAKE);
+        }
+        if (L2) {
+            frontLift.move(127);
+        }
+        else if (L1) {
+            frontLift.move(-127);
+        }
+        else {
+            frontLift.set_brake_mode(MOTOR_BRAKE_HOLD);
+        }
+        pros::delay(20);
+    }
+}
+void opcontrol() {
+    std::string driveTaskName("Drive Task");
+    std::string intakeTaskName("Misc Task");
+    Task driveTask(tankDrive, &driveTaskName);
+    Task intakeTask(miscFunctions, &intakeTaskName);
+
     
 
 }
