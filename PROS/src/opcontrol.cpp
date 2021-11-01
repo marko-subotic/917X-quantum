@@ -21,7 +21,8 @@ void tankDrive(void* p) {
     rightBack.move(0);
     
     while (true) {
-
+        leftY = cont.get_analog(ANALOG_LEFT_Y);
+        rightY = cont.get_analog(ANALOG_RIGHT_Y);
         if (abs(leftY) > DriveDeadzone) {
             leftY = ScaleRawJoystick(leftY);
         }
@@ -48,17 +49,15 @@ void miscFunctions(void* p) {
             intake.move(127);
         }else if (R1) {
             intake.move(-127);
-        }else {
-            intake.set_brake_mode(MOTOR_BRAKE_BRAKE);
+        }if(!R1 && !R2) {
+            intake.move(0);
         }
         if (L2) {
             frontLift.move(127);
-        }
-        else if (L1) {
+        }else if (L1) {
             frontLift.move(-127);
-        }
-        else {
-            frontLift.set_brake_mode(MOTOR_BRAKE_HOLD);
+        }if (!L1 && !L2) {
+            frontLift.move(0);
         }
         pros::delay(20);
     }
