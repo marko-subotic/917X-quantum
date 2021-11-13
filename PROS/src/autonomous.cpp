@@ -2,7 +2,7 @@
 
 void autonomous() {
     lv_obj_clean(lv_scr_act());
-    OdomDebug display(lv_scr_act());
+    OdomDisplay display(lv_scr_act());
     double prevRight = 0;
     double prevLeft = 0;
     double prevMid = 0;
@@ -19,8 +19,9 @@ void autonomous() {
         covRight = rightEnc.get_value(), covLeft = leftEnc.get_value(), covMid = horEnc.get_value();
         deltaRight = covRight - prevRight, deltaLeft = covLeft - prevLeft, deltaMid = covRight-prevMid;
         state.step(deltaLeft, deltaRight, deltaMid);
-        display.setState(state.getPos(), theta);
         theta = state.getTheta();
+        display.setState(state.getPos(), theta);
+        //display.encoderDebug(covMid, "right: encoder");
         pros::delay(20);
     }
     

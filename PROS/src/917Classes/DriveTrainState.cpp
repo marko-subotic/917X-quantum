@@ -24,7 +24,6 @@ void DriveTrainState::setState(Point resetPoint, double theta) {
 
 double DriveTrainState::deltaTheta(double leftEnc, double rightEnc) {
     return (rightEnc - leftEnc) / distanceYs;
-
 };
 
 Point DriveTrainState::rotateAroundPoint(Point pointOfRotation, Point pointRotating, double theta) {
@@ -45,7 +44,7 @@ Point DriveTrainState::rotateAroundPoint(Point pointOfRotation, Point pointRotat
 double DriveTrainState::thetaConverter(double theta){
     if(theta<0){
         return theta+2*M_PI;
-    }else if (theta < 2*M_PI) {
+    }else if (theta > 2*M_PI) {
         return theta - 2 * M_PI;
     }
     return theta;

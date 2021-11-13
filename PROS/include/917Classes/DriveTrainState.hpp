@@ -11,8 +11,8 @@ class DriveTrainState{
         double m_y;
         double m_theta;
         const double encWheelSize = 2.783;
-        const double distanceYs = 11.875;
-        const double distanceX = 7.125;
+        const double distanceYs = 12.3125;
+        const double distanceX = 6.5;
         const Point leftEnc = Point(-distanceYs/2, distanceX);
         const Point rightEnc = Point(distanceYs/2,distanceX);
         const Point bottomEnc = Point(0,0);

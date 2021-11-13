@@ -1,10 +1,10 @@
-#include "OdomDebug.hpp"
+#include "OdomDisplay.hpp"
 
-OdomDebug::OdomDebug(lv_obj_t* parent) 
-    : OdomDebug(parent, LV_COLOR_RED) {
+OdomDisplay::OdomDisplay(lv_obj_t* parent) 
+    : OdomDisplay(parent, LV_COLOR_RED) {
 };
 
-OdomDebug::OdomDebug(lv_obj_t* parent, lv_color_t color) {
+OdomDisplay::OdomDisplay(lv_obj_t* parent, lv_color_t color) {
     //screen container creation
     container = (lv_obj_create(parent, NULL));
     lv_obj_set_size(container, lv_obj_get_width(parent), lv_obj_get_height(parent));
@@ -87,8 +87,17 @@ OdomDebug::OdomDebug(lv_obj_t* parent, lv_color_t color) {
     lv_label_set_text(statusLabel, "No Odom Data Provided");
     lv_obj_align(statusLabel, container, LV_ALIGN_CENTER, -lv_obj_get_width(container) / 2 + (lv_obj_get_width(container) - fieldScreenDim) / 2, 0);
 
+    //label creation
+    encLabel = lv_label_create(container, NULL);
+
+    textStyle = lv_obj_get_style(encLabel);
+    textStyle->text.color = LV_COLOR_WHITE;
+    textStyle->text.opa = LV_OPA_100;
+    lv_obj_set_style(encLabel, textStyle);
 };
-void OdomDebug::setState(Point state, double theta) {
+
+
+void OdomDisplay::setState(Point state, double theta) {
     lv_obj_set_pos(bot, (fieldScreenDim/fieldDim)*state.x,fieldScreenDim-((fieldScreenDim / fieldDim)* state.y));
     lv_obj_invalidate(bot);
     std::string text =
@@ -96,5 +105,11 @@ void OdomDebug::setState(Point state, double theta) {
         "Y_in: " + std::to_string(state.y) + "\n" +
         "Theta_deg: " + std::to_string(theta) + "\n";
     lv_label_set_text(statusLabel, text.c_str());
-    lv_obj_align(statusLabel, container, LV_ALIGN_CENTER, -lv_obj_get_width(container) / 2 + (lv_obj_get_width(container) - fieldDimensions) / 2, 0);
+    lv_obj_align(statusLabel, container, LV_ALIGN_CENTER, -lv_obj_get_width(container) / 2 + (lv_obj_get_width(container) - fieldDimensions) / 3, 0);
+};
+
+void OdomDisplay::encoderDebug(int encValue, std::string encSpec) {
+    std::string text = encSpec + ": " + std::to_string(encValue);
+    lv_label_set_text(encLabel, text.c_str());
+    lv_obj_align(encLabel, container, LV_ALIGN_CENTER, -lv_obj_get_width(container) / 2 + (lv_obj_get_width(container) - fieldScreenDim) / 2, 0);
 };
