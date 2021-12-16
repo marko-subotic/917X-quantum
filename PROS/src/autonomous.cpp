@@ -17,7 +17,7 @@ void autonomous() {
     while (1) {
         prevRight = covRight, prevLeft = covLeft, prevMid = covMid;
         covRight = rightEnc.get_value(), covLeft = leftEnc.get_value(), covMid = horEnc.get_value();
-        deltaRight = covRight - prevRight, deltaLeft = covLeft - prevLeft, deltaMid = covRight-prevMid;
+        deltaRight = covRight - prevRight, deltaLeft = covLeft - prevLeft, deltaMid = covMid-prevMid;
         state.step(deltaLeft, deltaRight, deltaMid);
         theta = state.getTheta();
         display.setState(state.getPos(), theta);
