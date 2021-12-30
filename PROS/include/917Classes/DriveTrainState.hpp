@@ -11,8 +11,12 @@ class DriveTrainState{
         double m_y;
         double m_theta;
         const double encWheelSize = 2.783;
-        const double distanceYs = 12.3125;
-        const double distanceX = 6.5;
+        //ratio of when wheel diameter is 1, so that i can change wheel size without messing up constants
+        //const double yRatio = 14.2025;
+        //const double distanceYs = yRatio*encWheelSize;
+        const double distanceYs = 14.2025;
+
+        const double distanceX = 7.9375;
         const Point leftEnc = Point(-distanceYs/2, distanceX);
         const Point rightEnc = Point(distanceYs/2,distanceX);
         const Point bottomEnc = Point(0,0);

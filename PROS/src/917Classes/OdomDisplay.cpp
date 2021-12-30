@@ -20,7 +20,6 @@ OdomDisplay::OdomDisplay(lv_obj_t* parent, lv_color_t color) {
     lv_obj_set_size(field, lv_obj_get_height(container), lv_obj_get_height(container));
     lv_obj_align(field, NULL, LV_ALIGN_IN_RIGHT_MID, 0, 0);
     fieldScreenDim = lv_obj_get_height(field);
-    fieldDim = 50;
     //field styles
     lv_style_copy(&fStyle, cStyle);
     //lv_style_copy(fStyle, cStyle);
@@ -33,7 +32,7 @@ OdomDisplay::OdomDisplay(lv_obj_t* parent, lv_color_t color) {
     lineStyle.line.width = 3;
     lineStyle.line.color = LV_COLOR_BLACK;
 
-    const int tileCount = 12;
+    const int tileCount = 6;
     const lv_point_t startPoint = { 0,0 };
     std::vector<lv_point_t> pointVector(2, startPoint);
     static std::vector<std::vector<lv_point_t>> vertLinePoints(tileCount-1, pointVector);
@@ -98,14 +97,14 @@ OdomDisplay::OdomDisplay(lv_obj_t* parent, lv_color_t color) {
 
 
 void OdomDisplay::setState(Point state, double theta) {
-    lv_obj_set_pos(bot, (fieldScreenDim/fieldDim)*state.x,fieldScreenDim-((fieldScreenDim / fieldDim)* state.y));
+    lv_obj_set_pos(bot, (fieldScreenDim/FIELD_DIMENSIONS)*state.x,fieldScreenDim-((fieldScreenDim / FIELD_DIMENSIONS)* state.y));
     lv_obj_invalidate(bot);
     std::string text =
         "X_in: " + std::to_string(state.x) + "\n" +
         "Y_in: " + std::to_string(state.y) + "\n" +
         "Theta_deg: " + std::to_string(theta) + "\n";
     lv_label_set_text(statusLabel, text.c_str());
-    lv_obj_align(statusLabel, container, LV_ALIGN_CENTER, -lv_obj_get_width(container) / 2 + (lv_obj_get_width(container) - fieldDimensions) / 3, 0);
+    lv_obj_align(statusLabel, container, LV_ALIGN_CENTER, -lv_obj_get_width(container) / 2 + (lv_obj_get_width(container) - FIELD_DIMENSIONS) / 3, 0);
 };
 
 void OdomDisplay::encoderDebug(int encValue, std::string encSpec) {

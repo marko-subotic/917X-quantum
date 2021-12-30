@@ -20,8 +20,8 @@ void autonomous() {
         deltaRight = covRight - prevRight, deltaLeft = covLeft - prevLeft, deltaMid = covMid-prevMid;
         state.step(deltaLeft, deltaRight, deltaMid);
         theta = state.getTheta();
-        display.setState(state.getPos(), theta);
-        //display.encoderDebug(covMid, "right: encoder");
+        //display.setState(state.getPos(), theta);
+        display.encoderDebug(covMid, "right: encoder");
         pros::delay(20);
     }
     

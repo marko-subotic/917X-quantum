@@ -38,7 +38,7 @@ Point DriveTrainState::rotateAroundPoint(Point pointOfRotation, Point pointRotat
     pointRotating.x += pointOfRotation.x;
     pointRotating.y += pointOfRotation.y;
     return pointRotating;
-};
+}; 
 
 
 double DriveTrainState::thetaConverter(double theta){
@@ -71,7 +71,6 @@ void DriveTrainState::step(double dLeftEnc, double dRightEnc, double dBottomEnc)
     dRightEnc = dRightEnc / 360 * encWheelSize * M_PI;
     dBottomEnc = dBottomEnc / 360 * encWheelSize * M_PI;
     double dTheta = deltaTheta(dLeftEnc,dRightEnc);
-    m_theta = thetaConverter(m_theta + dTheta);
     double coefficient = 1;
     if (dTheta<0){
         coefficient*=-1;
@@ -85,28 +84,23 @@ void DriveTrainState::step(double dLeftEnc, double dRightEnc, double dBottomEnc)
         double centerRotateY;
         double centerRotateRX = rightEnc.x-dRightEnc/dTheta;
         double centerRotateLX = leftEnc.x-dLeftEnc/dTheta;
+        centerRotateY = dBottomEnc / dTheta;
         Point centerRotation;
         Point calcPoint((rightEnc.x + leftEnc.x) / 2, (rightEnc.y + leftEnc.y) / 2);
-        double encDist =dRightEnc;
         //These 2 if statements are to set the calculation point to either the left or right encoder
         //because the encoder further from the center of rotation is more accurate
         if(fabs(dRightEnc)>=fabs(dLeftEnc)){
-            //if the center of rotation is to the right, the default setting is for the bottom encoder to
-            //have a positive direction of right, so there have to be adjustments to where the center of
-            //rotation will be if it is to the left or to the right.
-            centerRotateY = dBottomEnc/dTheta;
             centerRotation = Point(centerRotateRX, centerRotateY);
         }else{
-            centerRotateY = -dBottomEnc/dTheta;
             centerRotation = Point(centerRotateLX, centerRotateY);
-
         }
         
         Point lastPoint = rotateAroundPoint(centerRotation, calcPoint, dTheta);
         shiftX = lastPoint.x - calcPoint.x;
         shiftY = lastPoint.y - calcPoint.y;
     }
-    m_y += shiftX*sin(m_theta) + shiftY * cos(m_theta);
-    m_x += shiftX*cos(m_theta) - shiftY * sin(m_theta);
-};
+    m_x += shiftX*cos(-m_theta) + shiftY * sin(-m_theta);
+    m_y += shiftY*cos(-m_theta) - shiftX * sin(-m_theta);
+    m_theta = thetaConverter(m_theta + dTheta);
 
+};
