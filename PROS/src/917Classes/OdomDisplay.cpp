@@ -33,7 +33,7 @@ OdomDisplay::OdomDisplay(lv_obj_t* parent, lv_color_t color) {
     lineStyle.line.color = LV_COLOR_BLACK;
 
     const int tileCount = 6;
-    const lv_point_t startPoint = { 0,0 };
+    lv_point_t startPoint = { 0,0 };
     std::vector<lv_point_t> pointVector(2, startPoint);
     static std::vector<std::vector<lv_point_t>> vertLinePoints(tileCount-1, pointVector);
     static std::vector<std::vector<lv_point_t>> horLinePoints(tileCount - 1, pointVector);
@@ -62,19 +62,31 @@ OdomDisplay::OdomDisplay(lv_obj_t* parent, lv_color_t color) {
     }
     
     //robot creation
-    bot = lv_led_create(field, NULL);
-    lv_led_on(bot);
-    lv_obj_set_size(bot, fieldScreenDim/ 10, fieldScreenDim / 10);
-    lv_obj_align(bot, NULL, LV_ALIGN_CENTER, 0, 0);
+   
+        //first is led creation
 
-    lv_style_t* lStyle = lv_obj_get_style(bot);
-    lStyle->body.radius = LV_RADIUS_CIRCLE;
-    lStyle->body.main_color = color;
-    lStyle->body.grad_color = color;
-    lStyle->body.border.color = LV_COLOR_WHITE;
-    lStyle->body.border.width = 2;
-    lStyle->body.border.opa = LV_OPA_100;
-    lv_obj_set_style(bot, lStyle);
+        bot = lv_led_create(field, NULL);
+        lv_led_on(bot);
+        lv_obj_set_size(bot, fieldScreenDim/ robotRatio, fieldScreenDim / robotRatio);
+        lv_obj_align(bot, NULL, LV_ALIGN_CENTER, 0, 0);
+
+        lv_style_t* lStyle = lv_obj_get_style(bot);
+        lStyle->body.radius = LV_RADIUS_CIRCLE;
+        lStyle->body.main_color = color;
+        lStyle->body.grad_color = color;
+        lStyle->body.border.color = LV_COLOR_WHITE;
+        lStyle->body.border.width = 2;
+        lStyle->body.border.opa = LV_OPA_100;
+        lv_obj_set_style(bot, lStyle);
+    
+        //next is line creation
+        botLine = lv_line_create(bot, NULL);
+        lv_obj_set_style(botLine, &lineStyle);
+        startPoint.x = lv_obj_get_width(bot)/2;
+        botLinePoints[0] = startPoint, botLinePoints[1] = startPoint;
+        botLinePoints[1].y = lv_obj_get_height(bot)/2;
+        lv_line_set_points(botLine, botLinePoints, 2);
+
     
     //status text creation
     statusLabel = lv_label_create(container, NULL);
@@ -86,19 +98,28 @@ OdomDisplay::OdomDisplay(lv_obj_t* parent, lv_color_t color) {
     lv_label_set_text(statusLabel, "No Odom Data Provided");
     lv_obj_align(statusLabel, container, LV_ALIGN_CENTER, -lv_obj_get_width(container) / 2 + (lv_obj_get_width(container) - fieldScreenDim) / 2, 0);
 
-    //label creation
+    //encoder direction checker label creation
     encLabel = lv_label_create(container, NULL);
 
     textStyle = lv_obj_get_style(encLabel);
     textStyle->text.color = LV_COLOR_WHITE;
     textStyle->text.opa = LV_OPA_100;
     lv_obj_set_style(encLabel, textStyle);
+    lv_obj_align(encLabel, container, LV_ALIGN_CENTER, -lv_obj_get_width(container) / 2 + (lv_obj_get_width(container) - fieldScreenDim) / 2, -lv_obj_get_height(container)*3/4);
+    lv_label_set_text(encLabel, "");
 };
 
 
 void OdomDisplay::setState(Point state, double theta) {
-    lv_obj_set_pos(bot, (fieldScreenDim/FIELD_DIMENSIONS)*state.x,fieldScreenDim-((fieldScreenDim / FIELD_DIMENSIONS)* state.y));
+    lv_obj_set_pos(bot, (fieldScreenDim/FIELD_DIMENSIONS)*state.x-lv_obj_get_width(bot)/2,fieldScreenDim-((fieldScreenDim / FIELD_DIMENSIONS)* state.y)-lv_obj_get_height(bot) / 2);
     lv_obj_invalidate(bot);
+    std::vector<Point> a(2,Point(0,0));
+    a[0].x = lv_obj_get_width(bot) / 2, a[1].y = 0;
+    a[1].x = botLinePoints[1].x, a[1].y = botLinePoints[1].y;
+    Point newLinePoint = DriveTrainState::rotateAroundPoint(a[1], a[0], -theta);
+    botLinePoints[0].x = newLinePoint.x, botLinePoints[0].y = newLinePoint.y;
+    lv_line_set_points(botLine, botLinePoints, 2);
+    lv_obj_invalidate(botLine);
     std::string text =
         "X_in: " + std::to_string(state.x) + "\n" +
         "Y_in: " + std::to_string(state.y) + "\n" +

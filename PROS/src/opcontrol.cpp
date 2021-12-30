@@ -71,7 +71,8 @@ void miscFunctions(void* p) {
     
 
 }*/
-void opcontrol() {
+
+void odomFunctions(void* p) {
     lv_obj_clean(lv_scr_act());
     OdomDisplay display(lv_scr_act());
     double prevRight = 0;
@@ -95,7 +96,9 @@ void opcontrol() {
         //display.encoderDebug(covLeft, "right: encoder");
         pros::delay(20);
     }
-
+}
+void opcontrol() {
+    pros::Task odomTasks(odomFunctions);
 
 
 }

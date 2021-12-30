@@ -11,9 +11,14 @@ class OdomDisplay {
 		lv_obj_t* statusLabel = nullptr;
 		lv_style_t* cStyle = nullptr;
 		lv_obj_t* encLabel = nullptr;
+		lv_obj_t* botLine = nullptr;
 		lv_style_t fStyle;
 		double fieldScreenDim;
+		double robotRatio = 10;
 		double fieldDim;
+		lv_point_t botLinePoints[2];
+		int lineThickness = 1.5;
+
 	public:
 		OdomDisplay(lv_obj_t* parent);
 		OdomDisplay(lv_obj_t* parent, lv_color_t color);
