@@ -5,4 +5,5 @@ struct Point {
 	double y;
     Point(double inX, double inY);
     Point() = default;
+	double operator-(const Point& rhs);
 };

@@ -1,10 +1,7 @@
-﻿  pch.cpp
+﻿  DriveTrainState.cpp
+  Utils.cpp
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\src\917Classes\Utils.cpp(28,42): error C2084: function 'double Utils::angleToPoint(Point)' already has a body
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\917Classes\Utils.hpp(13): message : see previous definition of 'angleToPoint'
   QuantumTests.cpp
-     Creating library C:\Users\marko\code\VEX robotics 2021\917X-quantum\Debug\QuantumTests.lib and object C:\Users\marko\code\VEX robotics 2021\917X-quantum\Debug\QuantumTests.exp
-QuantumTests.obj : error LNK2019: unresolved external symbol "public: __thiscall Point::Point(double,double)" (??0Point@@QAE@NN@Z) referenced in function "public: static void __cdecl QuantumTest::QuantumTests::Startup(void)" (?Startup@QuantumTests@QuantumTest@@SAXXZ)
-QuantumTests.obj : error LNK2019: unresolved external symbol "protected: void __thiscall DriveTrainState::setState(struct Point,double)" (?setState@DriveTrainState@@IAEXUPoint@@N@Z) referenced in function "public: static void __cdecl QuantumTest::QuantumTests::Startup(void)" (?Startup@QuantumTests@QuantumTest@@SAXXZ)
-QuantumTests.obj : error LNK2019: unresolved external symbol "public: __thiscall DriveTrainState::DriveTrainState(void)" (??0DriveTrainState@@QAE@XZ) referenced in function "void __cdecl `dynamic initializer for 'public: static class DriveTrainState QuantumTest::QuantumTests::user''(void)" (??__E?user@QuantumTests@QuantumTest@@2VDriveTrainState@@A@@YAXXZ)
-QuantumTests.obj : error LNK2019: unresolved external symbol "public: void __thiscall DriveTrainState::step(double,double,double)" (?step@DriveTrainState@@QAEXNNN@Z) referenced in function "public: void __thiscall QuantumTest::QuantumTests::TestCenterRotatePI6(void)" (?TestCenterRotatePI6@QuantumTests@QuantumTest@@QAEXXZ)
-QuantumTests.obj : error LNK2019: unresolved external symbol "public: struct Point __thiscall DriveTrainState::getPos(void)" (?getPos@DriveTrainState@@QAE?AUPoint@@XZ) referenced in function "public: void __thiscall QuantumTest::QuantumTests::TestCenterRotatePI6(void)" (?TestCenterRotatePI6@QuantumTests@QuantumTest@@QAEXXZ)
-QuantumTests.obj : error LNK2019: unresolved external symbol "public: static struct Point __cdecl Utils::rotateAroundPoint(struct Point,struct Point,double)" (?rotateAroundPoint@Utils@@SA?AUPoint@@U2@0N@Z) referenced in function "public: void __thiscall QuantumTest::QuantumTests::TestCenterRotatePI6(void)" (?TestCenterRotatePI6@QuantumTests@QuantumTest@@QAEXXZ)
-C:\Users\marko\code\VEX robotics 2021\917X-quantum\Debug\QuantumTests.dll : fatal error LNK1120: 6 unresolved externals
+  Generating Code...
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\917Classes\Utils.hpp(13): error C4716: 'Utils::angleToPoint': must return a value

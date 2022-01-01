@@ -3,6 +3,7 @@
 #include "917Classes\Utils.hpp"
 #include <math.h>
 
+
 DriveTrainState::DriveTrainState() {
     m_x = 0;
     m_y = 0;
@@ -56,7 +57,6 @@ void DriveTrainState::step(double dLeftEnc, double dRightEnc, double dBottomEnc)
         double centerRotateLX = leftEnc.x-dLeftEnc/dTheta;
         centerRotateY = dBottomEnc / dTheta;
         Point centerRotation;
-        Point calcPoint((rightEnc.x + leftEnc.x) / 2, (rightEnc.y + leftEnc.y) / 2);
         //These 2 if statements are to set the calculation point to either the left or right encoder
         //because the encoder further from the center of rotation is more accurate
         if(fabs(dRightEnc)>=fabs(dLeftEnc)){

@@ -1,5 +1,5 @@
 #pragma once
-#include "917Classes\structDefs.hpp"
+#include "structDefs.hpp"
 
 class Utils{
     public:
@@ -9,7 +9,9 @@ class Utils{
         //rotate point B around point A for theta radians, return new point B
         static Point rotateAroundPoint(Point pointOfRotation, Point pointRotating, double theta);
 
-        static double angleToPoint(Point target) {
+        //returns angle from the positive y-axis of any point to the origin, from [0,2PI)
+        static double angleToPoint(Point target);
 
-        }
+        //returns distance between 2 points
+        static double distanceBetweenPoints(Point one, Point two);
 };

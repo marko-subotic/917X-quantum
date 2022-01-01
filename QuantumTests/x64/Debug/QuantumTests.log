@@ -1,9 +1,9 @@
-﻿  QuantumTests.cpp
+﻿  pch.cpp
+  DriveTrainState.cpp
+  structDefs.cpp
+  Utils.cpp
+  QuantumTests.cpp
+  Running Code Analysis for C/C++...
+  Generating Code...
      Creating library C:\Users\marko\code\VEX robotics 2021\917X-quantum\QuantumTests\x64\Debug\QuantumTests.lib and object C:\Users\marko\code\VEX robotics 2021\917X-quantum\QuantumTests\x64\Debug\QuantumTests.exp
-QuantumTests.obj : error LNK2019: unresolved external symbol "public: __cdecl Point::Point(double,double)" (??0Point@@QEAA@NN@Z) referenced in function "public: static void __cdecl QuantumTest::QuantumTests::Startup(void)" (?Startup@QuantumTests@QuantumTest@@SAXXZ)
-QuantumTests.obj : error LNK2019: unresolved external symbol "protected: void __cdecl DriveTrainState::setState(struct Point,double)" (?setState@DriveTrainState@@IEAAXUPoint@@N@Z) referenced in function "public: static void __cdecl QuantumTest::QuantumTests::Startup(void)" (?Startup@QuantumTests@QuantumTest@@SAXXZ)
-QuantumTests.obj : error LNK2019: unresolved external symbol "public: void __cdecl DriveTrainState::step(double,double,double)" (?step@DriveTrainState@@QEAAXNNN@Z) referenced in function "public: void __cdecl QuantumTest::QuantumTests::TestCenterRotatePI6(void)" (?TestCenterRotatePI6@QuantumTests@QuantumTest@@QEAAXXZ)
-QuantumTests.obj : error LNK2019: unresolved external symbol "public: struct Point __cdecl DriveTrainState::getPos(void)" (?getPos@DriveTrainState@@QEAA?AUPoint@@XZ) referenced in function "public: void __cdecl QuantumTest::QuantumTests::TestCenterRotatePI6(void)" (?TestCenterRotatePI6@QuantumTests@QuantumTest@@QEAAXXZ)
-QuantumTests.obj : error LNK2019: unresolved external symbol "public: static struct Point __cdecl Utils::rotateAroundPoint(struct Point,struct Point,double)" (?rotateAroundPoint@Utils@@SA?AUPoint@@U2@0N@Z) referenced in function "public: void __cdecl QuantumTest::QuantumTests::TestCenterRotatePI6(void)" (?TestCenterRotatePI6@QuantumTests@QuantumTest@@QEAAXXZ)
-QuantumTests.obj : error LNK2001: unresolved external symbol "public: static class DriveTrainState QuantumTest::QuantumTests::user" (?user@QuantumTests@QuantumTest@@2VDriveTrainState@@A)
-C:\Users\marko\code\VEX robotics 2021\917X-quantum\QuantumTests\x64\Debug\QuantumTests.dll : fatal error LNK1120: 6 unresolved externals
+  QuantumTests.vcxproj -> C:\Users\marko\code\VEX robotics 2021\917X-quantum\QuantumTests\x64\Debug\QuantumTests.dll
