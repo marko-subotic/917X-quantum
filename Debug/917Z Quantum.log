@@ -1,0 +1,656 @@
+﻿  DriveTrainController.cpp
+  DriveTrainState.cpp
+  OdomDisplay.cpp
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\pros\src\917classes\OdomDisplay.cpp(1,10): fatal error C1083: Cannot open include file: 'OdomDisplay.hpp': No such file or directory
+  structDefs.cpp
+  Utils.cpp
+  autonomous.cpp
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\adi.h(49,21): error C2146: syntax error: missing '}' before identifier '__attribute__'
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\adi.h(49): error C2143: syntax error: missing ';' before '<L_TYPE_raw>'
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\adi.h(70,1): error C2143: syntax error: missing ';' before '}'
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\adi.h(70,22): error C4430: missing type specifier - int assumed. Note: C++ does not support default-int
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\adi.h(140,40): error C4430: missing type specifier - int assumed. Note: C++ does not support default-int
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\adi.h(140,21): error C2146: syntax error: missing ';' before identifier 'adi_port_get_config'
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\adi.h(172,43): error C2061: syntax error: identifier 'adi_port_config_e_t'
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\adi.h(695,1): error C2059: syntax error: '}'
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\adi.h(695,1): error C2143: syntax error: missing ';' before '}'
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\distance.h(26,12): error C2143: syntax error: missing ';' before '{'
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\distance.h(26,12): error C2447: '{': missing function header (old-style formal list?)
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\ext_adi.h(61,44): error C4430: missing type specifier - int assumed. Note: C++ does not support default-int
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\ext_adi.h(61,21): error C2146: syntax error: missing ';' before identifier 'ext_adi_port_get_config'
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\ext_adi.h(99,71): error C2061: syntax error: identifier 'adi_port_config_e_t'
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\imu.h(37,44): error C2146: syntax error: missing ';' before identifier 'quaternion_s'
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\imu.h(37,57): error C4430: missing type specifier - int assumed. Note: C++ does not support default-int
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\imu.h(38,2): error C2062: type 'double' unexpected
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\imu.h(42,17): error C4430: missing type specifier - int assumed. Note: C++ does not support default-int
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\imu.h(53,16): error C2371: 'pros::__attribute__': redefinition; different basic types
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\adi.h(49): message : see declaration of 'pros::__attribute__'
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\imu.h(53,44): error C2146: syntax error: missing ';' before identifier 'euler_s'
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\imu.h(53,52): error C4430: missing type specifier - int assumed. Note: C++ does not support default-int
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\imu.h(54,2): error C2062: type 'double' unexpected
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\imu.h(57,12): error C4430: missing type specifier - int assumed. Note: C++ does not support default-int
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\imu.h(162,34): error C4430: missing type specifier - int assumed. Note: C++ does not support default-int
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\imu.h(162,16): error C2146: syntax error: missing ';' before identifier 'imu_get_quaternion'
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\imu.h(179,24): error C4430: missing type specifier - int assumed. Note: C++ does not support default-int
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\imu.h(179,1): error C2086: 'int euler_s_t': redefinition
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\imu.h(57): message : see declaration of 'euler_s_t'
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\imu.h(179,11): error C2146: syntax error: missing ';' before identifier 'imu_get_euler'
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\imu.h(241,31): error C4430: missing type specifier - int assumed. Note: C++ does not support default-int
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\imu.h(241,14): error C2146: syntax error: missing ';' before identifier 'imu_get_gyro_rate'
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\imu.h(257,28): error C4430: missing type specifier - int assumed. Note: C++ does not support default-int
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\imu.h(257,15): error C2146: syntax error: missing ';' before identifier 'imu_get_accel'
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\imu.h(273,30): error C4430: missing type specifier - int assumed. Note: C++ does not support default-int
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\imu.h(273,16): error C2146: syntax error: missing ';' before identifier 'imu_get_status'
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\imu.h(410,37): error C2061: syntax error: identifier 'euler_s_t'
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\imu.h(508,1): error C2059: syntax error: '}'
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\imu.h(508,1): error C2143: syntax error: missing ';' before '}'
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\imu.h(509,1): error C2143: syntax error: missing ';' before '}'
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\imu.h(509,1): error C2059: syntax error: '}'
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\llemu.h(29,9): warning C4068: unknown pragma 'GCC'
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\llemu.h(30,9): warning C4068: unknown pragma 'GCC'
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\llemu.h(31,9): warning C4068: unknown pragma 'GCC'
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\display\lvgl.h(10,12): error C2143: syntax error: missing ';' before '{'
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\display\lvgl.h(10,12): error C2447: '{': missing function header (old-style formal list?)
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\display\lvgl.h(17,9): warning C4068: unknown pragma 'GCC'
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\display\lvgl.h(18,9): warning C4068: unknown pragma 'GCC'
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\display\lvgl.h(66,9): warning C4068: unknown pragma 'GCC'
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\llemu.h(33,9): warning C4068: unknown pragma 'GCC'
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\llemu.h(47,10): error C2143: syntax error: missing ';' before '*'
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\llemu.h(47,10): error C4430: missing type specifier - int assumed. Note: C++ does not support default-int
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\llemu.h(47,17): error C2238: unexpected token(s) preceding ';'
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\llemu.h(48,10): error C2143: syntax error: missing ';' before '*'
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\llemu.h(48,10): error C4430: missing type specifier - int assumed. Note: C++ does not support default-int
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\llemu.h(48,18): error C2238: unexpected token(s) preceding ';'
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\llemu.h(49,10): error C2143: syntax error: missing ';' before '*'
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\llemu.h(49,10): error C4430: missing type specifier - int assumed. Note: C++ does not support default-int
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\llemu.h(49,23): error C2238: unexpected token(s) preceding ';'
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\llemu.h(50,10): error C2143: syntax error: missing ';' before '*'
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\llemu.h(50,10): error C4430: missing type specifier - int assumed. Note: C++ does not support default-int
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\llemu.h(50,25): error C2238: unexpected token(s) preceding ';'
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\llemu.h(51,10): error C2143: syntax error: missing ';' before '*'
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\llemu.h(51,10): error C4430: missing type specifier - int assumed. Note: C++ does not support default-int
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\llemu.h(51,19): error C2238: unexpected token(s) preceding ';'
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\vision.h(48,44): error C2146: syntax error: missing ';' before identifier 'vision_signature'
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\vision.h(48,61): error C4430: missing type specifier - int assumed. Note: C++ does not support default-int
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\vision.h(49,2): error C2275: 'uint8_t': illegal use of this type as an expression
+C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.29.30133\include\stdint.h(22): message : see declaration of 'uint8_t'
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\vision.h(49,10): error C2146: syntax error: missing ')' before identifier 'id'
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\vision.h(60,23): error C4430: missing type specifier - int assumed. Note: C++ does not support default-int
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\vision.h(71,44): error C2146: syntax error: missing ';' before identifier 'vision_object'
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\vision.h(71,58): error C4430: missing type specifier - int assumed. Note: C++ does not support default-int
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\vision.h(73,2): error C2275: 'uint16_t': illegal use of this type as an expression
+C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.29.30133\include\stdint.h(23): message : see declaration of 'uint16_t'
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\vision.h(73,11): error C2146: syntax error: missing ')' before identifier 'signature'
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\vision.h(75,29): error C4430: missing type specifier - int assumed. Note: C++ does not support default-int
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\vision.h(75,25): error C2146: syntax error: missing ';' before identifier 'type'
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\vision.h(91,20): error C4430: missing type specifier - int assumed. Note: C++ does not support default-int
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\vision.h(159,51): error C4430: missing type specifier - int assumed. Note: C++ does not support default-int
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\vision.h(159,22): error C2146: syntax error: missing ';' before identifier 'vision_signature_from_utility'
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\vision.h(210,37): error C4430: missing type specifier - int assumed. Note: C++ does not support default-int
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\vision.h(210,19): error C2146: syntax error: missing ';' before identifier 'vision_get_by_size'
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\vision.h(234,36): error C4430: missing type specifier - int assumed. Note: C++ does not support default-int
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\vision.h(234,1): error C2086: 'int c::vision_object_s_t': redefinition
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\vision.h(210): message : see declaration of 'c::vision_object_s_t'
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\vision.h(234,19): error C2146: syntax error: missing ';' before identifier 'vision_get_by_sig'
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\vision.h(256,37): error C4430: missing type specifier - int assumed. Note: C++ does not support default-int
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\vision.h(256,1): error C2086: 'int c::vision_object_s_t': redefinition
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\vision.h(210): message : see declaration of 'c::vision_object_s_t'
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\vision.h(256,19): error C2146: syntax error: missing ';' before identifier 'vision_get_by_code'
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\vision.h(315,59): error C4430: missing type specifier - int assumed. Note: C++ does not support default-int
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\vision.h(315,59): error C2146: syntax error: missing ')' before identifier 'sig'
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\vision.h(315,59): error C3646: 'sig': unknown override specifier
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\vision.h(315,62): error C2059: syntax error: ')'
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\vision.h(344,29): error C2061: syntax error: identifier 'vision_object_s_t'
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\vision.h(375,28): error C2061: syntax error: identifier 'vision_object_s_t'
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\vision.h(405,58): error C2061: syntax error: identifier 'vision_object_s_t'
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\vision.h(417,42): error C4430: missing type specifier - int assumed. Note: C++ does not support default-int
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\vision.h(417,1): error C2086: 'int c::vision_signature_s_t': redefinition
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\vision.h(159): message : see declaration of 'c::vision_signature_s_t'
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\vision.h(417,22): error C2146: syntax error: missing ';' before identifier 'vision_get_signature'
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\vision.h(434,72): error C2061: syntax error: identifier 'vision_signature_s_t'
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\vision.h(553,1): error C2059: syntax error: '}'
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\vision.h(553,1): error C2143: syntax error: missing ';' before '}'
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\vision.h(554,1): error C2143: syntax error: missing ';' before '}'
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\vision.h(554,1): error C2059: syntax error: '}'
+C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.29.30133\include\tuple(24,1): error C2143: syntax error: missing ';' before '{'
+C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.29.30133\include\tuple(24,1): error C2447: '{': missing function header (old-style formal list?)
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\adi.hpp(50,42): error C2061: syntax error: identifier 'adi_port_config_e_t'
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\adi.hpp(66,41): error C2061: syntax error: identifier 'adi_port_config_e_t'
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\adi.hpp(91,26): error C2061: syntax error: identifier 'adi_port_config_e_t'
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\imu.hpp(123,19): error C2039: 'quaternion_s_t': is not a member of 'pros::c'
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\rotation.h(28): message : see declaration of 'pros::c'
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\imu.hpp(123,34): error C3646: 'get_quaternion': unknown override specifier
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\imu.hpp(123,49): error C2059: syntax error: ')'
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\imu.hpp(123,56): error C2238: unexpected token(s) preceding ';'
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\imu.hpp(139,19): error C2039: 'euler_s_t': is not a member of 'pros::c'
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\rotation.h(28): message : see declaration of 'pros::c'
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\imu.hpp(139,29): error C3646: 'get_euler': unknown override specifier
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\imu.hpp(139,39): error C2059: syntax error: ')'
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\imu.hpp(139,46): error C2238: unexpected token(s) preceding ';'
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\imu.hpp(197,19): error C2039: 'imu_gyro_s_t': is not a member of 'pros::c'
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\rotation.h(28): message : see declaration of 'pros::c'
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\imu.hpp(408,48): error C2039: 'euler_s_t': is not a member of 'pros::c'
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\rotation.h(28): message : see declaration of 'pros::c'
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\imu.hpp(408,58): error C4430: missing type specifier - int assumed. Note: C++ does not support default-int
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\imu.hpp(408,58): error C2146: syntax error: missing ')' before identifier 'target'
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\imu.hpp(408,58): error C3646: 'target': unknown override specifier
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\imu.hpp(408,64): error C2059: syntax error: ')'
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\imu.hpp(408,66): error C2143: syntax error: missing ';' before 'const'
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\imu.hpp(408,71): error C4430: missing type specifier - int assumed. Note: C++ does not support default-int
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\imu.hpp(408,71): error C2208: 'const int': no members defined using this type
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\imu.hpp(408): warning C4091: ' ': ignored on left of 'const int' when no variable is declared
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\imu.hpp(423,19): error C2039: 'imu_accel_s_t': is not a member of 'pros::c'
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\rotation.h(28): message : see declaration of 'pros::c'
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\llemu.hpp(63,9): warning C4068: unknown pragma 'GCC'
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\llemu.hpp(64,9): warning C4068: unknown pragma 'GCC'
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\llemu.hpp(74,9): warning C4068: unknown pragma 'GCC'
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\misc.hpp(138,9): warning C4068: unknown pragma 'GCC'
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\misc.hpp(139,9): warning C4068: unknown pragma 'GCC'
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\misc.hpp(147,9): warning C4068: unknown pragma 'GCC'
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\vision.hpp(82,30): error C3646: 'signature_from_utility': unknown override specifier
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\vision.hpp(82,53): error C2059: syntax error: 'const'
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\vision.hpp(86,77): error C2238: unexpected token(s) preceding ';'
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\vision.hpp(130,20): error C3646: 'get_by_size': unknown override specifier
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\vision.hpp(130,31): error C2059: syntax error: '('
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\vision.hpp(130,66): error C2238: unexpected token(s) preceding ';'
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\vision.hpp(152,20): error C3646: 'get_by_sig': unknown override specifier
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\vision.hpp(152,30): error C2059: syntax error: '('
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\vision.hpp(152,93): error C2238: unexpected token(s) preceding ';'
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\vision.hpp(171,20): error C3646: 'get_by_code': unknown override specifier
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\vision.hpp(171,31): error C2059: syntax error: '('
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\vision.hpp(171,104): error C2238: unexpected token(s) preceding ';'
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\vision.hpp(211,23): error C3646: 'get_signature': unknown override specifier
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\vision.hpp(211,36): error C2059: syntax error: '('
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\vision.hpp(211,75): error C2238: unexpected token(s) preceding ';'
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\vision.hpp(211,75): fatal error C1003: error count exceeds 100; stopping compilation
+  Globals.cpp
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\adi.h(49,21): error C2146: syntax error: missing '}' before identifier '__attribute__'
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\adi.h(49): error C2143: syntax error: missing ';' before '<L_TYPE_raw>'
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\adi.h(70,1): error C2143: syntax error: missing ';' before '}'
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\adi.h(70,22): error C4430: missing type specifier - int assumed. Note: C++ does not support default-int
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\adi.h(140,40): error C4430: missing type specifier - int assumed. Note: C++ does not support default-int
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\adi.h(140,21): error C2146: syntax error: missing ';' before identifier 'adi_port_get_config'
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\adi.h(172,43): error C2061: syntax error: identifier 'adi_port_config_e_t'
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\adi.h(695,1): error C2059: syntax error: '}'
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\adi.h(695,1): error C2143: syntax error: missing ';' before '}'
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\distance.h(26,12): error C2143: syntax error: missing ';' before '{'
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\distance.h(26,12): error C2447: '{': missing function header (old-style formal list?)
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\ext_adi.h(61,44): error C4430: missing type specifier - int assumed. Note: C++ does not support default-int
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\ext_adi.h(61,21): error C2146: syntax error: missing ';' before identifier 'ext_adi_port_get_config'
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\ext_adi.h(99,71): error C2061: syntax error: identifier 'adi_port_config_e_t'
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\imu.h(37,44): error C2146: syntax error: missing ';' before identifier 'quaternion_s'
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\imu.h(37,57): error C4430: missing type specifier - int assumed. Note: C++ does not support default-int
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\imu.h(38,2): error C2062: type 'double' unexpected
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\imu.h(42,17): error C4430: missing type specifier - int assumed. Note: C++ does not support default-int
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\imu.h(53,16): error C2371: 'pros::__attribute__': redefinition; different basic types
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\adi.h(49): message : see declaration of 'pros::__attribute__'
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\imu.h(53,44): error C2146: syntax error: missing ';' before identifier 'euler_s'
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\imu.h(53,52): error C4430: missing type specifier - int assumed. Note: C++ does not support default-int
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\imu.h(54,2): error C2062: type 'double' unexpected
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\imu.h(57,12): error C4430: missing type specifier - int assumed. Note: C++ does not support default-int
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\imu.h(162,34): error C4430: missing type specifier - int assumed. Note: C++ does not support default-int
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\imu.h(162,16): error C2146: syntax error: missing ';' before identifier 'imu_get_quaternion'
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\imu.h(179,24): error C4430: missing type specifier - int assumed. Note: C++ does not support default-int
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\imu.h(179,1): error C2086: 'int euler_s_t': redefinition
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\imu.h(57): message : see declaration of 'euler_s_t'
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\imu.h(179,11): error C2146: syntax error: missing ';' before identifier 'imu_get_euler'
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\imu.h(241,31): error C4430: missing type specifier - int assumed. Note: C++ does not support default-int
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\imu.h(241,14): error C2146: syntax error: missing ';' before identifier 'imu_get_gyro_rate'
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\imu.h(257,28): error C4430: missing type specifier - int assumed. Note: C++ does not support default-int
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\imu.h(257,15): error C2146: syntax error: missing ';' before identifier 'imu_get_accel'
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\imu.h(273,30): error C4430: missing type specifier - int assumed. Note: C++ does not support default-int
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\imu.h(273,16): error C2146: syntax error: missing ';' before identifier 'imu_get_status'
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\imu.h(410,37): error C2061: syntax error: identifier 'euler_s_t'
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\imu.h(508,1): error C2059: syntax error: '}'
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\imu.h(508,1): error C2143: syntax error: missing ';' before '}'
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\imu.h(509,1): error C2143: syntax error: missing ';' before '}'
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\imu.h(509,1): error C2059: syntax error: '}'
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\llemu.h(29,9): warning C4068: unknown pragma 'GCC'
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\llemu.h(30,9): warning C4068: unknown pragma 'GCC'
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\llemu.h(31,9): warning C4068: unknown pragma 'GCC'
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\display\lvgl.h(10,12): error C2143: syntax error: missing ';' before '{'
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\display\lvgl.h(10,12): error C2447: '{': missing function header (old-style formal list?)
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\display\lvgl.h(17,9): warning C4068: unknown pragma 'GCC'
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\display\lvgl.h(18,9): warning C4068: unknown pragma 'GCC'
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\display\lvgl.h(66,9): warning C4068: unknown pragma 'GCC'
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\llemu.h(33,9): warning C4068: unknown pragma 'GCC'
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\llemu.h(47,10): error C2143: syntax error: missing ';' before '*'
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\llemu.h(47,10): error C4430: missing type specifier - int assumed. Note: C++ does not support default-int
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\llemu.h(47,17): error C2238: unexpected token(s) preceding ';'
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\llemu.h(48,10): error C2143: syntax error: missing ';' before '*'
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\llemu.h(48,10): error C4430: missing type specifier - int assumed. Note: C++ does not support default-int
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\llemu.h(48,18): error C2238: unexpected token(s) preceding ';'
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\llemu.h(49,10): error C2143: syntax error: missing ';' before '*'
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\llemu.h(49,10): error C4430: missing type specifier - int assumed. Note: C++ does not support default-int
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\llemu.h(49,23): error C2238: unexpected token(s) preceding ';'
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\llemu.h(50,10): error C2143: syntax error: missing ';' before '*'
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\llemu.h(50,10): error C4430: missing type specifier - int assumed. Note: C++ does not support default-int
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\llemu.h(50,25): error C2238: unexpected token(s) preceding ';'
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\llemu.h(51,10): error C2143: syntax error: missing ';' before '*'
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\llemu.h(51,10): error C4430: missing type specifier - int assumed. Note: C++ does not support default-int
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\llemu.h(51,19): error C2238: unexpected token(s) preceding ';'
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\vision.h(48,44): error C2146: syntax error: missing ';' before identifier 'vision_signature'
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\vision.h(48,61): error C4430: missing type specifier - int assumed. Note: C++ does not support default-int
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\vision.h(49,2): error C2275: 'uint8_t': illegal use of this type as an expression
+C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.29.30133\include\stdint.h(22): message : see declaration of 'uint8_t'
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\vision.h(49,10): error C2146: syntax error: missing ')' before identifier 'id'
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\vision.h(60,23): error C4430: missing type specifier - int assumed. Note: C++ does not support default-int
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\vision.h(71,44): error C2146: syntax error: missing ';' before identifier 'vision_object'
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\vision.h(71,58): error C4430: missing type specifier - int assumed. Note: C++ does not support default-int
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\vision.h(73,2): error C2275: 'uint16_t': illegal use of this type as an expression
+C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.29.30133\include\stdint.h(23): message : see declaration of 'uint16_t'
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\vision.h(73,11): error C2146: syntax error: missing ')' before identifier 'signature'
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\vision.h(75,29): error C4430: missing type specifier - int assumed. Note: C++ does not support default-int
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\vision.h(75,25): error C2146: syntax error: missing ';' before identifier 'type'
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\vision.h(91,20): error C4430: missing type specifier - int assumed. Note: C++ does not support default-int
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\vision.h(159,51): error C4430: missing type specifier - int assumed. Note: C++ does not support default-int
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\vision.h(159,22): error C2146: syntax error: missing ';' before identifier 'vision_signature_from_utility'
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\vision.h(210,37): error C4430: missing type specifier - int assumed. Note: C++ does not support default-int
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\vision.h(210,19): error C2146: syntax error: missing ';' before identifier 'vision_get_by_size'
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\vision.h(234,36): error C4430: missing type specifier - int assumed. Note: C++ does not support default-int
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\vision.h(234,1): error C2086: 'int c::vision_object_s_t': redefinition
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\vision.h(210): message : see declaration of 'c::vision_object_s_t'
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\vision.h(234,19): error C2146: syntax error: missing ';' before identifier 'vision_get_by_sig'
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\vision.h(256,37): error C4430: missing type specifier - int assumed. Note: C++ does not support default-int
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\vision.h(256,1): error C2086: 'int c::vision_object_s_t': redefinition
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\vision.h(210): message : see declaration of 'c::vision_object_s_t'
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\vision.h(256,19): error C2146: syntax error: missing ';' before identifier 'vision_get_by_code'
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\vision.h(315,59): error C4430: missing type specifier - int assumed. Note: C++ does not support default-int
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\vision.h(315,59): error C2146: syntax error: missing ')' before identifier 'sig'
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\vision.h(315,59): error C3646: 'sig': unknown override specifier
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\vision.h(315,62): error C2059: syntax error: ')'
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\vision.h(344,29): error C2061: syntax error: identifier 'vision_object_s_t'
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\vision.h(375,28): error C2061: syntax error: identifier 'vision_object_s_t'
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\vision.h(405,58): error C2061: syntax error: identifier 'vision_object_s_t'
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\vision.h(417,42): error C4430: missing type specifier - int assumed. Note: C++ does not support default-int
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\vision.h(417,1): error C2086: 'int c::vision_signature_s_t': redefinition
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\vision.h(159): message : see declaration of 'c::vision_signature_s_t'
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\vision.h(417,22): error C2146: syntax error: missing ';' before identifier 'vision_get_signature'
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\vision.h(434,72): error C2061: syntax error: identifier 'vision_signature_s_t'
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\vision.h(553,1): error C2059: syntax error: '}'
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\vision.h(553,1): error C2143: syntax error: missing ';' before '}'
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\vision.h(554,1): error C2143: syntax error: missing ';' before '}'
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\vision.h(554,1): error C2059: syntax error: '}'
+C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.29.30133\include\tuple(24,1): error C2143: syntax error: missing ';' before '{'
+C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.29.30133\include\tuple(24,1): error C2447: '{': missing function header (old-style formal list?)
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\adi.hpp(50,42): error C2061: syntax error: identifier 'adi_port_config_e_t'
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\adi.hpp(66,41): error C2061: syntax error: identifier 'adi_port_config_e_t'
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\adi.hpp(91,26): error C2061: syntax error: identifier 'adi_port_config_e_t'
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\imu.hpp(123,19): error C2039: 'quaternion_s_t': is not a member of 'pros::c'
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\rotation.h(28): message : see declaration of 'pros::c'
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\imu.hpp(123,34): error C3646: 'get_quaternion': unknown override specifier
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\imu.hpp(123,49): error C2059: syntax error: ')'
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\imu.hpp(123,56): error C2238: unexpected token(s) preceding ';'
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\imu.hpp(139,19): error C2039: 'euler_s_t': is not a member of 'pros::c'
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\rotation.h(28): message : see declaration of 'pros::c'
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\imu.hpp(139,29): error C3646: 'get_euler': unknown override specifier
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\imu.hpp(139,39): error C2059: syntax error: ')'
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\imu.hpp(139,46): error C2238: unexpected token(s) preceding ';'
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\imu.hpp(197,19): error C2039: 'imu_gyro_s_t': is not a member of 'pros::c'
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\rotation.h(28): message : see declaration of 'pros::c'
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\imu.hpp(408,48): error C2039: 'euler_s_t': is not a member of 'pros::c'
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\rotation.h(28): message : see declaration of 'pros::c'
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\imu.hpp(408,58): error C4430: missing type specifier - int assumed. Note: C++ does not support default-int
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\imu.hpp(408,58): error C2146: syntax error: missing ')' before identifier 'target'
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\imu.hpp(408,58): error C3646: 'target': unknown override specifier
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\imu.hpp(408,64): error C2059: syntax error: ')'
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\imu.hpp(408,66): error C2143: syntax error: missing ';' before 'const'
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\imu.hpp(408,71): error C4430: missing type specifier - int assumed. Note: C++ does not support default-int
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\imu.hpp(408,71): error C2208: 'const int': no members defined using this type
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\imu.hpp(408): warning C4091: ' ': ignored on left of 'const int' when no variable is declared
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\imu.hpp(423,19): error C2039: 'imu_accel_s_t': is not a member of 'pros::c'
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\rotation.h(28): message : see declaration of 'pros::c'
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\llemu.hpp(63,9): warning C4068: unknown pragma 'GCC'
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\llemu.hpp(64,9): warning C4068: unknown pragma 'GCC'
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\llemu.hpp(74,9): warning C4068: unknown pragma 'GCC'
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\misc.hpp(138,9): warning C4068: unknown pragma 'GCC'
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\misc.hpp(139,9): warning C4068: unknown pragma 'GCC'
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\misc.hpp(147,9): warning C4068: unknown pragma 'GCC'
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\vision.hpp(82,30): error C3646: 'signature_from_utility': unknown override specifier
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\vision.hpp(82,53): error C2059: syntax error: 'const'
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\vision.hpp(86,77): error C2238: unexpected token(s) preceding ';'
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\vision.hpp(130,20): error C3646: 'get_by_size': unknown override specifier
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\vision.hpp(130,31): error C2059: syntax error: '('
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\vision.hpp(130,66): error C2238: unexpected token(s) preceding ';'
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\vision.hpp(152,20): error C3646: 'get_by_sig': unknown override specifier
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\vision.hpp(152,30): error C2059: syntax error: '('
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\vision.hpp(152,93): error C2238: unexpected token(s) preceding ';'
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\vision.hpp(171,20): error C3646: 'get_by_code': unknown override specifier
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\vision.hpp(171,31): error C2059: syntax error: '('
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\vision.hpp(171,104): error C2238: unexpected token(s) preceding ';'
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\vision.hpp(211,23): error C3646: 'get_signature': unknown override specifier
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\vision.hpp(211,36): error C2059: syntax error: '('
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\vision.hpp(211,75): error C2238: unexpected token(s) preceding ';'
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\vision.hpp(211,75): fatal error C1003: error count exceeds 100; stopping compilation
+  initialize.cpp
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\adi.h(49,21): error C2146: syntax error: missing '}' before identifier '__attribute__'
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\adi.h(49): error C2143: syntax error: missing ';' before '<L_TYPE_raw>'
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\adi.h(70,1): error C2143: syntax error: missing ';' before '}'
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\adi.h(70,22): error C4430: missing type specifier - int assumed. Note: C++ does not support default-int
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\adi.h(140,40): error C4430: missing type specifier - int assumed. Note: C++ does not support default-int
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\adi.h(140,21): error C2146: syntax error: missing ';' before identifier 'adi_port_get_config'
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\adi.h(172,43): error C2061: syntax error: identifier 'adi_port_config_e_t'
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\adi.h(695,1): error C2059: syntax error: '}'
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\adi.h(695,1): error C2143: syntax error: missing ';' before '}'
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\distance.h(26,12): error C2143: syntax error: missing ';' before '{'
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\distance.h(26,12): error C2447: '{': missing function header (old-style formal list?)
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\ext_adi.h(61,44): error C4430: missing type specifier - int assumed. Note: C++ does not support default-int
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\ext_adi.h(61,21): error C2146: syntax error: missing ';' before identifier 'ext_adi_port_get_config'
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\ext_adi.h(99,71): error C2061: syntax error: identifier 'adi_port_config_e_t'
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\imu.h(37,44): error C2146: syntax error: missing ';' before identifier 'quaternion_s'
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\imu.h(37,57): error C4430: missing type specifier - int assumed. Note: C++ does not support default-int
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\imu.h(38,2): error C2062: type 'double' unexpected
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\imu.h(42,17): error C4430: missing type specifier - int assumed. Note: C++ does not support default-int
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\imu.h(53,16): error C2371: 'pros::__attribute__': redefinition; different basic types
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\adi.h(49): message : see declaration of 'pros::__attribute__'
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\imu.h(53,44): error C2146: syntax error: missing ';' before identifier 'euler_s'
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\imu.h(53,52): error C4430: missing type specifier - int assumed. Note: C++ does not support default-int
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\imu.h(54,2): error C2062: type 'double' unexpected
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\imu.h(57,12): error C4430: missing type specifier - int assumed. Note: C++ does not support default-int
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\imu.h(162,34): error C4430: missing type specifier - int assumed. Note: C++ does not support default-int
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\imu.h(162,16): error C2146: syntax error: missing ';' before identifier 'imu_get_quaternion'
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\imu.h(179,24): error C4430: missing type specifier - int assumed. Note: C++ does not support default-int
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\imu.h(179,1): error C2086: 'int euler_s_t': redefinition
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\imu.h(57): message : see declaration of 'euler_s_t'
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\imu.h(179,11): error C2146: syntax error: missing ';' before identifier 'imu_get_euler'
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\imu.h(241,31): error C4430: missing type specifier - int assumed. Note: C++ does not support default-int
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\imu.h(241,14): error C2146: syntax error: missing ';' before identifier 'imu_get_gyro_rate'
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\imu.h(257,28): error C4430: missing type specifier - int assumed. Note: C++ does not support default-int
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\imu.h(257,15): error C2146: syntax error: missing ';' before identifier 'imu_get_accel'
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\imu.h(273,30): error C4430: missing type specifier - int assumed. Note: C++ does not support default-int
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\imu.h(273,16): error C2146: syntax error: missing ';' before identifier 'imu_get_status'
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\imu.h(410,37): error C2061: syntax error: identifier 'euler_s_t'
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\imu.h(508,1): error C2059: syntax error: '}'
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\imu.h(508,1): error C2143: syntax error: missing ';' before '}'
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\imu.h(509,1): error C2143: syntax error: missing ';' before '}'
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\imu.h(509,1): error C2059: syntax error: '}'
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\llemu.h(29,9): warning C4068: unknown pragma 'GCC'
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\llemu.h(30,9): warning C4068: unknown pragma 'GCC'
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\llemu.h(31,9): warning C4068: unknown pragma 'GCC'
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\display\lvgl.h(10,12): error C2143: syntax error: missing ';' before '{'
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\display\lvgl.h(10,12): error C2447: '{': missing function header (old-style formal list?)
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\display\lvgl.h(17,9): warning C4068: unknown pragma 'GCC'
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\display\lvgl.h(18,9): warning C4068: unknown pragma 'GCC'
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\display\lvgl.h(66,9): warning C4068: unknown pragma 'GCC'
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\llemu.h(33,9): warning C4068: unknown pragma 'GCC'
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\llemu.h(47,10): error C2143: syntax error: missing ';' before '*'
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\llemu.h(47,10): error C4430: missing type specifier - int assumed. Note: C++ does not support default-int
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\llemu.h(47,17): error C2238: unexpected token(s) preceding ';'
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\llemu.h(48,10): error C2143: syntax error: missing ';' before '*'
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\llemu.h(48,10): error C4430: missing type specifier - int assumed. Note: C++ does not support default-int
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\llemu.h(48,18): error C2238: unexpected token(s) preceding ';'
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\llemu.h(49,10): error C2143: syntax error: missing ';' before '*'
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\llemu.h(49,10): error C4430: missing type specifier - int assumed. Note: C++ does not support default-int
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\llemu.h(49,23): error C2238: unexpected token(s) preceding ';'
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\llemu.h(50,10): error C2143: syntax error: missing ';' before '*'
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\llemu.h(50,10): error C4430: missing type specifier - int assumed. Note: C++ does not support default-int
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\llemu.h(50,25): error C2238: unexpected token(s) preceding ';'
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\llemu.h(51,10): error C2143: syntax error: missing ';' before '*'
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\llemu.h(51,10): error C4430: missing type specifier - int assumed. Note: C++ does not support default-int
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\llemu.h(51,19): error C2238: unexpected token(s) preceding ';'
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\vision.h(48,44): error C2146: syntax error: missing ';' before identifier 'vision_signature'
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\vision.h(48,61): error C4430: missing type specifier - int assumed. Note: C++ does not support default-int
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\vision.h(49,2): error C2275: 'uint8_t': illegal use of this type as an expression
+C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.29.30133\include\stdint.h(22): message : see declaration of 'uint8_t'
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\vision.h(49,10): error C2146: syntax error: missing ')' before identifier 'id'
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\vision.h(60,23): error C4430: missing type specifier - int assumed. Note: C++ does not support default-int
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\vision.h(71,44): error C2146: syntax error: missing ';' before identifier 'vision_object'
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\vision.h(71,58): error C4430: missing type specifier - int assumed. Note: C++ does not support default-int
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\vision.h(73,2): error C2275: 'uint16_t': illegal use of this type as an expression
+C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.29.30133\include\stdint.h(23): message : see declaration of 'uint16_t'
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\vision.h(73,11): error C2146: syntax error: missing ')' before identifier 'signature'
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\vision.h(75,29): error C4430: missing type specifier - int assumed. Note: C++ does not support default-int
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\vision.h(75,25): error C2146: syntax error: missing ';' before identifier 'type'
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\vision.h(91,20): error C4430: missing type specifier - int assumed. Note: C++ does not support default-int
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\vision.h(159,51): error C4430: missing type specifier - int assumed. Note: C++ does not support default-int
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\vision.h(159,22): error C2146: syntax error: missing ';' before identifier 'vision_signature_from_utility'
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\vision.h(210,37): error C4430: missing type specifier - int assumed. Note: C++ does not support default-int
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\vision.h(210,19): error C2146: syntax error: missing ';' before identifier 'vision_get_by_size'
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\vision.h(234,36): error C4430: missing type specifier - int assumed. Note: C++ does not support default-int
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\vision.h(234,1): error C2086: 'int c::vision_object_s_t': redefinition
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\vision.h(210): message : see declaration of 'c::vision_object_s_t'
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\vision.h(234,19): error C2146: syntax error: missing ';' before identifier 'vision_get_by_sig'
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\vision.h(256,37): error C4430: missing type specifier - int assumed. Note: C++ does not support default-int
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\vision.h(256,1): error C2086: 'int c::vision_object_s_t': redefinition
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\vision.h(210): message : see declaration of 'c::vision_object_s_t'
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\vision.h(256,19): error C2146: syntax error: missing ';' before identifier 'vision_get_by_code'
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\vision.h(315,59): error C4430: missing type specifier - int assumed. Note: C++ does not support default-int
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\vision.h(315,59): error C2146: syntax error: missing ')' before identifier 'sig'
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\vision.h(315,59): error C3646: 'sig': unknown override specifier
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\vision.h(315,62): error C2059: syntax error: ')'
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\vision.h(344,29): error C2061: syntax error: identifier 'vision_object_s_t'
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\vision.h(375,28): error C2061: syntax error: identifier 'vision_object_s_t'
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\vision.h(405,58): error C2061: syntax error: identifier 'vision_object_s_t'
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\vision.h(417,42): error C4430: missing type specifier - int assumed. Note: C++ does not support default-int
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\vision.h(417,1): error C2086: 'int c::vision_signature_s_t': redefinition
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\vision.h(159): message : see declaration of 'c::vision_signature_s_t'
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\vision.h(417,22): error C2146: syntax error: missing ';' before identifier 'vision_get_signature'
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\vision.h(434,72): error C2061: syntax error: identifier 'vision_signature_s_t'
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\vision.h(553,1): error C2059: syntax error: '}'
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\vision.h(553,1): error C2143: syntax error: missing ';' before '}'
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\vision.h(554,1): error C2143: syntax error: missing ';' before '}'
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\vision.h(554,1): error C2059: syntax error: '}'
+C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.29.30133\include\tuple(24,1): error C2143: syntax error: missing ';' before '{'
+C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.29.30133\include\tuple(24,1): error C2447: '{': missing function header (old-style formal list?)
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\adi.hpp(50,42): error C2061: syntax error: identifier 'adi_port_config_e_t'
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\adi.hpp(66,41): error C2061: syntax error: identifier 'adi_port_config_e_t'
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\adi.hpp(91,26): error C2061: syntax error: identifier 'adi_port_config_e_t'
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\imu.hpp(123,19): error C2039: 'quaternion_s_t': is not a member of 'pros::c'
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\rotation.h(28): message : see declaration of 'pros::c'
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\imu.hpp(123,34): error C3646: 'get_quaternion': unknown override specifier
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\imu.hpp(123,49): error C2059: syntax error: ')'
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\imu.hpp(123,56): error C2238: unexpected token(s) preceding ';'
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\imu.hpp(139,19): error C2039: 'euler_s_t': is not a member of 'pros::c'
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\rotation.h(28): message : see declaration of 'pros::c'
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\imu.hpp(139,29): error C3646: 'get_euler': unknown override specifier
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\imu.hpp(139,39): error C2059: syntax error: ')'
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\imu.hpp(139,46): error C2238: unexpected token(s) preceding ';'
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\imu.hpp(197,19): error C2039: 'imu_gyro_s_t': is not a member of 'pros::c'
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\rotation.h(28): message : see declaration of 'pros::c'
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\imu.hpp(408,48): error C2039: 'euler_s_t': is not a member of 'pros::c'
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\rotation.h(28): message : see declaration of 'pros::c'
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\imu.hpp(408,58): error C4430: missing type specifier - int assumed. Note: C++ does not support default-int
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\imu.hpp(408,58): error C2146: syntax error: missing ')' before identifier 'target'
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\imu.hpp(408,58): error C3646: 'target': unknown override specifier
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\imu.hpp(408,64): error C2059: syntax error: ')'
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\imu.hpp(408,66): error C2143: syntax error: missing ';' before 'const'
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\imu.hpp(408,71): error C4430: missing type specifier - int assumed. Note: C++ does not support default-int
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\imu.hpp(408,71): error C2208: 'const int': no members defined using this type
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\imu.hpp(408): warning C4091: ' ': ignored on left of 'const int' when no variable is declared
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\imu.hpp(423,19): error C2039: 'imu_accel_s_t': is not a member of 'pros::c'
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\rotation.h(28): message : see declaration of 'pros::c'
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\llemu.hpp(63,9): warning C4068: unknown pragma 'GCC'
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\llemu.hpp(64,9): warning C4068: unknown pragma 'GCC'
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\llemu.hpp(74,9): warning C4068: unknown pragma 'GCC'
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\misc.hpp(138,9): warning C4068: unknown pragma 'GCC'
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\misc.hpp(139,9): warning C4068: unknown pragma 'GCC'
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\misc.hpp(147,9): warning C4068: unknown pragma 'GCC'
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\vision.hpp(82,30): error C3646: 'signature_from_utility': unknown override specifier
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\vision.hpp(82,53): error C2059: syntax error: 'const'
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\vision.hpp(86,77): error C2238: unexpected token(s) preceding ';'
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\vision.hpp(130,20): error C3646: 'get_by_size': unknown override specifier
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\vision.hpp(130,31): error C2059: syntax error: '('
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\vision.hpp(130,66): error C2238: unexpected token(s) preceding ';'
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\vision.hpp(152,20): error C3646: 'get_by_sig': unknown override specifier
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\vision.hpp(152,30): error C2059: syntax error: '('
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\vision.hpp(152,93): error C2238: unexpected token(s) preceding ';'
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\vision.hpp(171,20): error C3646: 'get_by_code': unknown override specifier
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\vision.hpp(171,31): error C2059: syntax error: '('
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\vision.hpp(171,104): error C2238: unexpected token(s) preceding ';'
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\vision.hpp(211,23): error C3646: 'get_signature': unknown override specifier
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\vision.hpp(211,36): error C2059: syntax error: '('
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\vision.hpp(211,75): error C2238: unexpected token(s) preceding ';'
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\vision.hpp(211,75): fatal error C1003: error count exceeds 100; stopping compilation
+  opcontrol.cpp
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\adi.h(49,21): error C2146: syntax error: missing '}' before identifier '__attribute__'
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\adi.h(49): error C2143: syntax error: missing ';' before '<L_TYPE_raw>'
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\adi.h(70,1): error C2143: syntax error: missing ';' before '}'
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\adi.h(70,22): error C4430: missing type specifier - int assumed. Note: C++ does not support default-int
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\adi.h(140,40): error C4430: missing type specifier - int assumed. Note: C++ does not support default-int
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\adi.h(140,21): error C2146: syntax error: missing ';' before identifier 'adi_port_get_config'
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\adi.h(172,43): error C2061: syntax error: identifier 'adi_port_config_e_t'
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\adi.h(695,1): error C2059: syntax error: '}'
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\adi.h(695,1): error C2143: syntax error: missing ';' before '}'
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\distance.h(26,12): error C2143: syntax error: missing ';' before '{'
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\distance.h(26,12): error C2447: '{': missing function header (old-style formal list?)
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\ext_adi.h(61,44): error C4430: missing type specifier - int assumed. Note: C++ does not support default-int
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\ext_adi.h(61,21): error C2146: syntax error: missing ';' before identifier 'ext_adi_port_get_config'
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\ext_adi.h(99,71): error C2061: syntax error: identifier 'adi_port_config_e_t'
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\imu.h(37,44): error C2146: syntax error: missing ';' before identifier 'quaternion_s'
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\imu.h(37,57): error C4430: missing type specifier - int assumed. Note: C++ does not support default-int
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\imu.h(38,2): error C2062: type 'double' unexpected
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\imu.h(42,17): error C4430: missing type specifier - int assumed. Note: C++ does not support default-int
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\imu.h(53,16): error C2371: 'pros::__attribute__': redefinition; different basic types
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\adi.h(49): message : see declaration of 'pros::__attribute__'
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\imu.h(53,44): error C2146: syntax error: missing ';' before identifier 'euler_s'
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\imu.h(53,52): error C4430: missing type specifier - int assumed. Note: C++ does not support default-int
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\imu.h(54,2): error C2062: type 'double' unexpected
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\imu.h(57,12): error C4430: missing type specifier - int assumed. Note: C++ does not support default-int
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\imu.h(162,34): error C4430: missing type specifier - int assumed. Note: C++ does not support default-int
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\imu.h(162,16): error C2146: syntax error: missing ';' before identifier 'imu_get_quaternion'
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\imu.h(179,24): error C4430: missing type specifier - int assumed. Note: C++ does not support default-int
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\imu.h(179,1): error C2086: 'int euler_s_t': redefinition
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\imu.h(57): message : see declaration of 'euler_s_t'
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\imu.h(179,11): error C2146: syntax error: missing ';' before identifier 'imu_get_euler'
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\imu.h(241,31): error C4430: missing type specifier - int assumed. Note: C++ does not support default-int
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\imu.h(241,14): error C2146: syntax error: missing ';' before identifier 'imu_get_gyro_rate'
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\imu.h(257,28): error C4430: missing type specifier - int assumed. Note: C++ does not support default-int
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\imu.h(257,15): error C2146: syntax error: missing ';' before identifier 'imu_get_accel'
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\imu.h(273,30): error C4430: missing type specifier - int assumed. Note: C++ does not support default-int
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\imu.h(273,16): error C2146: syntax error: missing ';' before identifier 'imu_get_status'
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\imu.h(410,37): error C2061: syntax error: identifier 'euler_s_t'
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\imu.h(508,1): error C2059: syntax error: '}'
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\imu.h(508,1): error C2143: syntax error: missing ';' before '}'
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\imu.h(509,1): error C2143: syntax error: missing ';' before '}'
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\imu.h(509,1): error C2059: syntax error: '}'
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\llemu.h(29,9): warning C4068: unknown pragma 'GCC'
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\llemu.h(30,9): warning C4068: unknown pragma 'GCC'
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\llemu.h(31,9): warning C4068: unknown pragma 'GCC'
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\display\lvgl.h(10,12): error C2143: syntax error: missing ';' before '{'
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\display\lvgl.h(10,12): error C2447: '{': missing function header (old-style formal list?)
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\display\lvgl.h(17,9): warning C4068: unknown pragma 'GCC'
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\display\lvgl.h(18,9): warning C4068: unknown pragma 'GCC'
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\display\lvgl.h(66,9): warning C4068: unknown pragma 'GCC'
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\llemu.h(33,9): warning C4068: unknown pragma 'GCC'
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\llemu.h(47,10): error C2143: syntax error: missing ';' before '*'
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\llemu.h(47,10): error C4430: missing type specifier - int assumed. Note: C++ does not support default-int
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\llemu.h(47,17): error C2238: unexpected token(s) preceding ';'
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\llemu.h(48,10): error C2143: syntax error: missing ';' before '*'
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\llemu.h(48,10): error C4430: missing type specifier - int assumed. Note: C++ does not support default-int
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\llemu.h(48,18): error C2238: unexpected token(s) preceding ';'
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\llemu.h(49,10): error C2143: syntax error: missing ';' before '*'
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\llemu.h(49,10): error C4430: missing type specifier - int assumed. Note: C++ does not support default-int
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\llemu.h(49,23): error C2238: unexpected token(s) preceding ';'
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\llemu.h(50,10): error C2143: syntax error: missing ';' before '*'
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\llemu.h(50,10): error C4430: missing type specifier - int assumed. Note: C++ does not support default-int
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\llemu.h(50,25): error C2238: unexpected token(s) preceding ';'
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\llemu.h(51,10): error C2143: syntax error: missing ';' before '*'
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\llemu.h(51,10): error C4430: missing type specifier - int assumed. Note: C++ does not support default-int
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\llemu.h(51,19): error C2238: unexpected token(s) preceding ';'
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\vision.h(48,44): error C2146: syntax error: missing ';' before identifier 'vision_signature'
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\vision.h(48,61): error C4430: missing type specifier - int assumed. Note: C++ does not support default-int
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\vision.h(49,2): error C2275: 'uint8_t': illegal use of this type as an expression
+C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.29.30133\include\stdint.h(22): message : see declaration of 'uint8_t'
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\vision.h(49,10): error C2146: syntax error: missing ')' before identifier 'id'
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\vision.h(60,23): error C4430: missing type specifier - int assumed. Note: C++ does not support default-int
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\vision.h(71,44): error C2146: syntax error: missing ';' before identifier 'vision_object'
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\vision.h(71,58): error C4430: missing type specifier - int assumed. Note: C++ does not support default-int
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\vision.h(73,2): error C2275: 'uint16_t': illegal use of this type as an expression
+C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.29.30133\include\stdint.h(23): message : see declaration of 'uint16_t'
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\vision.h(73,11): error C2146: syntax error: missing ')' before identifier 'signature'
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\vision.h(75,29): error C4430: missing type specifier - int assumed. Note: C++ does not support default-int
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\vision.h(75,25): error C2146: syntax error: missing ';' before identifier 'type'
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\vision.h(91,20): error C4430: missing type specifier - int assumed. Note: C++ does not support default-int
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\vision.h(159,51): error C4430: missing type specifier - int assumed. Note: C++ does not support default-int
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\vision.h(159,22): error C2146: syntax error: missing ';' before identifier 'vision_signature_from_utility'
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\vision.h(210,37): error C4430: missing type specifier - int assumed. Note: C++ does not support default-int
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\vision.h(210,19): error C2146: syntax error: missing ';' before identifier 'vision_get_by_size'
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\vision.h(234,36): error C4430: missing type specifier - int assumed. Note: C++ does not support default-int
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\vision.h(234,1): error C2086: 'int c::vision_object_s_t': redefinition
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\vision.h(210): message : see declaration of 'c::vision_object_s_t'
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\vision.h(234,19): error C2146: syntax error: missing ';' before identifier 'vision_get_by_sig'
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\vision.h(256,37): error C4430: missing type specifier - int assumed. Note: C++ does not support default-int
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\vision.h(256,1): error C2086: 'int c::vision_object_s_t': redefinition
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\vision.h(210): message : see declaration of 'c::vision_object_s_t'
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\vision.h(256,19): error C2146: syntax error: missing ';' before identifier 'vision_get_by_code'
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\vision.h(315,59): error C4430: missing type specifier - int assumed. Note: C++ does not support default-int
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\vision.h(315,59): error C2146: syntax error: missing ')' before identifier 'sig'
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\vision.h(315,59): error C3646: 'sig': unknown override specifier
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\vision.h(315,62): error C2059: syntax error: ')'
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\vision.h(344,29): error C2061: syntax error: identifier 'vision_object_s_t'
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\vision.h(375,28): error C2061: syntax error: identifier 'vision_object_s_t'
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\vision.h(405,58): error C2061: syntax error: identifier 'vision_object_s_t'
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\vision.h(417,42): error C4430: missing type specifier - int assumed. Note: C++ does not support default-int
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\vision.h(417,1): error C2086: 'int c::vision_signature_s_t': redefinition
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\vision.h(159): message : see declaration of 'c::vision_signature_s_t'
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\vision.h(417,22): error C2146: syntax error: missing ';' before identifier 'vision_get_signature'
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\vision.h(434,72): error C2061: syntax error: identifier 'vision_signature_s_t'
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\vision.h(553,1): error C2059: syntax error: '}'
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\vision.h(553,1): error C2143: syntax error: missing ';' before '}'
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\vision.h(554,1): error C2143: syntax error: missing ';' before '}'
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\vision.h(554,1): error C2059: syntax error: '}'
+C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.29.30133\include\tuple(24,1): error C2143: syntax error: missing ';' before '{'
+C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.29.30133\include\tuple(24,1): error C2447: '{': missing function header (old-style formal list?)
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\adi.hpp(50,42): error C2061: syntax error: identifier 'adi_port_config_e_t'
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\adi.hpp(66,41): error C2061: syntax error: identifier 'adi_port_config_e_t'
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\adi.hpp(91,26): error C2061: syntax error: identifier 'adi_port_config_e_t'
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\imu.hpp(123,19): error C2039: 'quaternion_s_t': is not a member of 'pros::c'
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\rotation.h(28): message : see declaration of 'pros::c'
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\imu.hpp(123,34): error C3646: 'get_quaternion': unknown override specifier
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\imu.hpp(123,49): error C2059: syntax error: ')'
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\imu.hpp(123,56): error C2238: unexpected token(s) preceding ';'
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\imu.hpp(139,19): error C2039: 'euler_s_t': is not a member of 'pros::c'
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\rotation.h(28): message : see declaration of 'pros::c'
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\imu.hpp(139,29): error C3646: 'get_euler': unknown override specifier
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\imu.hpp(139,39): error C2059: syntax error: ')'
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\imu.hpp(139,46): error C2238: unexpected token(s) preceding ';'
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\imu.hpp(197,19): error C2039: 'imu_gyro_s_t': is not a member of 'pros::c'
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\rotation.h(28): message : see declaration of 'pros::c'
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\imu.hpp(408,48): error C2039: 'euler_s_t': is not a member of 'pros::c'
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\rotation.h(28): message : see declaration of 'pros::c'
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\imu.hpp(408,58): error C4430: missing type specifier - int assumed. Note: C++ does not support default-int
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\imu.hpp(408,58): error C2146: syntax error: missing ')' before identifier 'target'
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\imu.hpp(408,58): error C3646: 'target': unknown override specifier
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\imu.hpp(408,64): error C2059: syntax error: ')'
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\imu.hpp(408,66): error C2143: syntax error: missing ';' before 'const'
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\imu.hpp(408,71): error C4430: missing type specifier - int assumed. Note: C++ does not support default-int
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\imu.hpp(408,71): error C2208: 'const int': no members defined using this type
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\imu.hpp(408): warning C4091: ' ': ignored on left of 'const int' when no variable is declared
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\imu.hpp(423,19): error C2039: 'imu_accel_s_t': is not a member of 'pros::c'
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\rotation.h(28): message : see declaration of 'pros::c'
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\llemu.hpp(63,9): warning C4068: unknown pragma 'GCC'
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\llemu.hpp(64,9): warning C4068: unknown pragma 'GCC'
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\llemu.hpp(74,9): warning C4068: unknown pragma 'GCC'
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\misc.hpp(138,9): warning C4068: unknown pragma 'GCC'
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\misc.hpp(139,9): warning C4068: unknown pragma 'GCC'
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\misc.hpp(147,9): warning C4068: unknown pragma 'GCC'
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\vision.hpp(82,30): error C3646: 'signature_from_utility': unknown override specifier
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\vision.hpp(82,53): error C2059: syntax error: 'const'
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\vision.hpp(86,77): error C2238: unexpected token(s) preceding ';'
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\vision.hpp(130,20): error C3646: 'get_by_size': unknown override specifier
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\vision.hpp(130,31): error C2059: syntax error: '('
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\vision.hpp(130,66): error C2238: unexpected token(s) preceding ';'
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\vision.hpp(152,20): error C3646: 'get_by_sig': unknown override specifier
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\vision.hpp(152,30): error C2059: syntax error: '('
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\vision.hpp(152,93): error C2238: unexpected token(s) preceding ';'
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\vision.hpp(171,20): error C3646: 'get_by_code': unknown override specifier
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\vision.hpp(171,31): error C2059: syntax error: '('
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\vision.hpp(171,104): error C2238: unexpected token(s) preceding ';'
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\vision.hpp(211,23): error C3646: 'get_signature': unknown override specifier
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\vision.hpp(211,36): error C2059: syntax error: '('
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\vision.hpp(211,75): error C2238: unexpected token(s) preceding ';'
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\pros\vision.hpp(211,75): fatal error C1003: error count exceeds 100; stopping compilation
+  pch.cpp
+  QuantumTests.cpp
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\quantumtests\QuantumTests.cpp(3,10): fatal error C1083: Cannot open include file: 'CppUnitTest.h': No such file or directory
+  GeometryFunctions.cpp
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\shared\GeometryFunctions.cpp(6,24): error C4430: missing type specifier - int assumed. Note: C++ does not support default-int
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\shared\GeometryFunctions.cpp(6,7): error C2146: syntax error: missing ';' before identifier 'calculateNewPoint'
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\shared\GeometryFunctions.cpp(6,100): error C2143: syntax error: missing ';' before '{'
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\shared\GeometryFunctions.cpp(6,100): error C2447: '{': missing function header (old-style formal list?)
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\shared\GeometryFunctions.cpp(22,28): error C2146: syntax error: missing ')' before identifier 'leftWheel'
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\shared\GeometryFunctions.cpp(22,160): error C2143: syntax error: missing ';' before '{'
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\shared\GeometryFunctions.cpp(22,160): error C2447: '{': missing function header (old-style formal list?)
+  UnitTest.cpp
+C:\Users\marko\code\VEX robotics 2021\917X-quantum\unittests\UnitTest.cpp(5,10): fatal error C1083: Cannot open include file: '..\ChangeUpCode\include\Point.h': No such file or directory
+  Generating Code...

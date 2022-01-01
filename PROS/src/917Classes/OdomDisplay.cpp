@@ -1,4 +1,5 @@
 #include "OdomDisplay.hpp"
+#include "Utils.hpp"
 
 OdomDisplay::OdomDisplay(lv_obj_t* parent) 
     : OdomDisplay(parent, LV_COLOR_RED) {
@@ -116,7 +117,7 @@ void OdomDisplay::setState(Point state, double theta) {
     std::vector<Point> a(2,Point(0,0));
     a[0].x = lv_obj_get_width(bot) / 2, a[1].y = 0;
     a[1].x = botLinePoints[1].x, a[1].y = botLinePoints[1].y;
-    Point newLinePoint = DriveTrainState::rotateAroundPoint(a[1], a[0], -theta);
+    Point newLinePoint = Utils::rotateAroundPoint(a[1], a[0], -theta);
     botLinePoints[0].x = newLinePoint.x, botLinePoints[0].y = newLinePoint.y;
     lv_line_set_points(botLine, botLinePoints, 2);
     lv_obj_invalidate(botLine);
@@ -131,5 +132,5 @@ void OdomDisplay::setState(Point state, double theta) {
 void OdomDisplay::encoderDebug(int encValue, std::string encSpec) {
     std::string text = encSpec + ": " + std::to_string(encValue);
     lv_label_set_text(encLabel, text.c_str());
-    lv_obj_align(encLabel, container, LV_ALIGN_CENTER, -lv_obj_get_width(container) / 2 + (lv_obj_get_width(container) - fieldScreenDim) / 2, 0);
+    lv_obj_align(encLabel, container, LV_ALIGN_CENTER, -lv_obj_get_width(container) / 2 + (lv_obj_get_width(container) - fieldScreenDim) / 2, -lv_obj_get_height(container) / 4);
 };

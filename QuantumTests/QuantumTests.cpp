@@ -2,6 +2,9 @@
 #include "pch.h"
 #include "CppUnitTest.h"
 #include "917Classes\DriveTrainState.hpp"
+#include "917Classes\Utils.hpp"
+#include "917Classes\structDefs.hpp"
+#include "math.h"
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 
 namespace QuantumTest
@@ -35,11 +38,11 @@ namespace QuantumTest
 			double leftEncRead = calcVertEncDist(dTheta, centerOfRotation.x, user.leftEnc.x) *wheelConstRecip;
 			double rightEncRead = calcVertEncDist(dTheta, centerOfRotation.x, user.rightEnc.x) * wheelConstRecip;
 			double horEncRead = calcHorEncDist(dTheta, centerOfRotation.y, user.bottomEnc.y) * wheelConstRecip;
-			user.step(leftEncRead, rightEncRead, horEncRead, -dTheta*(180/M_PI), 0);
+			user.step(leftEncRead, rightEncRead, horEncRead);
 			/*double endY = 1;
 			double endX = 1;*/
 			Point userEndP = user.getPos();
-			Point endP = user.rotateAroundPoint(centerOfRotation,calcPoint, dTheta);
+			Point endP = Utils::rotateAroundPoint(centerOfRotation,calcPoint, dTheta);
 			endP.x = endP.x - calcPoint.x;
 			endP.y = endP.y - calcPoint.y;
 			if (fabs(endP.x-userEndP.x)<minDif) {
@@ -56,6 +59,5 @@ namespace QuantumTest
 		}
 	};
 	double QuantumTests::minDif;
-	DriveTrainState QuantumTests::user;
 
 }

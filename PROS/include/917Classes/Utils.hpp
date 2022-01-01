@@ -1,10 +1,15 @@
 #pragma once
+#include "917Classes\structDefs.hpp"
 
 class Utils{
     public:
-        //This generates the number of the angle in degrees and accounts for disconuities using the system
-        //left of forward is 0 to -180 and right of forward is 0 to 180. if turning left, angle is negative,
-        //if turning right, angle is positive
-        //double calcInertAngle(double targetAng);
+        //This keeps  theta in  [0,2pi] range.
+        static double thetaConverter(double thetaDeg);
 
+        //rotate point B around point A for theta radians, return new point B
+        static Point rotateAroundPoint(Point pointOfRotation, Point pointRotating, double theta);
+
+        static double angleToPoint(Point target) {
+
+        }
 };

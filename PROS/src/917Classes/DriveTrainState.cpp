@@ -1,5 +1,6 @@
 #define _USE_MATH_DEFINES
 #include "917Classes\DriveTrainState.hpp"
+#include "917Classes\Utils.hpp"
 #include <math.h>
 
 DriveTrainState::DriveTrainState() {
@@ -26,35 +27,6 @@ double DriveTrainState::deltaTheta(double leftEnc, double rightEnc) {
     return (rightEnc - leftEnc) / distanceYs;
 };
 
-Point DriveTrainState::rotateAroundPoint(Point pointOfRotation, Point pointRotating, double theta) {
-    double cosT = cos(theta);
-    double sinT = sin(theta);
-    pointRotating.x -= pointOfRotation.x;
-    pointRotating.y -= pointOfRotation.y;
-    double xTemp = pointRotating.x;
-    double yTemp = pointRotating.y;
-    pointRotating.x = (xTemp * cosT) - (yTemp * sinT);
-    pointRotating.y = (xTemp * sinT) + (yTemp * cosT);
-    pointRotating.x += pointOfRotation.x;
-    pointRotating.y += pointOfRotation.y;
-    return pointRotating;
-}; 
-
-
-double DriveTrainState::thetaConverter(double theta){
-    if(theta<0){
-        return theta+2*M_PI;
-    }else if (theta > 2*M_PI) {
-        return theta - 2 * M_PI;
-    }
-    return theta;
-};
-
-
-
-double DriveTrainState::distance2Points(Point first, Point second){
-    return sqrt(pow(first.x-second.x,2)+pow(first.y-second.y,2));
-};
 
 
 Point DriveTrainState::getPos(){
@@ -67,17 +39,15 @@ double DriveTrainState::getTheta(){
 }
 
 void DriveTrainState::step(double dLeftEnc, double dRightEnc, double dBottomEnc){
+    double rawRight = dRightEnc;
+    double rawLeft = dLeftEnc;
     dLeftEnc = dLeftEnc/360*encWheelSize*M_PI;
     dRightEnc = dRightEnc / 360 * encWheelSize * M_PI;
     dBottomEnc = dBottomEnc / 360 * encWheelSize * M_PI;
     double dTheta = deltaTheta(dLeftEnc,dRightEnc);
-    double coefficient = 1;
-    if (dTheta<0){
-        coefficient*=-1;
-    }
 	double shiftY; 
     double shiftX;
-    if(fabs(dLeftEnc-dRightEnc)<minimumForRotation){
+    if(fabs(rawRight-rawLeft)<minimumForRotation){
         shiftY = (dLeftEnc + dRightEnc) / 2;
 		shiftX = dBottomEnc;
     } else{
@@ -95,12 +65,11 @@ void DriveTrainState::step(double dLeftEnc, double dRightEnc, double dBottomEnc)
             centerRotation = Point(centerRotateLX, centerRotateY);
         }
         
-        Point lastPoint = rotateAroundPoint(centerRotation, calcPoint, dTheta);
+        Point lastPoint = Utils::rotateAroundPoint(centerRotation, calcPoint, dTheta);
         shiftX = lastPoint.x - calcPoint.x;
         shiftY = lastPoint.y - calcPoint.y;
     }
     m_x += shiftX*cos(-m_theta) + shiftY * sin(-m_theta);
     m_y += shiftY*cos(-m_theta) - shiftX * sin(-m_theta);
-    m_theta = thetaConverter(m_theta + dTheta);
-
+    m_theta = Utils::thetaConverter(m_theta + dTheta);
 };

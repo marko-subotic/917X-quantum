@@ -73,6 +73,9 @@ void miscFunctions(void* p) {
 }*/
 
 void odomFunctions(void* p) {
+    rightEnc.reset();
+    leftEnc.reset();
+    horEnc.reset();
     lv_obj_clean(lv_scr_act());
     OdomDisplay display(lv_scr_act());
     double prevRight = 0;
@@ -93,7 +96,12 @@ void odomFunctions(void* p) {
         state.step(deltaLeft, deltaRight, deltaMid);
         theta = state.getTheta();
         display.setState(state.getPos(), theta);
-        //display.encoderDebug(covLeft, "right: encoder");
+        if (fabs(deltaRight - deltaLeft) < 2) {
+            display.encoderDebug(deltaRight - deltaLeft, "going straight");
+        }
+        else {
+            display.encoderDebug(deltaRight - deltaLeft, "arcing");
+        }
         pros::delay(20);
     }
 }
