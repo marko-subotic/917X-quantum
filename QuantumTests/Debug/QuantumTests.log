@@ -1,7 +1,0 @@
-﻿  DriveTrainState.cpp
-  Utils.cpp
-C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\src\917Classes\Utils.cpp(28,42): error C2084: function 'double Utils::angleToPoint(Point)' already has a body
-C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\917Classes\Utils.hpp(13): message : see previous definition of 'angleToPoint'
-  QuantumTests.cpp
-  Generating Code...
-C:\Users\marko\code\VEX robotics 2021\917X-quantum\PROS\include\917Classes\Utils.hpp(13): error C4716: 'Utils::angleToPoint': must return a value

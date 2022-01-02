@@ -1,9 +1,0 @@
-﻿  pch.cpp
-  DriveTrainState.cpp
-  structDefs.cpp
-  Utils.cpp
-  QuantumTests.cpp
-  Running Code Analysis for C/C++...
-  Generating Code...
-     Creating library C:\Users\marko\code\VEX robotics 2021\917X-quantum\QuantumTests\x64\Debug\QuantumTests.lib and object C:\Users\marko\code\VEX robotics 2021\917X-quantum\QuantumTests\x64\Debug\QuantumTests.exp
-  QuantumTests.vcxproj -> C:\Users\marko\code\VEX robotics 2021\917X-quantum\QuantumTests\x64\Debug\QuantumTests.dll

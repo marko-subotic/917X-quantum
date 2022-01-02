@@ -1,3 +1,0 @@
-C:\Users\marko\code\VEX robotics 2021\917X-quantum\QuantumTests\x64\Debug\QuantumTests.dll
-C:\Users\marko\code\VEX robotics 2021\917X-quantum\QuantumTests\x64\Debug\QuantumTests.dll.lastcodeanalysissucceeded
-C:\Users\marko\code\VEX robotics 2021\917X-quantum\QuantumTests\x64\Debug\NativeCodeAnalysis.read.1.tlog
