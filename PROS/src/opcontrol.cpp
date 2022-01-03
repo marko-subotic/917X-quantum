@@ -96,12 +96,7 @@ void odomFunctions(void* p) {
         state.step(deltaLeft, deltaRight, deltaMid);
         theta = state.getTheta();
         display.setState(state.getPos(), theta);
-        if (fabs(deltaRight - deltaLeft) < 2) {
-            display.encoderDebug(deltaRight - deltaLeft, "going straight");
-        }
-        else {
-            display.encoderDebug(deltaRight - deltaLeft, "arcing");
-        }
+        display.encoderDebug(covLeft, "rightEncoder: ");
         pros::delay(20);
     }
 }
