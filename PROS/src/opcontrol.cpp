@@ -96,7 +96,7 @@ void odomFunctions(void* p) {
         state.step(deltaLeft, deltaRight, deltaMid);
         theta = state.getTheta();
         display.setState(state.getPos(), theta);
-        display.encoderDebug(covLeft, "rightEncoder: ");
+        display.encoderDebug(covRight, "rightEncoder: ");
         pros::delay(20);
     }
 }
