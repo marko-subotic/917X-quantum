@@ -1,5 +1,8 @@
 #include "main.h"
+#include "math.h"
 using namespace pros;
+
+DriveTrainState state(25,25, 0);
 
 int ScaleRawJoystick(int raw)
 {
@@ -88,17 +91,21 @@ void odomFunctions(void* p) {
     double deltaLeft = covLeft - prevLeft;
     double deltaMid = covMid - prevMid;
     double theta = 0;
-    DriveTrainState state = DriveTrainState(25, 25, theta);
     while (1) {
         prevRight = covRight, prevLeft = covLeft, prevMid = covMid;
         covRight = rightEnc.get_value(), covLeft = leftEnc.get_value(), covMid = horEnc.get_value();
         deltaRight = covRight - prevRight, deltaLeft = covLeft - prevLeft, deltaMid = covMid - prevMid;
         state.step(deltaLeft, deltaRight, deltaMid);
         theta = state.getTheta();
-        display.setState(state.getPos(), theta);
-        display.encoderDebug(covRight, "rightEncoder: ");
+        display.setState(state.getPos(), theta*180/M_PI);
+        display.encoderDebug(covMid, "rightEncoder: ");
         pros::delay(20);
     }
+}
+
+void motorControl(void* p) {
+    Point pointOne(0,0);
+    DriveTrainController::turnToPoint(&state, pointOne);
 }
 void opcontrol() {
     pros::Task odomTasks(odomFunctions);

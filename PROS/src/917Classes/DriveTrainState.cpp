@@ -1,8 +1,11 @@
 #define _USE_MATH_DEFINES
 #include "917Classes\DriveTrainState.hpp"
 #include "917Classes\Utils.hpp"
+#include "LockGuard.hpp"
+#include "pros/rtos.hpp"
 #include <math.h>
 
+pros::Mutex mtx;
 
 DriveTrainState::DriveTrainState() {
     m_x = 0;
@@ -31,11 +34,13 @@ double DriveTrainState::deltaTheta(double leftEnc, double rightEnc) {
 
 
 Point DriveTrainState::getPos(){
+    LockGuard lockGuard(&mtx);
     return Point(m_x,m_y);
 };
 
 
 double DriveTrainState::getTheta(){
+    LockGuard lockGuard(&mtx);
     return m_theta;
 }
 
@@ -69,7 +74,8 @@ void DriveTrainState::step(double dLeftEnc, double dRightEnc, double dBottomEnc)
         shiftX = lastPoint.x - calcPoint.x;
         shiftY = lastPoint.y - calcPoint.y;
     }
-    m_x += shiftX*cos(-m_theta) + shiftY * sin(-m_theta);
-    m_y += shiftY*cos(-m_theta) - shiftX * sin(-m_theta);
+    LockGuard lockGuard(&mtx);
+    m_x += shiftX * cos(-m_theta) + shiftY * sin(-m_theta);
+    m_y += shiftY * cos(-m_theta) - shiftX * sin(-m_theta);
     m_theta = Utils::thetaConverter(m_theta + dTheta);
 };

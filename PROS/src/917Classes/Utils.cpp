@@ -2,6 +2,9 @@
 #include "917Classes\Utils.hpp"
 #include "917Classes\structDefs.hpp"
 #include "math.h"
+#include "constants.h"
+#include <cassert>
+
 
 double Utils::thetaConverter(double theta) {
     if (theta < 0) {
@@ -29,7 +32,8 @@ Point Utils::rotateAroundPoint(Point pointOfRotation, Point pointRotating, doubl
 double Utils::angleToPoint(Point target) {
     if (target.y == 0) {
         if (target.x == 0) {
-            return NULL;
+            //assert(false, "dividing 0/0");
+            return 300;
         }else if (target.x>0) {
             return M_PI * 3 / 2;
         }else if (target.x < 0) {
@@ -56,4 +60,9 @@ double Utils::angleToPoint(Point target) {
 
 double Utils::distanceBetweenPoints(Point one, Point two) {
     return sqrt(pow(one.x - two.x, 2) + pow(one.y - two.y, 2));
+};
+
+double Utils::perToVol(double percentage) {
+    return percentage * MAX_VOLTAGE / 100;
+
 };

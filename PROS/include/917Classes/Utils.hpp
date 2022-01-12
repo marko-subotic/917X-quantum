@@ -14,4 +14,7 @@ class Utils{
 
         //returns distance between 2 points
         static double distanceBetweenPoints(Point one, Point two);
+
+        //returns voltage conversion from percentage
+        static double perToVol(double percentage);
 };
