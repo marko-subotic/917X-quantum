@@ -1,8 +1,8 @@
 #include "main.h"
 #pragma once
-extern pros::ADIEncoder rightEnc;
-extern pros::ADIEncoder leftEnc;
-extern pros::ADIEncoder horEnc;
+//extern pros::ADIEncoder rightEnc;
+//extern pros::ADIEncoder leftEnc;
+//extern pros::ADIEncoder horEnc;
 extern pros::Motor rightFront;
 extern pros::Motor rightMid;
 extern pros::Motor rightBack;

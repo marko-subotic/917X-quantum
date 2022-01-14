@@ -15,9 +15,11 @@ int ScaleRawJoystick(int raw)
 }
 
 void tankDrive(void* p) {
-    int leftY = cont.get_analog(ANALOG_LEFT_Y);
-    int rightY = cont.get_analog(ANALOG_RIGHT_Y);
-    
+    int leftY;
+    int rightY;
+    bool up;
+    int coef = 1;
+
     leftFront.move(0);
     leftBack.move(0);
     rightFront.move(0);
@@ -26,18 +28,23 @@ void tankDrive(void* p) {
     while (true) {
         leftY = cont.get_analog(ANALOG_LEFT_Y);
         rightY = cont.get_analog(ANALOG_RIGHT_Y);
+        bool up = cont.get_digital_new_press(DIGITAL_UP);
+
+        if (up) {
+            coef *= -1;
+        }
         if (abs(leftY) > DriveDeadzone) {
             leftY = ScaleRawJoystick(leftY);
         }
         if (abs(rightY) > DriveDeadzone) {
             rightY = ScaleRawJoystick(rightY);
         }
-        leftFront.move(leftY);
-        leftMid.move(leftY);
-        leftBack.move(leftY);
-        rightFront.move(rightY);
-        rightMid.move(rightY);
-        rightBack.move(rightY);
+        leftFront.move(coef*leftY);
+        leftMid.move(coef * leftY);
+        leftBack.move(coef * leftY);
+        rightFront.move(coef * rightY);
+        rightMid.move(coef * rightY);
+        rightBack.move(coef * rightY);
         pros::delay(20);
     }
 }
@@ -52,6 +59,7 @@ void miscFunctions(void* p) {
         bool L2 = cont.get_digital(E_CONTROLLER_DIGITAL_L2);
         bool L1 = cont.get_digital(E_CONTROLLER_DIGITAL_L1);
         bool x = cont.get_digital_new_press(DIGITAL_X);
+
         if (R2) {
             intake.move(127);
         }else if (R1) {
@@ -72,6 +80,8 @@ void miscFunctions(void* p) {
         }
         pros::delay(20);
     }
+    clamp.set_value(false);
+
 }
 void opcontrol() {
     std::string driveTaskName("Drive Task");
@@ -85,7 +95,8 @@ void opcontrol() {
 
 /*
 void odomFunctions(void* p) {
-    rightEnc.reset();
+    
+    .reset();
     leftEnc.reset();
     horEnc.reset();
     lv_obj_clean(lv_scr_act());
