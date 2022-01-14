@@ -12,3 +12,4 @@ extern pros::Motor leftBack;
 extern pros::Motor frontLift;
 extern pros::Motor intake;
 extern pros::Controller cont;
+extern pros::ADIDigitalOut clamp;

@@ -33,8 +33,10 @@ void tankDrive(void* p) {
             rightY = ScaleRawJoystick(rightY);
         }
         leftFront.move(leftY);
+        leftMid.move(leftY);
         leftBack.move(leftY);
         rightFront.move(rightY);
+        rightMid.move(rightY);
         rightBack.move(rightY);
         pros::delay(20);
     }
@@ -43,11 +45,13 @@ void tankDrive(void* p) {
 void miscFunctions(void* p) {
     intake.set_brake_mode(MOTOR_BRAKE_BRAKE);
     frontLift.set_brake_mode(MOTOR_BRAKE_BRAKE);
+    bool clampToggle = false;
     while (true) {
         bool R2 = cont.get_digital(E_CONTROLLER_DIGITAL_R2);
         bool R1 = cont.get_digital(E_CONTROLLER_DIGITAL_R1);
         bool L2 = cont.get_digital(E_CONTROLLER_DIGITAL_L2);
         bool L1 = cont.get_digital(E_CONTROLLER_DIGITAL_L1);
+        bool x = cont.get_digital_new_press(DIGITAL_X);
         if (R2) {
             intake.move(127);
         }else if (R1) {
@@ -62,10 +66,14 @@ void miscFunctions(void* p) {
         }if (!L1 && !L2) {
             frontLift.move(0);
         }
+        if (x) {
+            clampToggle = !clampToggle;
+            clamp.set_value(clampToggle);
+        }
         pros::delay(20);
     }
 }
-/*void opcontrol() {
+void opcontrol() {
     std::string driveTaskName("Drive Task");
     std::string intakeTaskName("Misc Task");
     Task driveTask(tankDrive, &driveTaskName);
@@ -73,8 +81,9 @@ void miscFunctions(void* p) {
 
     
 
-}*/
+}
 
+/*
 void odomFunctions(void* p) {
     rightEnc.reset();
     leftEnc.reset();
@@ -112,3 +121,4 @@ void opcontrol() {
 
 
 }
+*/
