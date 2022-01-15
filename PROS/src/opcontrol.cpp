@@ -19,25 +19,30 @@ void tankDrive(void* p) {
     int rightY;
     bool up;
     int coef = 1;
-
+    bool facingForward = true;
     leftFront.move(0);
     leftBack.move(0);
     rightFront.move(0);
     rightBack.move(0);
-    
     while (true) {
         leftY = cont.get_analog(ANALOG_LEFT_Y);
         rightY = cont.get_analog(ANALOG_RIGHT_Y);
         bool up = cont.get_digital_new_press(DIGITAL_UP);
-
-        if (up) {
-            coef *= -1;
-        }
+        
+        
         if (abs(leftY) > DriveDeadzone) {
             leftY = ScaleRawJoystick(leftY);
         }
         if (abs(rightY) > DriveDeadzone) {
             rightY = ScaleRawJoystick(rightY);
+        }
+        if (up) {
+            coef *= -1;
+            facingForward = !facingForward;
+        }if (!facingForward) {
+            int sub = rightY;
+            rightY = leftY;
+            leftY = sub;
         }
         leftFront.move(coef*leftY);
         leftMid.move(coef * leftY);
@@ -83,6 +88,7 @@ void miscFunctions(void* p) {
     clamp.set_value(false);
 
 }
+
 void opcontrol() {
     std::string driveTaskName("Drive Task");
     std::string intakeTaskName("Misc Task");
@@ -93,43 +99,28 @@ void opcontrol() {
 
 }
 
+
 /*
-void odomFunctions(void* p) {
-    
-    .reset();
-    leftEnc.reset();
-    horEnc.reset();
-    lv_obj_clean(lv_scr_act());
-    OdomDisplay display(lv_scr_act());
-    double prevRight = 0;
-    double prevLeft = 0;
-    double prevMid = 0;
-    double covRight = rightEnc.get_value();
-    double covLeft = leftEnc.get_value();
-    double covMid = horEnc.get_value();
-    double deltaRight = covRight - prevRight;
-    double deltaLeft = covLeft - prevLeft;
-    double deltaMid = covMid - prevMid;
-    double theta = 0;
-    while (1) {
-        prevRight = covRight, prevLeft = covLeft, prevMid = covMid;
-        covRight = rightEnc.get_value(), covLeft = leftEnc.get_value(), covMid = horEnc.get_value();
-        deltaRight = covRight - prevRight, deltaLeft = covLeft - prevLeft, deltaMid = covMid - prevMid;
-        state.step(deltaLeft, deltaRight, deltaMid);
-        theta = state.getTheta();
-        display.setState(state.getPos(), theta*180/M_PI);
-        display.encoderDebug(covMid, "rightEncoder: ");
-        pros::delay(20);
-    }
-}
-
-void motorControl(void* p) {
-    Point pointOne(0,0);
-    DriveTrainController::turnToPoint(&state, pointOne);
-}
 void opcontrol() {
-    pros::Task odomTasks(odomFunctions);
-
+    /*double driveLength = 4000;
+    double bidentRot = 3500;
+    clamp.set_value(false);
+    rightFront.move_relative(driveLength, 600);
+    rightMid.move_relative(driveLength, 600);
+    rightBack.move_relative(driveLength, 600);
+    leftFront.move_relative(driveLength, 600);
+    leftMid.move_relative(driveLength, 600);
+    leftBack.move_relative(driveLength, 600);
+    pros::delay(2000);
+    clamp.set_value(true);
+    rightFront.move_relative(-driveLength, 600);
+    rightMid.move_relative(-driveLength, 600);
+    rightBack.move_relative(-driveLength, 600);
+    leftFront.move_relative(-driveLength, 600);
+    leftMid.move_relative(-driveLength, 600);
+    leftBack.move_relative(-driveLength, 600);
+    
+    frontLift.move_relative(3500, 600);
 
 }
 */
