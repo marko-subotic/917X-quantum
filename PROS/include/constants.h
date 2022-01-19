@@ -6,3 +6,6 @@
 
 #define JoystickScaleConst 1
 #define DriveDeadzone 10
+
+#define LIFT_RATIO 5
+#define FORK_RATIO 7

@@ -1,4 +1,4 @@
-#include "917Classes\structDefs.hpp"
+#include "structDefs.hpp"
 
 Point::Point(double inX, double inY){
     x = inX;

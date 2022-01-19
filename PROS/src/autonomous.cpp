@@ -41,7 +41,7 @@ void odomFunctions(void* p) {
 void motorControl(void* p) {
     Point pointOne(0, 0);
 
-    DriveTrainController::turnToPoint(&state, pointOne);
+    DriveTrainController::turnToPoint(&state, pointOne, 0, 0);
 }
 void autonomous() {
     pros::Task odomTasks(odomFunctions);

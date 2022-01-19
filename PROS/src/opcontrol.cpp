@@ -1,5 +1,6 @@
 #include "main.h"
 #include "math.h"
+#include "Globals.hpp"
 using namespace pros;
 
 //DriveTrainState state(25,25, 0);
@@ -41,29 +42,48 @@ void tankDrive(void* p) {
 }
 
 void miscFunctions(void* p) {
-    intake.set_brake_mode(MOTOR_BRAKE_BRAKE);
-    frontLift.set_brake_mode(MOTOR_BRAKE_BRAKE);
+    bident.set_brake_mode(MOTOR_BRAKE_BRAKE);
+    lift.set_brake_mode(MOTOR_BRAKE_BRAKE);
+    bool clampToggle = false;
+    double liftLock = lift.get_raw_position(NULL);
+    double forkLock = bident.get_raw_position(NULL);
+    lift.set_encoder_units(pros::E_MOTOR_ENCODER_COUNTS);
+    bident.set_encoder_units(pros::E_MOTOR_ENCODER_COUNTS);
+
     while (true) {
         bool R2 = cont.get_digital(E_CONTROLLER_DIGITAL_R2);
         bool R1 = cont.get_digital(E_CONTROLLER_DIGITAL_R1);
         bool L2 = cont.get_digital(E_CONTROLLER_DIGITAL_L2);
         bool L1 = cont.get_digital(E_CONTROLLER_DIGITAL_L1);
+        bool x = cont.get_digital_new_press(DIGITAL_X);
+
         if (R2) {
-            intake.move(127);
-        }else if (R1) {
-            intake.move(-127);
-        }if(!R1 && !R2) {
-            intake.move(0);
+            lift.move(127);
+            liftLock = lift.get_raw_position(NULL);
+        }
+        else if (R1) {
+            lift.move(-127);
+            liftLock = lift.get_raw_position(NULL);
+        }if (!R1 && !R2) {
+            lift.move_absolute(liftLock, 10);
         }
         if (L2) {
-            frontLift.move(127);
-        }else if (L1) {
-            frontLift.move(-127);
+            bident.move(127);
+            forkLock = bident.get_raw_position(NULL);
+        }
+        else if (L1) {
+            bident.move(-127);
+            forkLock = bident.get_raw_position(NULL);
         }if (!L1 && !L2) {
-            frontLift.move(0);
+            bident.move_absolute(forkLock, 10);
+        }
+        if (x) {
+            clampToggle = !clampToggle;
+            clamp.set_value(clampToggle);
         }
         pros::delay(20);
     }
+    clamp.set_value(false);
 }
 void opcontrol() {
     std::string driveTaskName("Drive Task");

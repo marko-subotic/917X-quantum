@@ -1,6 +1,6 @@
 #define _USE_MATH_DEFINES
-#include "917Classes\Utils.hpp"
-#include "917Classes\structDefs.hpp"
+#include "Utils.hpp"
+#include "structDefs.hpp"
 #include "math.h"
 #include "constants.h"
 #include <cassert>

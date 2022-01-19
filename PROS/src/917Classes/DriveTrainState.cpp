@@ -1,7 +1,7 @@
 #define _USE_MATH_DEFINES
-#include "917Classes\DriveTrainState.hpp"
-#include "917Classes\Utils.hpp"
-#include "917Classes\LockGuard.hpp"
+#include "DriveTrainState.hpp"
+#include "Utils.hpp"
+#include "LockGuard.hpp"
 #include "pros/rtos.hpp"
 #include <math.h>
 

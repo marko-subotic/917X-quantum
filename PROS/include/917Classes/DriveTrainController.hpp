@@ -6,14 +6,25 @@
 
 
 class DriveTrainController {
-    private:
-        static constexpr double minErrorDegrees = .03;
-        static constexpr double linSpd = 7;
-        static constexpr double AngleUntilDecelerate = 0 * M_PI / 180;
-        static constexpr double AngleUntilLinear = 3 * M_PI / 180;
-        static constexpr double oSpeed = 100;
-    public:
-        //calculates length between 2 points, use it to calculate the radius from center of rotation
-        //to the point calculated
-        static void turnToPoint(DriveTrainState * state, Point target);
+private:
+    static constexpr double minErrorDegrees = .03;
+    static constexpr double linSpd = 7;
+    static constexpr double AngleUntilDecelerate = 0 * M_PI / 180;
+    static constexpr double AngleUntilLinear = 3 * M_PI / 180;
+    static constexpr double oSpeed = 100;
+
+    //drive to point constants
+    static constexpr double MinErrorInches = .2;
+    static constexpr double DistanceUntilDecelerateInches = 23;
+    static constexpr double DistanceUntilAccelerate = 7;
+    static constexpr double AngleForMaxError = 90;
+    //if final is greater than 20 risk of not finishing straight heightens
+    static constexpr double finalSpeedForward = 10;
+    //if init is great than 35 risk of not going straight heightens
+    static constexpr double initialSpeedForward = 35;
+    static constexpr double finalSpeedBackward = 40;
+    static constexpr double initialSpeedBackward = 30;
+public:
+    static void turnToPoint(DriveTrainState* state, Point target, double forkPos, double liftPos);
+    static void driveToPoint(DriveTrainState* state, Point target, double inSpd, double forkPos, double liftPos);
 };
