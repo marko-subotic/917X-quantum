@@ -9,7 +9,8 @@ class DriveTrainController {
     private:
         static constexpr double minErrorDegrees = .03;
         static constexpr double linSpd = 7;
-        static constexpr double AngleUntilDecelerate = 3 * M_PI / 180;
+        static constexpr double AngleUntilDecelerate = 0 * M_PI / 180;
+        static constexpr double AngleUntilLinear = 3 * M_PI / 180;
         static constexpr double oSpeed = 100;
     public:
         //calculates length between 2 points, use it to calculate the radius from center of rotation

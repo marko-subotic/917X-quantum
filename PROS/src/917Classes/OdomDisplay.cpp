@@ -129,7 +129,7 @@ void OdomDisplay::setState(Point state, double theta) {
     lv_obj_align(statusLabel, container, LV_ALIGN_CENTER, -lv_obj_get_width(container) / 2 + (lv_obj_get_width(container) - FIELD_DIMENSIONS) / 3, 0);
 };
 
-void OdomDisplay::encoderDebug(int encValue, std::string encSpec) {
+void OdomDisplay::encoderDebug(double encValue, std::string encSpec) {
     std::string text = encSpec + ": " + std::to_string(encValue);
     lv_label_set_text(encLabel, text.c_str());
     lv_obj_align(encLabel, container, LV_ALIGN_CENTER, -lv_obj_get_width(container) / 2 + (lv_obj_get_width(container) - fieldScreenDim) / 2, -lv_obj_get_height(container) / 4);

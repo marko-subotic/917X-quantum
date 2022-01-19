@@ -23,5 +23,5 @@ class OdomDisplay {
 		OdomDisplay(lv_obj_t* parent);
 		OdomDisplay(lv_obj_t* parent, lv_color_t color);
 		void setState(Point state, double theta);
-		void encoderDebug(int encValue, std::string labelEnc);
+		void encoderDebug(double encValue, std::string labelEnc);
 };
