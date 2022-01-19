@@ -55,9 +55,11 @@
         double initialSpeed = initialSpeedForward;
         double pointAng = Utils::angleToPoint(Point(target.x - state->getPos().x, target.y - state->getPos().y));
         double targetAng = pointAng - state->getTheta();
-        if (inSpd <0) targetAng -= M_PI;
-
+        if (targetAng > M_PI) targetAng -= M_PI;
+        else if (targetAng < -M_PI) targetAng += M_PI;
         if (inSpd < 0) {
+            if (targetAng > 0) targetAng -= M_PI;
+            else targetAng += M_PI;
             finalSpeed = finalSpeedBackward;
             initialSpeed = initialSpeedBackward;
         }
@@ -118,7 +120,13 @@
 
             pointAng = Utils::angleToPoint(Point(target.x - state->getPos().x, target.y - state->getPos().y));
             targetAng = pointAng - state->getTheta();
-            if (inSpd < 0) targetAng -= M_PI;
+            if (targetAng > M_PI) targetAng -= M_PI;
+            else if (targetAng < -M_PI) targetAng += M_PI;
+            if (inSpd < 0) {
+                if (targetAng > 0) targetAng -= M_PI;
+                else targetAng += M_PI;
+            }
+                
 
             //speed correction keeps robot pointed towards the point it wants to drive too
             //spd/ospeed makes the corrections get bigger the faster the bot goes, angle for max error
