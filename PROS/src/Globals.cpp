@@ -1,5 +1,6 @@
 #include "main.h"
-pros::ADIEncoder rightEnc('C', 'D', true), leftEnc('A', 'B', true), horEnc('E', 'F', true);
-pros::Motor rightFront(10, 0), rightBack(9, 0), leftFront(1, 1), leftBack(2, 1), lift(19, 1), bident(21, 1);
+pros::ADIEncoder rightEnc('C', 'D'), leftEnc('A', 'B'), horEnc('G', 'H');
+pros::Motor rightFront(5, pros::E_MOTOR_GEARSET_06, 0), rightMid(7, pros::E_MOTOR_GEARSET_06, 0), rightBack(18, pros::E_MOTOR_GEARSET_06, 0),
+leftFront(4, pros::E_MOTOR_GEARSET_06, 1), leftMid(1, pros::E_MOTOR_GEARSET_06, 1), leftBack(17, pros::E_MOTOR_GEARSET_06, 1), lift(6, 1), bident(10, 1);
 pros::Controller cont(pros::E_CONTROLLER_MASTER);
-pros::ADIDigitalOut clamp('G', false);
+pros::ADIDigitalOut clamp('E', false);

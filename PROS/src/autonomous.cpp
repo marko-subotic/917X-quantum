@@ -33,7 +33,7 @@ void odomFunctions(void* p) {
         state.step(deltaLeft, deltaRight, deltaMid);
         theta = state.getTheta();
         display.setState(state.getPos(), theta);
-        display.encoderDebug(pointTwo.x - state.getPos().x, "angle to point: ");
+        display.encoderDebug(covMid, "angle to point: ");
         pros::delay(20);
     }
 }
@@ -41,7 +41,7 @@ void odomFunctions(void* p) {
 void motorControl(void* p) {
     Point pointOne(0, 0);
 
-    DriveTrainController::turnToPoint(&state, pointOne, 0, 0);
+    //DriveTrainController::turnToPoint(&state, pointOne, 0, 0);
 }
 void autonomous() {
     pros::Task odomTasks(odomFunctions);

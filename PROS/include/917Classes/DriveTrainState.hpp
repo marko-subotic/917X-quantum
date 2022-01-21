@@ -12,8 +12,8 @@ class DriveTrainState{
         double m_theta;
         const double encWheelSize = 2.73675; //this is on hardwood
         //ratios of when wheel diameter is 1, so that i can change wheel size without messing up constants
-        const double distanceYs = 14.833185;
-        const double distanceX = 14.833185;
+        const double distanceYs = 13.737;
+        const double distanceX = 4;
         const Point leftEnc = Point(-distanceYs/2, distanceX);
         const Point rightEnc = Point(distanceYs/2,distanceX);
         const Point bottomEnc = Point(0,0);
