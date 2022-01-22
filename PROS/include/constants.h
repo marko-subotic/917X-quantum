@@ -1,7 +1,7 @@
 #include "main.h"
 #pragma once
 
-#define FIELD_DIMENSIONS 50
+#define FIELD_DIMENSIONS 144
 #define MAX_VOLTAGE 12000
 
 #define JoystickScaleConst 1

@@ -2,8 +2,8 @@
 #include "math.h"
 #include "Globals.hpp"
 using namespace pros;
+DriveTrainState place(25, 25, 0);
 
-//DriveTrainState state(25,25, 0);
 
 int ScaleRawJoystick(int raw)
 {
@@ -16,29 +16,44 @@ int ScaleRawJoystick(int raw)
 }
 
 void tankDrive(void* p) {
-    int leftY = cont.get_analog(ANALOG_LEFT_Y);
-    int rightY = cont.get_analog(ANALOG_RIGHT_Y);
-    
+    int leftY;
+    int rightY;
+    bool up;
+    int coef = 1;
+    bool facingForward = true;
     leftFront.move(0);
     leftBack.move(0);
     rightFront.move(0);
     rightBack.move(0);
-    
     while (true) {
         leftY = cont.get_analog(ANALOG_LEFT_Y);
         rightY = cont.get_analog(ANALOG_RIGHT_Y);
+        bool up = cont.get_digital_new_press(DIGITAL_UP);
+
+
         if (abs(leftY) > DriveDeadzone) {
             leftY = ScaleRawJoystick(leftY);
         }
         if (abs(rightY) > DriveDeadzone) {
             rightY = ScaleRawJoystick(rightY);
         }
-        leftFront.move(leftY);
-        leftBack.move(leftY);
-        rightFront.move(rightY);
-        rightBack.move(rightY);
+        if (up) {
+            coef *= -1;
+            facingForward = !facingForward;
+        }if (!facingForward) {
+            int sub = rightY;
+            rightY = leftY;
+            leftY = sub;
+        }
+        leftFront.move(coef * leftY);
+        leftMid.move(coef * leftY);
+        leftBack.move(coef * leftY);
+        rightFront.move(coef * rightY);
+        rightMid.move(coef * rightY);
+        rightBack.move(coef * rightY);
         pros::delay(20);
     }
+
 }
 
 void miscFunctions(void* p) {
@@ -85,9 +100,51 @@ void miscFunctions(void* p) {
     }
     clamp.set_value(false);
 }
+
+void odomFunctionsOP(void* p) {
+
+    rightEnc.reset();
+    leftEnc.reset();
+    horEnc.reset();
+    lv_obj_clean(lv_scr_act());
+    OdomDisplay display(lv_scr_act());
+
+    double prevRight = 0;
+    double prevLeft = 0;
+    double prevMid = 0;
+    double covRight = rightEnc.get_value();
+    double covLeft = leftEnc.get_value();
+    double covMid = horEnc.get_value();
+    double deltaRight = covRight - prevRight;
+    double deltaLeft = covLeft - prevLeft;
+    double deltaMid = covMid - prevMid;
+    double theta = 0;
+    Point pointTwo(0, 0);
+    while (1) {
+        double pointAng = Utils::angleToPoint(Point(pointTwo.x - place.getPos().x, pointTwo.y - place.getPos().y));
+        double targetAng = pointAng - place.getTheta();
+        prevRight = covRight, prevLeft = covLeft, prevMid = covMid;
+        covRight = rightEnc.get_value(), covLeft = leftEnc.get_value(), covMid = horEnc.get_value();
+        deltaRight = covRight - prevRight, deltaLeft = covLeft - prevLeft, deltaMid = covMid - prevMid;
+        place.step(deltaLeft, deltaRight, deltaMid);
+        theta = place.getTheta();
+        display.setState(place.getPos(), theta);
+        display.encoderDebug(covLeft, "angle to point: ");
+        pros::delay(1);
+    }
+}
+
 void opcontrol() {
+    rightBack.set_brake_mode(pros::E_MOTOR_BRAKE_COAST);
+    rightMid.set_brake_mode(pros::E_MOTOR_BRAKE_COAST);
+    rightFront.set_brake_mode(pros::E_MOTOR_BRAKE_COAST);
+
+    leftBack.set_brake_mode(pros::E_MOTOR_BRAKE_COAST);
+    leftMid.set_brake_mode(pros::E_MOTOR_BRAKE_COAST);
+    leftFront.set_brake_mode(pros::E_MOTOR_BRAKE_COAST);
     std::string driveTaskName("Drive Task");
     std::string intakeTaskName("Misc Task");
+    pros::Task odomTasks(odomFunctionsOP);
     Task driveTask(tankDrive, &driveTaskName);
     Task intakeTask(miscFunctions, &intakeTaskName);
 
