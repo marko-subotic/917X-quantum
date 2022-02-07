@@ -63,17 +63,17 @@ void rightSide(void* p) {
     DriveTrainController::driveToPoint(&state, pointOne, -100, 0, 10);
     clamp.set_value(true);
     DriveTrainController::driveToPoint(&state, pointTwo, 100, 0, 0);
-    DriveTrainController::turnToPoint(&state, pointThree, 0, -10);
+    DriveTrainController::turnToPoint(&state, pointThree, 0, Utils::redMotConv(-10));
     DriveTrainController::driveToPoint(&state, pointThree,100, 0, -10);
     pros::delay(700);
 
     //DriveTrainController::turnToPoint(&state, pointTwo, .25, -10);
     //DriveTrainController::driveToPoint(&state, pointTwo, 100, .2, -10);
-    DriveTrainController::driveToPoint(&state, Point(state.getPos().x - 10, fabs(atan(state.getTheta())) * 10 + state.getPos().y), -100, 220, -10);
-    DriveTrainController::turnToPoint(&state, pointFive, 250, -10);
-    DriveTrainController::driveToPoint(&state, pointFive, 100, 250, -10);
+    DriveTrainController::driveToPoint(&state, Point(state.getPos().x - 10, fabs(atan(state.getTheta())) * 10 + state.getPos().y), -100, 220, Utils::redMotConv(-10));
+    DriveTrainController::turnToPoint(&state, pointFive, 250, Utils::redMotConv(-10));
+    DriveTrainController::driveToPoint(&state, pointFive, 100, 250, Utils::redMotConv(-10));
     pros::delay(2000);
-    DriveTrainController::turnToPoint(&state, pointSix, 250, -10);
+    DriveTrainController::turnToPoint(&state, pointSix, 250, Utils::redMotConv(-10));
 
 }
 

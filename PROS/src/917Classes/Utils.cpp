@@ -66,3 +66,7 @@ double Utils::perToVol(double percentage) {
     return percentage * MAX_VOLTAGE / 100;
 
 };
+
+double Utils::redMotConv(double angle) {
+    return angle / 360 * LIFT_ENCODER;
+};

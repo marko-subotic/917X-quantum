@@ -17,4 +17,6 @@ class Utils{
 
         //returns voltage conversion from percentage
         static double perToVol(double percentage);
+
+        static double redMotConv(double angle);
 };
