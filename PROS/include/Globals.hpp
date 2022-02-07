@@ -9,7 +9,7 @@ extern pros::Motor rightBack;
 extern pros::Motor leftFront;
 extern pros::Motor leftMid;
 extern pros::Motor leftBack;
-extern pros::Motor bident;
+extern pros::Motor intake;
 extern pros::Motor lift;
 extern pros::ADIDigitalOut clamp;
 extern pros::Controller cont;

@@ -1,9 +1,11 @@
 #include "main.h"
 #include "math.h"
 #include "Globals.hpp"
+#include <algorithm>    // std::max
+
 using namespace pros;
 DriveTrainState place(25, 25, 0);
-
+int takein = 0;
 
 int ScaleRawJoystick(int raw)
 {
@@ -13,6 +15,24 @@ int ScaleRawJoystick(int raw)
         ScaledVal *= -1;
 
     return(ScaledVal);
+}
+
+void intakeInFunc() {
+    if (takein != 100) {
+        takein = 100;
+    }
+    else if (takein == 100) {
+        takein = 0;
+    }
+}
+
+void intakeOutFunc() {
+    if (takein != -100) {
+        takein = -100;
+    }
+    else if (takein == -100) {
+        takein = 0;
+    }
 }
 
 void tankDrive(void* p) {
@@ -51,25 +71,23 @@ void tankDrive(void* p) {
         rightFront.move(coef * rightY);
         rightMid.move(coef * rightY);
         rightBack.move(coef * rightY);
+        /**/
         pros::delay(20);
     }
 
 }
 
 void miscFunctions(void* p) {
-    bident.set_brake_mode(MOTOR_BRAKE_BRAKE);
     lift.set_brake_mode(MOTOR_BRAKE_BRAKE);
     bool clampToggle = false;
     double liftLock = lift.get_raw_position(NULL);
-    double forkLock = bident.get_raw_position(NULL);
     lift.set_encoder_units(pros::E_MOTOR_ENCODER_COUNTS);
-    bident.set_encoder_units(pros::E_MOTOR_ENCODER_COUNTS);
 
     while (true) {
         bool R2 = cont.get_digital(E_CONTROLLER_DIGITAL_R2);
         bool R1 = cont.get_digital(E_CONTROLLER_DIGITAL_R1);
-        bool L2 = cont.get_digital(E_CONTROLLER_DIGITAL_L2);
-        bool L1 = cont.get_digital(E_CONTROLLER_DIGITAL_L1);
+        bool L2 = cont.get_digital_new_press(E_CONTROLLER_DIGITAL_L2);
+        bool L1 = cont.get_digital_new_press(E_CONTROLLER_DIGITAL_L1);
         bool x = cont.get_digital_new_press(DIGITAL_X);
 
         if (R2) {
@@ -83,15 +101,12 @@ void miscFunctions(void* p) {
             lift.move_absolute(liftLock, 10);
         }
         if (L2) {
-            bident.move(127);
-            forkLock = bident.get_raw_position(NULL);
+            intakeInFunc();
         }
         else if (L1) {
-            bident.move(-127);
-            forkLock = bident.get_raw_position(NULL);
-        }if (!L1 && !L2) {
-            bident.move_absolute(forkLock, 10);
+            intakeOutFunc();
         }
+        intake.move(takein);
         if (x) {
             clampToggle = !clampToggle;
             clamp.set_value(clampToggle);
@@ -102,7 +117,6 @@ void miscFunctions(void* p) {
 }
 
 void odomFunctionsOP(void* p) {
-
     rightEnc.reset();
     leftEnc.reset();
     horEnc.reset();
@@ -118,19 +132,30 @@ void odomFunctionsOP(void* p) {
     double deltaRight = covRight - prevRight;
     double deltaLeft = covLeft - prevLeft;
     double deltaMid = covMid - prevMid;
-    double theta = 0;
+    double theta = place.getTheta();
+    display.setState(place.getPos(), theta);
     Point pointTwo(0, 0);
     while (1) {
-        double pointAng = Utils::angleToPoint(Point(pointTwo.x - place.getPos().x, pointTwo.y - place.getPos().y));
-        double targetAng = pointAng - place.getTheta();
-        prevRight = covRight, prevLeft = covLeft, prevMid = covMid;
-        covRight = rightEnc.get_value(), covLeft = leftEnc.get_value(), covMid = horEnc.get_value();
-        deltaRight = covRight - prevRight, deltaLeft = covLeft - prevLeft, deltaMid = covMid - prevMid;
+        
+        //double pointAng = Utils::angleToPoint(Point(pointTwo.x - place.getPos().x, pointTwo.y - place.getPos().y));
+        //double targetAng = pointAng - place.getTheta();
+        printf("%f\n", std::max(deltaRight, std::max(deltaLeft, deltaMid)));
+        if (std::max(fabs(deltaRight), std::max(fabs(deltaLeft), fabs(deltaMid))) < DriveTrainState::minTicks) {
+            covRight = rightEnc.get_value(), covLeft = leftEnc.get_value(), covMid = horEnc.get_value();
+            deltaRight = covRight - prevRight, deltaLeft = covLeft - prevLeft, deltaMid = covMid - prevMid;
+            //printf("charging\n");
+            continue;
+        }
+        //printf("not charging\n");
+
         place.step(deltaLeft, deltaRight, deltaMid);
         theta = place.getTheta();
         display.setState(place.getPos(), theta);
-        display.encoderDebug(covLeft, "angle to point: ");
-        pros::delay(1);
+        display.encoderDebug(covRight, "angle to point: ");
+        prevRight = covRight, prevLeft = covLeft, prevMid = covMid;
+        covRight = rightEnc.get_value(), covLeft = leftEnc.get_value(), covMid = horEnc.get_value();
+        deltaRight = covRight - prevRight, deltaLeft = covLeft - prevLeft, deltaMid = covMid - prevMid;
+        pros::delay(20);
     }
 }
 

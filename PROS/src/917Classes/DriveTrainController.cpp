@@ -11,11 +11,9 @@
 		double targetAng = pointAng - state->getTheta();
 		if (targetAng > M_PI) targetAng -= 2* M_PI;
 		else if (targetAng < -M_PI) targetAng += 2* M_PI;
-        bident.move_absolute(forkPos * FORK_RATIO, 100);
         lift.move_absolute(liftPos * LIFT_RATIO, 100);
-		while (std::abs(targetAng)*100 > minErrorDegrees*100 ) {
-            printf("%f", std::abs(targetAng) - minErrorDegrees);
-            printf(", %f\n", minErrorDegrees);
+		while (std::abs(targetAng)> minErrorDegrees) {
+            
 			pointAng = Utils::angleToPoint(Point(target.x - state->getPos().x, target.y - state->getPos().y));
 			targetAng = pointAng - state->getTheta();
 			double spd;
@@ -37,23 +35,16 @@
 			if (targetAng < 0) {
 				coefficient *= -1;
 			}
-			;
 
-			/*rightBack.move_voltage(Utils::perToVol(spd) * coefficient);
-            rightMid.move_voltage(Utils::perToVol(spd) * coefficient);
-            rightFront.move_voltage(Utils::perToVol(spd) * coefficient);
-            
-            leftMid.move_voltage(Utils::perToVol(spd) * -coefficient);
-			leftBack.move_voltage(Utils::perToVol(spd) * -coefficient);
-			leftFront.move_voltage(Utils::perToVol(spd) * -coefficient);*/
-            rightBack.move_velocity((spd) * coefficient);
+            printf("%f\n", spd);
+            rightBack.move_velocity((spd)*coefficient);
             rightMid.move_velocity((spd) * coefficient);
             rightFront.move_velocity((spd) * coefficient);
 
             leftMid.move_velocity((spd) * -coefficient);
             leftBack.move_velocity((spd) * -coefficient);
             leftFront.move_velocity((spd) * -coefficient);
-			pros::delay(1);
+			pros::delay(20);
 
 		}
         printf("exiting");
@@ -73,6 +64,8 @@
         double initialSpeed = initialSpeedForward;
         double pointAng = Utils::angleToPoint(Point(target.x - state->getPos().x, target.y - state->getPos().y));
         double targetAng = pointAng - state->getTheta();
+        lift.move_absolute(liftPos * LIFT_RATIO, 100);
+
         if (targetAng > M_PI) targetAng -= M_PI;
         else if (targetAng < -M_PI) targetAng += M_PI;
         if (inSpd < 0) {
@@ -100,8 +93,7 @@
 
 
         while (fabs(error) >= MinErrorInches) {
-           // printf("%f\n", state->getPos().y);
-            //printf("%f\n", error);
+           
 
             bool isAccel = false;
             bool isDecel = false;
@@ -130,7 +122,6 @@
 
             }
             else if (isDecel) {
-                printf("error: %f\n", (error));
 
                 spd = kParabola * (pow(DistanceUntilDecelerateInches - fabs(error), 2)) + highestSpd;
 
@@ -153,13 +144,18 @@
             //speed correction keeps robot pointed towards the point it wants to drive too
             //spd/ospeed makes the corrections get bigger the faster the bot goes, angle for max error
             //is a constant that needs to be tuned
-            double speedCorrection = 0;// spd / oSpeed * ((spd / AngleForMaxError) * targetAng);
+            double speedCorrection = spd / oSpeed * ((spd / AngleForMaxError) * targetAng);
+            printf("correction: %f\n", speedCorrection);
+            printf("(x,y,theta): (%f,%f,%f)\n", state->getPos().x, state->getPos().y, state->getTheta());
+            // printf("%f\n", state->getPos().y);
+            //printf("%f\n", error);
+            printf("error: %f\n", (error));
 
-            leftSpeed = spd + speedCorrection;
-            rightSpeed = spd - speedCorrection;
+            leftSpeed = spd - speedCorrection;
+            rightSpeed = spd + speedCorrection;
             if (inSpd < 0) {
-                printf("speed: %f\n", spd);
-                printf("kParabola: %f\n", kParabola);
+                //printf("speed: %f\n", spd);
+                //printf("kParabola: %f\n", kParabola);
                 double temp = leftSpeed;
                 leftSpeed = -rightSpeed;
                 rightSpeed = -temp;
@@ -173,7 +169,7 @@
             leftBack.move_velocity((leftSpeed));
             leftFront.move_velocity((leftSpeed));
             error = Utils::distanceBetweenPoints(target, state->getPos());
-            pros::delay(1);
+            pros::delay(20);
         }
         
         rightBack.set_brake_mode(pros::E_MOTOR_BRAKE_HOLD);
@@ -185,7 +181,7 @@
         leftFront.set_brake_mode(pros::E_MOTOR_BRAKE_HOLD);
 
         rightBack.move(0);
-        rightFront.move(-0);
+        rightFront.move(0);
         rightMid.move(0);
 
         leftMid.move(0);

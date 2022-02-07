@@ -10,15 +10,14 @@ class DriveTrainState{
         double m_x;
         double m_y;
         double m_theta;
-        const double encWheelSize = 2.7883; //this is on hardwood
-        //ratios of when wheel diameter is 1, so that i can change wheel size without messing up constants
-        const double distanceYs = 13.737;
+        const double encWheelSize = 2.7883; 
+        const double distanceYs = 13.66;
         const double distanceX = 4;
         const Point leftEnc = Point(-distanceYs/2, distanceX);
         const Point rightEnc = Point(distanceYs/2,distanceX);
         const Point bottomEnc = Point(0,0);
         const Point calcPoint = Point((rightEnc.x + leftEnc.x) / 2, (rightEnc.y + leftEnc.y) / 2);
-        const double minimumForRotation = 1;
+        const double minimumForRotation = 5;
 
                     
         //sets the the x and y to the param point vals and theta to param theta, used to reset/special cases
@@ -29,6 +28,7 @@ class DriveTrainState{
         double deltaTheta(double leftEnc, double rightEnc);
 
     public:
+        static const int minTicks = 15;
 	    //default constructor gives point and theta values to 0;
 	    DriveTrainState();
 
@@ -44,6 +44,9 @@ class DriveTrainState{
 
         //returns theta for testing and such
         double getTheta();
+
+        //switches direction, so i can apply turning to both sides of the bot
+        void switchDir();
 
         //allows testing class to access protected 
 	    friend class QuantumTest::QuantumTests;

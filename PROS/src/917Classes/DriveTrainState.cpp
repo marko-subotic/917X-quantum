@@ -1,8 +1,9 @@
-#define _USE_MATH_DEFINES
 #include "DriveTrainState.hpp"
 #include "Utils.hpp"
 #include "LockGuard.hpp"
 #include "pros/rtos.hpp"
+#define _USE_MATH_DEFINES
+#include <cstdio>
 #include <math.h>
 
 pros::Mutex mtx;
@@ -50,13 +51,15 @@ void DriveTrainState::step(double dLeftEnc, double dRightEnc, double dBottomEnc)
     dLeftEnc = dLeftEnc/360*encWheelSize*M_PI;
     dRightEnc = dRightEnc / 360 * encWheelSize * M_PI;
     dBottomEnc = dBottomEnc / 360 * encWheelSize * M_PI;
-    double dTheta = deltaTheta(dLeftEnc,dRightEnc);
+    double dTheta;
 	double shiftY; 
     double shiftX;
     if(fabs(rawRight-rawLeft)<minimumForRotation){
+        dTheta = 0;
         shiftY = (dLeftEnc + dRightEnc) / 2;
 		shiftX = dBottomEnc;
     } else{
+        dTheta = deltaTheta(dLeftEnc, dRightEnc);
         double centerRotateY;
         double centerRotateRX = rightEnc.x-dRightEnc/dTheta;
         double centerRotateLX = leftEnc.x-dLeftEnc/dTheta;
@@ -79,3 +82,8 @@ void DriveTrainState::step(double dLeftEnc, double dRightEnc, double dBottomEnc)
     m_y += shiftY * cos(-m_theta) - shiftX * sin(-m_theta);
     m_theta = Utils::thetaConverter(m_theta + dTheta);
 };
+
+void DriveTrainState::switchDir() {
+    m_theta = Utils::thetaConverter(m_theta + M_PI);
+
+}
