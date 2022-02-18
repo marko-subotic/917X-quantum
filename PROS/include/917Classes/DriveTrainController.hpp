@@ -15,12 +15,13 @@ private:
     static constexpr double oSpeed[2] = { 80, 70};
 
     //drive to point constants
+    static constexpr int decelPow = 5;
     static constexpr double MinErrorInches = 1;
-    static constexpr double DistanceUntilDecelerateInches = 27;
+    static constexpr double DistanceUntilDecelerateInches = 11;
     static constexpr double DistanceUntilAccelerate = 7;
     static constexpr double AngleForMaxError[2] = { 7.5 * M_PI / 180, 14 * M_PI / 180 };
     //if final is greater than 20 risk of not finishing straight heightens
-    static constexpr double finalSpeedForward = 20;
+    static constexpr double finalSpeedForward = 15;
     //if init is great than 35 risk of not going straight heightens
     static constexpr double initialSpeedForward = 50;
     static constexpr double finalSpeedBackward = 15;

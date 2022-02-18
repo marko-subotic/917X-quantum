@@ -141,9 +141,9 @@ void test(void* p) {
     Point end(15, 25);
 
     tilter.set_value(true);
-    state.switchDir(), state.switchDir();
-    DriveTrainController::driveToPoint(&state, forward, -100, 0, 0);
-    /*printf("driving");
+    //state.switchDir(), state.switchDir();
+    //DriveTrainController::driveToPoint(&state, forward, -100, 0, 0);
+    printf("driving");
     DriveTrainController::driveToPoint(&state, forward, -100, 0, 0);
     pros::delay(500);
     printf("turning");
@@ -188,7 +188,7 @@ void test(void* p) {
     pros::delay(500);
     printf("turning\n");
     DriveTrainController::driveToPoint(&state, start, -100, 0, 0);
-    */
+    
 }
 void autonomous() {
     //state.switchDir();

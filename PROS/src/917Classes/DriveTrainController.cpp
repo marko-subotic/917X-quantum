@@ -37,24 +37,32 @@
 			}
 
            // printf("%f\n", spd);
-            rightBack.move_velocity((spd)*coefficient);
-            rightMid.move_velocity((spd) * coefficient);
-            rightFront.move_velocity((spd) * coefficient);
+            rightBack.move(Utils::perToVol(rightSpeed)*coefficient);
+            rightMid.move(Utils::perToVol(rightSpeed) * coefficient);
+            rightFront.move(Utils::perToVol(rightSpeed) * coefficient);
 
-            leftMid.move_velocity((spd) * -coefficient);
-            leftBack.move_velocity((spd) * -coefficient);
-            leftFront.move_velocity((spd) * -coefficient);
+            leftMid.move(Utils::perToVol(leftSpeed) * -coefficient);
+            leftBack.move(Utils::perToVol(leftSpeed) * -coefficient);
+            leftFront.move(Utils::perToVol(leftSpeed) * -coefficient);
+
+            rightBack.tare_position();
+            rightFront.tare_position();
+            rightMid.tare_position();
+
+            leftMid.tare_position();
+            leftBack.tare_position();
+            leftFront.tare_position();
 			pros::delay(20);
 
 		}
         printf("exiting");
-        rightBack.move_voltage(0);
-        rightMid.move_voltage(0);
-        rightFront.move_voltage(0);
+        rightBack.move_absolute(0, 100);
+        rightFront.move_absolute(0, 100);
+        rightMid.move_absolute(0, 100);
 
-        leftMid.move_voltage(0);
-        leftBack.move_voltage(0);
-        leftFront.move_voltage(0);
+        leftMid.move_absolute(0, 100);
+        leftBack.move_absolute(0, 100);
+        leftFront.move_absolute(0, 100);
 	};
 
 	void DriveTrainController::driveToPoint(DriveTrainState* state, Point target, double inSpd, double liftPos, int mogoState) {
@@ -89,7 +97,7 @@
         double leftSpeed = spd;
         double rightSpeed = spd;
         double highestSpd = 0;
-        double kParabola = (finalSpeedForward - fabs(inSpd)) / (pow(DistanceUntilDecelerateInches, 2));
+        double kParabola = (fabs(inSpd) - finalSpeed) / (pow(DistanceUntilDecelerateInches, decelPow));
 
 
         while (fabs(error) >= MinErrorInches) {
@@ -98,10 +106,12 @@
 
             bool isAccel = false;
             bool isDecel = false;
-            
+            double distanceDecelerating = DistanceUntilDecelerateInches;
             double distanceCovered = dist-error;
             if (fabs(dist) < NonMaxSpeedDist) {
-                if (fabs(distanceCovered) < fabs(dist) * (DistanceUntilAccelerate / (NonMaxSpeedDist))) {
+                if (fabs(distanceCovered) < fabs(dist) * (DistanceUntilAccelerate / (NonMaxSpeedDist)))
+                {
+                    distanceDecelerating = dist * (DistanceUntilDecelerateInches) / NonMaxSpeedDist;
                     isAccel = true;
                 }
                 else {
@@ -119,12 +129,12 @@
             if (isAccel) {
                 spd = initialSpeed * (1 + fabs(distanceCovered) * kAccel);
                 highestSpd = spd;
-                kParabola = (fabs(finalSpeed) - fabs(spd)) / (pow(DistanceUntilDecelerateInches, 2));
+                kParabola = (fabs(inSpd) - fabs(finalSpeed)) / (pow(distanceDecelerating, 2));
 
             }
             else if (isDecel) {
-
-                spd = kParabola * (pow(DistanceUntilDecelerateInches - fabs(error), 2)) + highestSpd;
+                //https://www.desmos.com/calculator/n5xuodzf4s
+                spd = kParabola * (pow(error, decelPow)) + finalSpeed;
 
             }
             else {
