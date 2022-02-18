@@ -50,10 +50,16 @@ void DriveTrainState::step(double dLeftEnc, double dRightEnc, double dBottomEnc)
     double rawLeft = dLeftEnc;
     dLeftEnc = dLeftEnc/360*encWheelSize*M_PI;
     dRightEnc = dRightEnc / 360 * encWheelSize * M_PI;
-    dBottomEnc = dBottomEnc / 360 * encWheelSize * M_PI;
+    dBottomEnc = dBottomEnc / 360 * horEncWheelSize * M_PI;
     double dTheta;
 	double shiftY; 
     double shiftX;
+    if (!facingForward) {
+        double temp = dRightEnc;
+        dRightEnc = -dLeftEnc;
+        dLeftEnc = -temp;
+        dBottomEnc *= -1;
+    }
     if(fabs(rawRight-rawLeft)<minimumForRotation){
         dTheta = 0;
         shiftY = (dLeftEnc + dRightEnc) / 2;
@@ -85,5 +91,6 @@ void DriveTrainState::step(double dLeftEnc, double dRightEnc, double dBottomEnc)
 
 void DriveTrainState::switchDir() {
     m_theta = Utils::thetaConverter(m_theta + M_PI);
+    facingForward = !facingForward;
 
 }

@@ -10,14 +10,16 @@ class DriveTrainState{
         double m_x;
         double m_y;
         double m_theta;
-        const double encWheelSize = 2.7883; 
-        const double distanceYs = 13.66;
-        const double distanceX = 4;
+        const double encWheelSize = 2.775;
+        const double horEncWheelSize = 2.775;
+        const double distanceYs = 14.54;
+        const double distanceX = 4.4;
         const Point leftEnc = Point(-distanceYs/2, distanceX);
         const Point rightEnc = Point(distanceYs/2,distanceX);
         const Point bottomEnc = Point(0,0);
         const Point calcPoint = Point((rightEnc.x + leftEnc.x) / 2, (rightEnc.y + leftEnc.y) / 2);
         const double minimumForRotation = 5;
+        bool facingForward = true;
 
                     
         //sets the the x and y to the param point vals and theta to param theta, used to reset/special cases

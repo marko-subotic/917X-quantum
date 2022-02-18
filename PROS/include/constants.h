@@ -8,4 +8,4 @@
 #define DriveDeadzone 10
 
 #define LIFT_RATIO 5
-#define LIFT_ENCODER TICKS 1800
+#define LIFT_ENCODER 1800

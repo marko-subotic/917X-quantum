@@ -5,7 +5,8 @@
 
 using namespace pros;
 DriveTrainState place(25, 25, 0);
-int takein = 0;
+int takein = -127;
+const double intakemax = 127;
 
 int ScaleRawJoystick(int raw)
 {
@@ -18,19 +19,19 @@ int ScaleRawJoystick(int raw)
 }
 
 void intakeInFunc() {
-    if (takein != 100) {
-        takein = 100;
+    if (takein != intakemax) {
+        takein = intakemax;
     }
-    else if (takein == 100) {
+    else if (takein == intakemax) {
         takein = 0;
     }
 }
 
 void intakeOutFunc() {
-    if (takein != -100) {
-        takein = -100;
+    if (takein != -intakemax) {
+        takein = -intakemax;
     }
-    else if (takein == -100) {
+    else if (takein == -intakemax) {
         takein = 0;
     }
 }
@@ -39,8 +40,8 @@ void tankDrive(void* p) {
     int leftY;
     int rightY;
     bool up;
-    int coef = 1;
-    bool facingForward = true;
+    int coef = -1;
+    bool facingForward = false;
     leftFront.move(0);
     leftBack.move(0);
     rightFront.move(0);
@@ -80,6 +81,7 @@ void tankDrive(void* p) {
 void miscFunctions(void* p) {
     lift.set_brake_mode(MOTOR_BRAKE_BRAKE);
     bool clampToggle = false;
+    bool tiltToggle = true;
     double liftLock = lift.get_raw_position(NULL);
     lift.set_encoder_units(pros::E_MOTOR_ENCODER_COUNTS);
 
@@ -89,6 +91,8 @@ void miscFunctions(void* p) {
         bool L2 = cont.get_digital_new_press(E_CONTROLLER_DIGITAL_L2);
         bool L1 = cont.get_digital_new_press(E_CONTROLLER_DIGITAL_L1);
         bool x = cont.get_digital_new_press(DIGITAL_X);
+        bool y = cont.get_digital_new_press(DIGITAL_Y);
+
 
         if (R2) {
             lift.move(127);
@@ -110,6 +114,9 @@ void miscFunctions(void* p) {
         if (x) {
             clampToggle = !clampToggle;
             clamp.set_value(clampToggle);
+        }if (y) {
+            tiltToggle = !tiltToggle;
+            tilter.set_value(tiltToggle);
         }
         pros::delay(20);
     }

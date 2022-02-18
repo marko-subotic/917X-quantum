@@ -63,7 +63,7 @@ double Utils::distanceBetweenPoints(Point one, Point two) {
 };
 
 double Utils::perToVol(double percentage) {
-    return percentage * MAX_VOLTAGE / 100;
+    return percentage * 127 / 100;
 
 };
 
