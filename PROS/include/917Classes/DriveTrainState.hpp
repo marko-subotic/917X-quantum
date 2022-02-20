@@ -12,25 +12,23 @@ class DriveTrainState{
         double m_theta;
         const double encWheelSize = 2.775;
         const double horEncWheelSize = 2.775;
-        const double distanceYs = 14.54;
+        const double distanceYs = 14.72;
         const double distanceX = 4.4;
         const Point leftEnc = Point(-distanceYs/2, distanceX);
         const Point rightEnc = Point(distanceYs/2,distanceX);
         const Point bottomEnc = Point(0,0);
         const Point calcPoint = Point((rightEnc.x + leftEnc.x) / 2, (rightEnc.y + leftEnc.y) / 2);
-        const double minimumForRotation = 5;
+        const double minimumForRotation = 1;
         bool facingForward = true;
 
                     
-        //sets the the x and y to the param point vals and theta to param theta, used to reset/special cases
-        //for testing
-        void setState(Point resetPoint, double theta);
+       
 
         //static method to calculate change in theta given the change in the 2 vertical encoders
         double deltaTheta(double leftEnc, double rightEnc);
 
     public:
-        static const int minTicks = 15;
+        static const int minTicks = 2;
 	    //default constructor gives point and theta values to 0;
 	    DriveTrainState();
 
@@ -53,5 +51,8 @@ class DriveTrainState{
         //allows testing class to access protected 
 	    friend class QuantumTest::QuantumTests;
 
+        //sets the the x and y to the param point vals and theta to param theta, used to reset/special cases
+       //for testing
+        void setState(Point resetPoint, double theta);
         
 };

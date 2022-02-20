@@ -5,7 +5,7 @@
 
 using namespace pros;
 DriveTrainState place(25, 25, 0);
-int takein = -127;
+int takein = 0;
 const double intakemax = 127;
 
 int ScaleRawJoystick(int raw)
@@ -82,6 +82,7 @@ void miscFunctions(void* p) {
     lift.set_brake_mode(MOTOR_BRAKE_BRAKE);
     bool clampToggle = false;
     bool tiltToggle = true;
+    tilter.set_value(tiltToggle);
     double liftLock = lift.get_raw_position(NULL);
     lift.set_encoder_units(pros::E_MOTOR_ENCODER_COUNTS);
 
@@ -162,7 +163,7 @@ void odomFunctionsOP(void* p) {
         prevRight = covRight, prevLeft = covLeft, prevMid = covMid;
         covRight = rightEnc.get_value(), covLeft = leftEnc.get_value(), covMid = horEnc.get_value();
         deltaRight = covRight - prevRight, deltaLeft = covLeft - prevLeft, deltaMid = covMid - prevMid;
-        pros::delay(20);
+        pros::delay(1);
     }
 }
 
