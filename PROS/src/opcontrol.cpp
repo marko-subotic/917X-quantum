@@ -42,6 +42,7 @@ void tankDrive(void* p) {
     bool up;
     int coef = -1;
     bool facingForward = false;
+    bool brake = false;
     leftFront.move(0);
     leftBack.move(0);
     rightFront.move(0);
@@ -49,8 +50,8 @@ void tankDrive(void* p) {
     while (true) {
         leftY = cont.get_analog(ANALOG_LEFT_Y);
         rightY = cont.get_analog(ANALOG_RIGHT_Y);
-        bool up = cont.get_digital_new_press(DIGITAL_UP);
-
+        up = cont.get_digital_new_press(DIGITAL_UP);
+        bool right = cont.get_digital_new_press(DIGITAL_RIGHT);
 
         if (abs(leftY) > DriveDeadzone) {
             leftY = ScaleRawJoystick(leftY);
@@ -66,12 +67,33 @@ void tankDrive(void* p) {
             rightY = leftY;
             leftY = sub;
         }
-        leftFront.move(coef * leftY);
-        leftMid.move(coef * leftY);
-        leftBack.move(coef * leftY);
-        rightFront.move(coef * rightY);
-        rightMid.move(coef * rightY);
-        rightBack.move(coef * rightY);
+        if (right) {
+            brake = !brake;
+        }
+        if (brake) {
+            leftFront.tare_position();
+            leftMid.tare_position();
+            leftBack.tare_position();
+            rightFront.tare_position();
+            rightBack.tare_position();
+            rightMid.tare_position();
+
+            leftFront.move_absolute(0, 100);
+            leftMid.move_absolute(0, 100);
+            leftBack.move_absolute(0, 100);
+            rightFront.move_absolute(0, 100);
+            rightBack.move_absolute(0, 100);
+            rightMid.move_absolute(0, 100);
+        }
+        else {
+            leftFront.move(coef * leftY);
+            leftMid.move(coef * leftY);
+            leftBack.move(coef * leftY);
+            rightFront.move(coef * rightY);
+            rightMid.move(coef * rightY);
+            rightBack.move(coef * rightY);
+        }
+        
         /**/
         pros::delay(20);
     }
@@ -168,6 +190,7 @@ void odomFunctionsOP(void* p) {
 }
 
 void opcontrol() {
+    clamp.set_value(true);
     rightBack.set_brake_mode(pros::E_MOTOR_BRAKE_COAST);
     rightMid.set_brake_mode(pros::E_MOTOR_BRAKE_COAST);
     rightFront.set_brake_mode(pros::E_MOTOR_BRAKE_COAST);
@@ -177,7 +200,7 @@ void opcontrol() {
     leftFront.set_brake_mode(pros::E_MOTOR_BRAKE_COAST);
     std::string driveTaskName("Drive Task");
     std::string intakeTaskName("Misc Task");
-    pros::Task odomTasks(odomFunctionsOP);
+    //pros::Task odomTasks(odomFunctionsOP);
     Task driveTask(tankDrive, &driveTaskName);
     Task intakeTask(miscFunctions, &intakeTaskName);
 
