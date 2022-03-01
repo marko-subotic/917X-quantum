@@ -8,11 +8,12 @@
 class DriveTrainController {
 private:
     //index of arrays is state of the bot, index 0 is 1 mogo in back, index 1 is no mogo
-    static constexpr double minErrorDegrees = .03;
+    static constexpr int turnPow = 4;
+    static constexpr double minErrorDegrees = 1*M_PI/180;
     static constexpr double linSpd = 3;
-    static constexpr double AngleUntilDecelerate [2] = { 37 * M_PI / 180, 37  * M_PI / 180 };
-    static constexpr double AngleUntilLinear[2] = { 8 * M_PI / 180, 8 * M_PI / 180 };
-    static constexpr double oSpeed[2] = { 40, 40};
+    static constexpr double AngleWhenDecelerate [2] = { 180 * M_PI / 180, 96  * M_PI / 180 };
+    static constexpr double AngleUntilLinear[2] = { 20 * M_PI / 180, 3 * M_PI / 180 };
+    static constexpr double oSpeed[2] = { 40, 100};
 
     //drive to point constants
     static constexpr int decelPow = 5;
@@ -23,9 +24,9 @@ private:
     //if final is greater than 20 risk of not finishing straight heightens
     static constexpr double finalSpeedForward[2] = { 30, 25 };
     //if init is great than 35 risk of not going straight heightens
-    static constexpr double initialSpeedForward[2] = { 80, 80 };
-    static constexpr double finalSpeedBackward[2] = { 30, 30 };
-    static constexpr double initialSpeedBackward[2] = { 80, 80 };
+    static constexpr double initialSpeedForward[2] = { 50, 50 };
+    static constexpr double finalSpeedBackward[2] = { 30, 20 };
+    static constexpr double initialSpeedBackward[2] = { 50, 50 };
 public:
     static void turnToPoint(DriveTrainState* state, Point target, double liftPos, int mogoState);
     static void driveToPoint(DriveTrainState* state, Point target, double inSpd, double liftPos, int mogoState);

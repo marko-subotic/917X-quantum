@@ -1,16 +1,16 @@
 #include "main.h"
 #include "917Classes/DriveTrainState.hpp"
 #include <algorithm>    // std::max
-
+#include <time.h>       /* time_t, struct tm, difftime, time, mktime */
 
 //right neutral auton
-DriveTrainState state(110.5, 12, 0);
+//DriveTrainState state(110.5, 12, 0);
 //right mid auton
 //DriveTrainState state(103.5, 12, 0);
 //for skills
 //DriveTrainState state(27, 10.5, M_PI/2);
 // for testing
-//DriveTrainState state(25, 25, 0);
+DriveTrainState state(25, 25, 0);
 
 void odomFunctions(void* p) {
     rightEnc.reset();
@@ -56,6 +56,7 @@ void odomFunctions(void* p) {
 }
 
 void rightSide(void* p) {
+
     Point pointOne(110.5, 55);
     Point pointTwo(110, 35);
     Point pointThree(130, 39);
@@ -223,16 +224,18 @@ void test(void* p) {
 
     Point start(25, 25);
     Point forward(25, 50);
-    Point end(10, 50);
+    Point end(12, 0);
 
     Point pointTwo(66, 112);
     Point pointThree(65, 94);
     Point pointFour(62, 90);
     Point pointFive(70, 105);
     Point pointSix(70, 107.5);
-    tilter.set_value(true);
+    //tilter.set_value(true);
 
-    state.switchDir();
+    DriveTrainController::turnToPoint(&state, end, 0, 1);
+    DriveTrainController::driveToPoint(&state, end, -100, 0, 1);
+    /*state.switchDir();
     state.setState(pointTwo, Utils::angleToPoint(Point(pointThree.x-pointTwo.x, pointThree.y-pointTwo.y)));
     DriveTrainController::turnToPoint(&state, pointThree, -79, 0);
     DriveTrainController::driveToPoint(&state, pointThree, 100, -79, 0);
@@ -247,6 +250,7 @@ void test(void* p) {
     DriveTrainController::turnToPoint(&state, pointSix, -95, 0);
     DriveTrainController::driveToPoint(&state, pointSix, -100, -79, 0);
     clamp.set_value(false);
+    */
     //tilter.set_value(true);
     //DriveTrainController::turnToPoint(&state, forward, 0, 0);
     //DriveTrainController::turnToPoint(&state, forward, 0, 0);
@@ -260,6 +264,6 @@ void autonomous() {
     //state.switchDir();
     lift.set_encoder_units(pros::E_MOTOR_ENCODER_COUNTS);
     pros::Task odomTasks(odomFunctions);
-    pros::Task driveTask(rightSide);
+    pros::Task driveTask(test);
 
 }

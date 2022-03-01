@@ -69,14 +69,15 @@ void tankDrive(void* p) {
         }
         if (right) {
             brake = !brake;
-        }
-        if (brake) {
             leftFront.tare_position();
             leftMid.tare_position();
             leftBack.tare_position();
             rightFront.tare_position();
             rightBack.tare_position();
             rightMid.tare_position();
+        }
+        if (brake) {
+            
 
             leftFront.move_absolute(0, 100);
             leftMid.move_absolute(0, 100);

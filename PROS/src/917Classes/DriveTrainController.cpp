@@ -13,23 +13,30 @@
 		else if (targetAng < -M_PI) targetAng += 2* M_PI;
         double firstAng = targetAng;
         lift.move_absolute(Utils::redMotConv(liftPos) * LIFT_RATIO, 100);
-		while (std::abs(targetAng)> minErrorDegrees&&firstAng*targetAng>0) {
+
+
+        double kParabola = (oSpeed[mogoState] - linSpd) / (pow((AngleWhenDecelerate[mogoState]-AngleUntilLinear[mogoState]), turnPow));
+		
+        while (std::abs(targetAng)> minErrorDegrees&&firstAng*targetAng>0) {
             lift.move_absolute(Utils::redMotConv(liftPos) * LIFT_RATIO, 100);
 			pointAng = Utils::angleToPoint(Point(target.x - state->getPos().x, target.y - state->getPos().y));
 			targetAng = pointAng - state->getTheta();
 			double spd;
 			if (targetAng > M_PI) targetAng -= 2* M_PI;
 			else if (targetAng < -M_PI) targetAng += 2*M_PI;
-            //printf("%f\n", targetAng);
+            //printf("%f, %f, %f, %f\n", targetAng, spd, rightFront.get_actual_velocity(), rightFront.get_power()/rightFront.get_current_draw());
 
 			if (fabs(targetAng) < AngleUntilLinear[mogoState]) {
 				spd = linSpd;
-			}if (fabs(targetAng) > M_PI-AngleUntilDecelerate[mogoState]) {
+			}else if (fabs(targetAng) > AngleWhenDecelerate[mogoState]) {
 				spd = oSpeed[mogoState];
 			}
 			else {
-				//https://www.desmos.com/calculator/frano6ozhv
-				spd = (oSpeed[mogoState] - linSpd) / 2 * (1 + cos(M_PI/(M_PI-AngleUntilDecelerate[mogoState])*(M_PI-AngleUntilDecelerate[mogoState]-fabs(targetAng)))) + linSpd;
+				/*//https://www.desmos.com/calculator/frano6ozhv
+				spd = (oSpeed[mogoState] - linSpd) / 2 * (1 + cos(M_PI/(M_PI-AngleWhenDecelerate[mogoState])*(M_PI-AngleWhenDecelerate[mogoState]-fabs(targetAng)))) + linSpd;
+                */
+                //https://www.desmos.com/calculator/6r8xr8tr6r
+                spd = kParabola * (pow((fabs(targetAng) - AngleUntilLinear[mogoState]), turnPow)) + linSpd;
 			}
             int coefficient = 1;
 			if (targetAng < 0) {
@@ -37,14 +44,22 @@
 			}
 
            // printf("%f\n", spd);
-            rightBack.move_velocity(spd*coefficient);
+            rightBack.move_velocity(spd * coefficient);
             rightMid.move_velocity(spd * coefficient);
             rightFront.move_velocity((spd) * coefficient);
 
             leftMid.move_velocity((spd) * -coefficient);
             leftBack.move_velocity((spd) * -coefficient);
             leftFront.move_velocity((spd) * -coefficient);
+            
+            /*
+            rightBack.move(Utils::perToVol(spd * coefficient));
+            rightMid.move(Utils::perToVol(spd * coefficient));
+            rightFront.move(Utils::perToVol(spd * coefficient));
 
+            leftMid.move(Utils::perToVol((spd) * -coefficient));
+            leftBack.move(Utils::perToVol((spd) * -coefficient));
+            leftFront.move(Utils::perToVol((spd) * -coefficient));*/
             rightBack.tare_position();
             rightFront.tare_position();
             rightMid.tare_position();
@@ -168,7 +183,7 @@
             //printf("%f\n", error);
             */
             //printf("%f, %f\n", error, (spd));
-            printf("(x,y,theta): (%f,%f,%f)\n", state->getPos().x, state->getPos().y, targetAng);
+            //printf("(x,y,theta): (%f,%f,%f)\n", state->getPos().x, state->getPos().y, targetAng);
 
             leftSpeed = spd - speedCorrection;
             rightSpeed = spd + speedCorrection;
@@ -215,11 +230,19 @@
         leftMid.set_brake_mode(pros::E_MOTOR_BRAKE_HOLD);
         leftFront.set_brake_mode(pros::E_MOTOR_BRAKE_HOLD);
 
-        rightBack.move_absolute(0, 30);
+        /*rightBack.move_absolute(0, 30);
         rightFront.move_absolute(0, 30);
         rightMid.move_absolute(0, 30);
 
         leftMid.move_absolute(0, 30);
         leftBack.move_absolute(0, 30);
         leftFront.move_absolute(0, 30);
+        */
+        rightBack.move_velocity(0);
+        rightFront.move_velocity(0);
+        rightMid.move_velocity(0);
+
+        leftMid.move_velocity(0);
+        leftBack.move_velocity(0);
+        leftFront.move_velocity(0);
 	};
