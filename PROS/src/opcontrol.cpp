@@ -47,12 +47,13 @@ void tankDrive(void* p) {
     leftBack.move(0);
     rightFront.move(0);
     rightBack.move(0);
+    
     while (true) {
         leftY = cont.get_analog(ANALOG_LEFT_Y);
         rightY = cont.get_analog(ANALOG_RIGHT_Y);
         up = cont.get_digital_new_press(DIGITAL_UP);
         bool right = cont.get_digital_new_press(DIGITAL_RIGHT);
-
+        
         if (abs(leftY) > DriveDeadzone) {
             leftY = ScaleRawJoystick(leftY);
         }
