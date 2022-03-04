@@ -44,7 +44,7 @@
 
                 }
                 spd = targetSpd + compensation;*/
-			}else if (fabs(targetAng) > AngleWhenDecelerate[mogoState]) {
+			}else if (fabs(targetAng-lookAhead) > AngleWhenDecelerate[mogoState]) {
 				targetSpd = oSpeed[mogoState];
 			}
 			else {
@@ -52,7 +52,7 @@
 				spd = (oSpeed[mogoState] - linSpd) / 2 * (1 + cos(M_PI/(M_PI-AngleWhenDecelerate[mogoState])*(M_PI-AngleWhenDecelerate[mogoState]-fabs(targetAng)))) + linSpd;
                 */
                 //https://www.desmos.com/calculator/6r8xr8tr6r
-                targetSpd = kParabola * (pow((fabs(targetAng) - AngleUntilLinear[mogoState]), turnPow)) + linSpd;
+                targetSpd = kParabola * (pow((fabs(targetAng-lookAhead) - AngleUntilLinear[mogoState]), turnPow)) + linSpd;
                 /*if (aveRealVelo < targetSpd) {
                     spd = targetSpd + compensation;
                     compensation += fabs(targetSpd - aveRealVelo);
@@ -71,7 +71,7 @@
             double compensation = (targetSpd-aveRealVelo)*kOsc[mogoState];
             spd += compensation;
             if (spd > 100) spd = 100;
-            else if (spd < -10) spd = -10;
+            else if (spd < minCorrect[mogoState]) spd = -minCorrect[mogoState];
 
            // printf("%f\n", spd);
             /*
@@ -83,7 +83,7 @@
             leftBack.move_velocity((spd) * -coefficient);
             leftFront.move_velocity((spd) * -coefficient);
             */
-            printf("%f, %f, %f, %f, %f\n", targetAng, targetSpd, aveRealVelo, targetSpd, spd);
+            printf("%f, %f, %f, %f\n", targetAng, targetSpd, aveRealVelo, spd);
 
             rightBack.move(Utils::perToVol(spd * coefficient));
             rightMid.move(Utils::perToVol(spd * coefficient));

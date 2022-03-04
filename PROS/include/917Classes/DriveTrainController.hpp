@@ -11,14 +11,16 @@ private:
     static constexpr int turnPow = 4;
     static constexpr double minErrorDegrees = 1*M_PI/180;
     static constexpr double linSpd = 5;
-    static constexpr double AngleWhenDecelerate [2] = { 45 * M_PI / 180, 40  * M_PI / 180 };
+    static constexpr double AngleWhenDecelerate [2] = { 50 * M_PI / 180, 40  * M_PI / 180 };
     static constexpr double AngleUntilLinear[2] = { 7 * M_PI / 180, 5 * M_PI / 180 };
-    static constexpr double oSpeed[2] = { 40, 100};
-    static constexpr double kOsc[2] = { 5.47, 1.2 };
+    static constexpr double oSpeed[2] = { 100, 100};
+    static constexpr double kOsc[2] = { .85, 1.2 };
     static constexpr int rpms = 300;
     static constexpr double bigDiam = 4.1;
     static constexpr double smallDiam = 2.75;
     static constexpr double loopDelay = 20;
+    static constexpr double lookAhead = 0 * M_PI / 180;
+    static constexpr double minCorrect[2] = { -35, -20 };
 
     //drive to point constants
     static constexpr int decelPow = 5;

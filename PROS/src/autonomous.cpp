@@ -221,10 +221,9 @@ void prog(void* p) {
 
 void test(void* p) {
     lift.tare_position();
-    tilter.set_value(true);
     Point start(25, 25);
     Point forward(25, 50);
-    Point end(12, 0);
+    Point end(12, 25);
 
     Point pointTwo(66, 112);
     Point pointThree(65, 94);
@@ -233,8 +232,8 @@ void test(void* p) {
     Point pointSix(70, 107.5);
     //tilter.set_value(true);
 
-    DriveTrainController::turnToPoint(&state, end, 0, 0);
-    DriveTrainController::driveToPoint(&state, end, -100, 0, 0);
+    DriveTrainController::turnToPoint(&state, end, 0, 1);
+    DriveTrainController::driveToPoint(&state, end, -100, 0, 1);
     /*state.switchDir();
     state.setState(pointTwo, Utils::angleToPoint(Point(pointThree.x-pointTwo.x, pointThree.y-pointTwo.y)));
     DriveTrainController::turnToPoint(&state, pointThree, -79, 0);
