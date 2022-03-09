@@ -9,16 +9,25 @@
 	void DriveTrainController::turnToPoint(DriveTrainState * state, Point target, double liftPos, int mogoState) {
 		double pointAng = Utils::angleToPoint(Point(target.x-state->getPos().x, target.y-state->getPos().y));
 		double targetAng = pointAng - state->getTheta();
+        
 		if (targetAng > M_PI) targetAng -= 2* M_PI;
 		else if (targetAng < -M_PI) targetAng += 2* M_PI;
+
+        int index = 0;
+        for (int i = 0; i < division; i++) {
+            if (fabs(targetAng) <= (i + 1) * M_PI / division) {
+                index = i;
+                break;
+            }
+        }
+        
         double firstAng = targetAng;
         lift.move_absolute(Utils::redMotConv(liftPos) * LIFT_RATIO, 100);
 
 
-        double kParabola = (oSpeed[mogoState] - linSpd) / (pow((AngleWhenDecelerate[mogoState]-AngleUntilLinear[mogoState]), turnPow));
-        double spd = 20;
-        double prevLeft = leftEnc.get_value();
-        double prevRight = rightEnc.get_value();
+        double kParabola = (oSpeed[mogoState] - linSpd[index][mogoState]) / (pow((AngleWhenDecelerate[index][mogoState]-AngleUntilLinear[index][mogoState]), turnPow));
+        double prevLeft = leftEnc.get_position()/100;
+        double prevRight = rightEnc.get_position()/100;
 
         while (std::abs(targetAng)> minErrorDegrees&&firstAng*targetAng>0) {
             lift.move_absolute(Utils::redMotConv(liftPos) * LIFT_RATIO, 100);
@@ -26,72 +35,41 @@
 			targetAng = pointAng - state->getTheta();
             double targetSpd;
             
-            double deltaTheta = (fabs(leftEnc.get_value() - prevLeft) + fabs(rightEnc.get_value() - prevRight)) / 2;
+            double deltaTheta = (fabs(leftEnc.get_position()/100 - prevLeft) + fabs(rightEnc.get_position()/100 - prevRight)) / 2;
             //double encoderRPM = deltaTheta / (loopDelay / 1000) / 360;
-            double aveRealVelo = deltaTheta / (loopDelay / 1000) / 360 * smallDiam / bigDiam * 60 / rpms * 100;//(fabs(rightMid.get_actual_velocity()) + fabs(rightBack.get_actual_velocity()) + fabs(rightFront.get_actual_velocity()) + fabs(leftMid.get_actual_velocity()) + fabs(leftBack.get_actual_velocity()) + fabs(leftFront.get_actual_velocity())) / 6;
-            prevLeft = leftEnc.get_value(), prevRight = rightEnc.get_value();
+            double aveRealVelo = deltaTheta / loopDelay * 1000 / 360 * smallDiam / bigDiam * 60 / rpms * 100;//(fabs(rightMid.get_actual_velocity()) + fabs(rightBack.get_actual_velocity()) + fabs(rightFront.get_actual_velocity()) + fabs(leftMid.get_actual_velocity()) + fabs(leftBack.get_actual_velocity()) + fabs(leftFront.get_actual_velocity())) / 6;
+            prevLeft = leftEnc.get_position()/100, prevRight = rightEnc.get_position()/100;
             if (targetAng > M_PI) targetAng -= 2* M_PI;
 			else if (targetAng < -M_PI) targetAng += 2*M_PI;
 
-			if (fabs(targetAng) < AngleUntilLinear[mogoState]) {
-				targetSpd = linSpd;
-                /*if (aveRealVelo < targetSpd) {
-                    spd = targetSpd + compensation;
-                    compensation += fabs(targetSpd-aveRealVelo);
-                }
-                else {
-                    compensation -= fabs(targetSpd - aveRealVelo);
-
-                }
-                spd = targetSpd + compensation;*/
-			}else if (fabs(targetAng-lookAhead) > AngleWhenDecelerate[mogoState]) {
+			if (fabs(targetAng) < AngleUntilLinear[index][mogoState]) {
+				targetSpd = linSpd[index][mogoState];
+                
+			}else if (fabs(targetAng) > AngleWhenDecelerate[index][mogoState]) {
 				targetSpd = oSpeed[mogoState];
 			}
 			else {
-				/*//https://www.desmos.com/calculator/frano6ozhv
-				spd = (oSpeed[mogoState] - linSpd) / 2 * (1 + cos(M_PI/(M_PI-AngleWhenDecelerate[mogoState])*(M_PI-AngleWhenDecelerate[mogoState]-fabs(targetAng)))) + linSpd;
-                */
+				
                 //https://www.desmos.com/calculator/6r8xr8tr6r
-                targetSpd = kParabola * (pow((fabs(targetAng-lookAhead) - AngleUntilLinear[mogoState]), turnPow)) + linSpd;
-                /*if (aveRealVelo < targetSpd) {
-                    spd = targetSpd + compensation;
-                    compensation += fabs(targetSpd - aveRealVelo);
-                }
-                else {
-                    compensation -= fabs(targetSpd - aveRealVelo);
-
-                }
-                spd = targetSpd + compensation;*/
+                targetSpd = kParabola * (pow((fabs(targetAng) - AngleUntilLinear[index][mogoState]), turnPow)) + linSpd[index][mogoState];
+               
                 
 			}
             int coefficient = 1;
 			if (targetAng < 0) {
 				coefficient *= -1;
 			}
-            double compensation = (targetSpd-aveRealVelo)*kOsc[mogoState];
-            spd += compensation;
-            if (spd > 100) spd = 100;
-            else if (spd < minCorrect[mogoState]) spd = -minCorrect[mogoState];
 
-           // printf("%f\n", spd);
-            /*
-            rightBack.move_velocity(spd * coefficient);
-            rightMid.move_velocity(spd * coefficient);
-            rightFront.move_velocity((spd) * coefficient);
+          
+            printf("index:%d\n", index);
 
-            leftMid.move_velocity((spd) * -coefficient);
-            leftBack.move_velocity((spd) * -coefficient);
-            leftFront.move_velocity((spd) * -coefficient);
-            */
-            printf("%f, %f, %f, %f\n", targetAng, targetSpd, aveRealVelo, spd);
+            rightBack.move(Utils::perToVol(targetSpd * coefficient));
+            rightMid.move(Utils::perToVol(targetSpd * coefficient));
+            rightFront.move(Utils::perToVol(targetSpd * coefficient));
 
-            rightBack.move(Utils::perToVol(spd * coefficient));
-            rightMid.move(Utils::perToVol(spd * coefficient));
-            rightFront.move(Utils::perToVol(spd * coefficient));
-
-            leftMid.move(Utils::perToVol((spd) * -coefficient));
-            leftBack.move(Utils::perToVol((spd) * -coefficient));
-            leftFront.move(Utils::perToVol((spd) * -coefficient));
+            leftMid.move(Utils::perToVol((targetSpd) * -coefficient));
+            leftBack.move(Utils::perToVol((targetSpd) * -coefficient));
+            leftFront.move(Utils::perToVol((targetSpd) * -coefficient));
             rightBack.tare_position();
             rightFront.tare_position();
             rightMid.tare_position();
@@ -144,8 +122,8 @@
         double dist = error;
         double origSpeed = std::abs(inSpd);
         double spd = initialSpeed;
-        double prevLeft = leftEnc.get_value();
-        double prevRight = rightEnc.get_value();
+        double prevLeft = leftEnc.get_position()/100;
+        double prevRight = rightEnc.get_position()/100;
         double kAccel = (origSpeed / (initialSpeed * DistanceUntilAccelerate)) - (1 / DistanceUntilAccelerate);
         double leftSpeed = spd;
         double rightSpeed = spd;
@@ -159,10 +137,10 @@
         while (fabs(error) >= MinErrorInches) {
             lift.move_absolute(Utils::redMotConv(liftPos) * LIFT_RATIO, 100);
             double targetSpd;
-            double deltaTheta = (fabs(leftEnc.get_value() - prevLeft) + fabs(rightEnc.get_value() - prevRight)) / 2;
+            double deltaTheta = (fabs(leftEnc.get_position()/100 - prevLeft) + fabs(rightEnc.get_position()/100 - prevRight)) / 2;
             //double encoderRPM = deltaTheta / (loopDelay / 1000) / 360;
-            double aveRealVelo = deltaTheta / (loopDelay / 1000) / 360 * smallDiam / bigDiam * 60 / rpms * 100;//(fabs(rightMid.get_actual_velocity()) + fabs(rightBack.get_actual_velocity()) + fabs(rightFront.get_actual_velocity()) + fabs(leftMid.get_actual_velocity()) + fabs(leftBack.get_actual_velocity()) + fabs(leftFront.get_actual_velocity())) / 6;
-            prevLeft = leftEnc.get_value(), prevRight = rightEnc.get_value();
+            double aveRealVelo = deltaTheta / loopDelay * 1000 / 360 * smallDiam / bigDiam * 60 / rpms * 100;//(fabs(rightMid.get_actual_velocity()) + fabs(rightBack.get_actual_velocity()) + fabs(rightFront.get_actual_velocity()) + fabs(leftMid.get_actual_velocity()) + fabs(leftBack.get_actual_velocity()) + fabs(leftFront.get_actual_velocity())) / 6;
+            prevLeft = leftEnc.get_position()/100, prevRight = rightEnc.get_position()/100;
             bool isAccel = false;
             bool isDecel = false;
             double distanceCovered = dist-error;
@@ -197,7 +175,7 @@
             }
             else {
                 targetSpd = origSpeed;
-                highestSpd = spd;
+                highestSpd = targetSpd;
             }
 
             double compensation = (targetSpd - aveRealVelo) * kCor[mogoState];
@@ -220,7 +198,7 @@
             // printf("%f\n", state->getPos().y);
             //printf("%f\n", error);
             */
-            //printf("%f, %f\n", error, (spd));
+            printf("%f, %f, %f\n", error, (spd), aveRealVelo);
             //printf("(x,y,theta): (%f,%f,%f)\n", state->getPos().x, state->getPos().y, targetAng);
 
             leftSpeed = spd - speedCorrection;

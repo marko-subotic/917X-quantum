@@ -28,7 +28,7 @@ class DriveTrainState{
         double deltaTheta(double leftEnc, double rightEnc);
 
     public:
-        static const int minTicks = 2;
+        static const int minTicks = 0;
 	    //default constructor gives point and theta values to 0;
 	    DriveTrainState();
 
