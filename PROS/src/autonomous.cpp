@@ -8,9 +8,9 @@
 //right mid auton
 //DriveTrainState state(103.5, 12, 0);
 //for skills
-//DriveTrainState state(27, 10.5, M_PI/2);
+DriveTrainState state(27, 10.5, M_PI/2);
 // for testing
-DriveTrainState state(25, 25, 0);
+//DriveTrainState state(25, 25, 0);
 
 void odomFunctions(void* p) {
     rightEnc.reset_position();
@@ -143,17 +143,19 @@ void midTow(void* p) {
 void prog(void* p) {
     
     lift.tare_position();
-    Point pointOne(35, 62);
-    Point pointTwo(66, 112);
-    Point pointThree(65, 94);
-    Point pointFour(62, 90);
-    Point pointFive(70, 105);
-    Point pointSix(70, 107.5);
-    Point pointSeven(26.75, 116);
+    Point pointOne(33, 62);
+    Point pointTwo(66, 109);
+    Point pointThree(60, 90);
+    Point pointFour(59, 80);
+    Point pointFive(70, 97);
+    Point pointSix(71, 107.5);
+    Point pointSeven(20.75, 113);
+    Point pointSevenOh(45, 113);
     Point pointEight(66, 78);
     Point pointNine(64, 33.5);
-    Point pointTen(64, 45);
-    Point pointEleven(64, 37);
+    Point pointTen(64, 55);
+    Point pointEleven(64, 60);
+    Point pointTwelve(64, 42);
 
     //printf("%f\n", Utils::perToVol(100));
     
@@ -163,7 +165,7 @@ void prog(void* p) {
     intake.move(-127);
 
     //pros::delay(1000);
-    DriveTrainController::driveToPoint(&state, pointOne, -100, 0, 0);
+    DriveTrainController::driveToPoint(&state, pointOne, -100, 6, 0);
     clamp.set_value(true);
     pros::delay(500);
     
@@ -181,6 +183,7 @@ void prog(void* p) {
     state.switchDir();
     DriveTrainController::turnToPoint(&state, pointFive, 0, 1);
     tilter.set_value(false);
+    pros::delay(300);
     DriveTrainController::driveToPoint(&state, pointFive, -100, 0, 1);
     DriveTrainController::turnToPoint(&state, pointFour, -20, 1);
     DriveTrainController::driveToPoint(&state, pointFour, -100, 4, 1);
@@ -191,9 +194,24 @@ void prog(void* p) {
     clamp.set_value(false);
     state.switchDir();
     DriveTrainController::turnToPoint(&state, pointThree, -90, 1);
+    DriveTrainController::turnToPoint(&state, pointThree, -90, 1);
+
     DriveTrainController::driveToPoint(&state, pointThree, 100, -90, 1);
-    pros::delay(500);
+    pros::delay(300);
+
+    DriveTrainController::turnToPoint(&state, pointSevenOh, 0, 1);
+    DriveTrainController::turnToPoint(&state, pointSevenOh, 0, 1);
+    pros::delay(300);
+
+    DriveTrainController::driveToPoint(&state, pointSevenOh, 100, 0, 1);
+    pros::delay(300);
+
     DriveTrainController::turnToPoint(&state, pointSeven, 0, 1);
+    DriveTrainController::turnToPoint(&state, pointSeven, 0, 1);
+    
+    pros::delay(300);
+    double targetAng = Utils::angleToPoint(Point(pointSeven.x - state.getPos().x, pointSeven.y - state.getPos().y));
+    //printf("%f, %f\n", targetAng, state.getTheta());
     DriveTrainController::driveToPoint(&state, pointSeven, 100, 0, 1);
     tilter.set_value(true);
     state.switchDir();
@@ -201,16 +219,17 @@ void prog(void* p) {
     DriveTrainController::driveToPoint(&state, pointEight, -100, 0, 0);
     clamp.set_value(true);
     DriveTrainController::turnToPoint(&state, pointNine, -20, 0);
-    DriveTrainController::driveToPoint(&state, pointNine, -90, -76, 0);
+    DriveTrainController::driveToPoint(&state, pointNine, -60, -74, 0);
+    pros::delay(500);
     clamp.set_value(false);
     pros::delay(500);
     state.switchDir();
-    DriveTrainController::turnToPoint(&state, pointTen, -76, 0);
-    DriveTrainController::driveToPoint(&state, pointTen, 100, -83, 0);
+    DriveTrainController::turnToPoint(&state, pointTen, -71, 0);
+    DriveTrainController::driveToPoint(&state, pointTen, 100, -71, 0);
     tilter.set_value(false);
     state.switchDir();
-    DriveTrainController::turnToPoint(&state, pointNine, 0, 1);
-    DriveTrainController::driveToPoint(&state, pointNine, -100, 0, 1);
+    DriveTrainController::turnToPoint(&state, pointTwelve, 0, 1);
+    DriveTrainController::driveToPoint(&state, pointTwelve, -100, 0, 1);
 
     DriveTrainController::turnToPoint(&state, pointEleven, 0, 1);
     DriveTrainController::driveToPoint(&state, pointEleven, -100, 0, 1);
@@ -227,18 +246,27 @@ void test(void* p) {
     lift.tare_position();
     Point start(25, 25);
     Point forward(25, 50);
-    Point end(12, 37.5);
+    Point end(12, 25);
 
     Point pointTwo(66, 112);
     Point pointThree(65, 94);
     Point pointFour(62, 90);
     Point pointFive(70, 105);
     Point pointSix(70, 107.5);
-   tilter.set_value(true);
+   //tilter.set_value(true);
 
-    DriveTrainController::turnToPoint(&state, end, 0, 0);
+    DriveTrainController::turnToPoint(&state, end, 0, 1);
     pros::delay(100);
-    DriveTrainController::driveToPoint(&state, end, -100, 0, 0);
+    DriveTrainController::driveToPoint(&state, end, -100, 0, 1);
+
+    DriveTrainController::turnToPoint(&state, forward, 0, 1);
+    pros::delay(100);
+    DriveTrainController::driveToPoint(&state, forward, -100, 0, 1);
+
+    DriveTrainController::turnToPoint(&state, start, 0, 1);
+    pros::delay(100);
+    DriveTrainController::driveToPoint(&state, start, -100, 0, 1);
+
     /*state.switchDir();
     state.setState(pointTwo, Utils::angleToPoint(Point(pointThree.x-pointTwo.x, pointThree.y-pointTwo.y)));
     DriveTrainController::turnToPoint(&state, pointThree, -79, 0);
@@ -268,6 +296,6 @@ void autonomous() {
     //state.switchDir();
     lift.set_encoder_units(pros::E_MOTOR_ENCODER_COUNTS);
     pros::Task odomTasks(odomFunctions);
-    pros::Task driveTask(test);
+    pros::Task driveTask(prog);
 
 }

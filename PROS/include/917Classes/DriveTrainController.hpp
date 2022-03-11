@@ -12,13 +12,13 @@ private:
     static constexpr int turnPow = 4;
     static constexpr double minErrorDegrees = 1*M_PI/180;
     static constexpr double linSpd[division][2] = { {25, 25},
-                                                  {25, 20},
+                                                  {30, 25},
                                                   {25, 25}};
-    static constexpr double AngleWhenDecelerate[division][2] = { { 50 * M_PI / 180, 45 * M_PI / 180 }, 
-                                                        { 75 * M_PI / 180, 50 * M_PI / 180 }, 
-                                                        { 107* M_PI / 180, 95 * M_PI / 180 } };
-    static constexpr double AngleUntilLinear[division][2] = { { 7 * M_PI / 180, 5 * M_PI / 180 }, 
-                                                     { 7 * M_PI / 180, 5 * M_PI / 180 }, 
+    static constexpr double AngleWhenDecelerate[division][2] = { { 55 * M_PI / 180, 60 * M_PI / 180 }, 
+                                                        { 75 * M_PI / 180, 95 * M_PI / 180 }, 
+                                                        { 107* M_PI / 180, 108 * M_PI / 180 } };
+    static constexpr double AngleUntilLinear[division][2] = { { 7 * M_PI / 180, 10 * M_PI / 180 }, 
+                                                     { 7 * M_PI / 180, 10 * M_PI / 180 }, 
                                                      { 7 * M_PI / 180, 5 * M_PI / 180 } };
     static constexpr double oSpeed[2] = { 100, 100};
     static constexpr int rpms = 300;
@@ -28,11 +28,11 @@ private:
 
     //drive to point constants
     static constexpr int decelPow = 5;
-    static constexpr double MinErrorInches = 1;
+    static constexpr double MinErrorInches = 3;
     static constexpr double DistanceUntilDecelerateInches[2] = { 16, 13 };
     static constexpr double DistanceUntilAccelerate = 0.1;
     static constexpr double kCor[2] = { 1.3, .35 };
-    static constexpr double AngleForMaxError[2] = { 7 * M_PI / 180, 13 * M_PI / 180 };
+    static constexpr double AngleForMaxError[2] = { 10 * M_PI / 180, 17 * M_PI / 180 };
     //if final is greater than 20 risk of not finishing straight heightens
     static constexpr double finalSpeedForward[2] = { 30, 25 };
     //if init is great than 35 risk of not going straight heightens

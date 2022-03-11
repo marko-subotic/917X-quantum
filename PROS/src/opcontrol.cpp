@@ -160,11 +160,11 @@ void miscFunctions(void* p) {
 }
 
 void odomFunctionsOP(void* p) {
-    if (rightEnc.get_reversed()) {
+    rightEnc.reset_position();
+    if (!rightEnc.get_reversed()) {
         rightEnc.reverse();
     }
-    rightEnc.reset();
-    leftEnc.reset();
+    leftEnc.reset_position();
     horEnc.reset();
     lv_obj_clean(lv_scr_act());
     OdomDisplay display(lv_scr_act());
@@ -172,8 +172,8 @@ void odomFunctionsOP(void* p) {
     double prevRight = 0;
     double prevLeft = 0;
     double prevMid = 0;
-    double covRight = rightEnc.get_position();
-    double covLeft = leftEnc.get_position();
+    double covRight = rightEnc.get_position() / 100;
+    double covLeft = leftEnc.get_position() / 100;
     double covMid = horEnc.get_value();
     double deltaRight = covRight - prevRight;
     double deltaLeft = covLeft - prevLeft;
@@ -182,12 +182,12 @@ void odomFunctionsOP(void* p) {
     display.setState(place.getPos(), theta);
     Point pointTwo(0, 0);
     while (1) {
-        
-        //double pointAng = Utils::angleToPoint(Point(pointTwo.x - place.getPos().x, pointTwo.y - place.getPos().y));
-        //double targetAng = pointAng - place.getTheta();
-        printf("%f\n", std::max(deltaRight, std::max(deltaLeft, deltaMid)));
+
+        //double pointAng = Utils::angleToPoint(Point(pointTwo.x - state.getPos().x, pointTwo.y - state.getPos().y));
+        //double targetAng = pointAng - state.getTheta();
+        //printf("%f\n", std::max(deltaRight, std::max(deltaLeft, deltaMid)));
         if (std::max(fabs(deltaRight), std::max(fabs(deltaLeft), fabs(deltaMid))) < DriveTrainState::minTicks) {
-            covRight = rightEnc.get_position(), covLeft = leftEnc.get_position(), covMid = horEnc.get_value();
+            covRight = rightEnc.get_position() / 100, covLeft = leftEnc.get_position() / 100, covMid = horEnc.get_value();
             deltaRight = covRight - prevRight, deltaLeft = covLeft - prevLeft, deltaMid = covMid - prevMid;
             //printf("charging\n");
             continue;
@@ -197,9 +197,9 @@ void odomFunctionsOP(void* p) {
         place.step(deltaLeft, deltaRight, deltaMid);
         theta = place.getTheta();
         display.setState(place.getPos(), theta);
-        display.encoderDebug(covRight, "angle to point: ");
+        display.encoderDebug(deltaLeft, "angle to point: ");
         prevRight = covRight, prevLeft = covLeft, prevMid = covMid;
-        covRight = rightEnc.get_position(), covLeft = leftEnc.get_position(), covMid = horEnc.get_value();
+        covRight = rightEnc.get_position() / 100, covLeft = leftEnc.get_position() / 100, covMid = horEnc.get_value();
         deltaRight = covRight - prevRight, deltaLeft = covLeft - prevLeft, deltaMid = covMid - prevMid;
         pros::delay(10);
     }
@@ -216,7 +216,7 @@ void opcontrol() {
     leftFront.set_brake_mode(pros::E_MOTOR_BRAKE_COAST);
     std::string driveTaskName("Drive Task");
     std::string intakeTaskName("Misc Task");
-    //pros::Task odomTasks(odomFunctionsOP);
+   // pros::Task odomTasks(odomFunctionsOP);
     Task driveTask(tankDrive, &driveTaskName);
     Task intakeTask(miscFunctions, &intakeTaskName);
 

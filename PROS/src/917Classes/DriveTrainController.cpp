@@ -61,7 +61,7 @@
 			}
 
           
-            printf("index:%d\n", index);
+            //printf("index:%d\n", index);
 
             rightBack.move(Utils::perToVol(targetSpd * coefficient));
             rightMid.move(Utils::perToVol(targetSpd * coefficient));
@@ -198,7 +198,7 @@
             // printf("%f\n", state->getPos().y);
             //printf("%f\n", error);
             */
-            printf("%f, %f, %f\n", error, (spd), aveRealVelo);
+            //printf("%f, %f, %f\n", error, (spd), aveRealVelo);
             //printf("(x,y,theta): (%f,%f,%f)\n", state->getPos().x, state->getPos().y, targetAng);
 
             leftSpeed = spd - speedCorrection;
@@ -237,7 +237,8 @@
             leftFront.tare_position();
             pros::delay(loopDelay);
         }
-        
+        printf("(x,y,theta): (%f,%f,%f)\n", state->getPos().x, state->getPos().y, targetAng);
+
         rightBack.set_brake_mode(pros::E_MOTOR_BRAKE_HOLD);
         rightMid.set_brake_mode(pros::E_MOTOR_BRAKE_HOLD);
         rightFront.set_brake_mode(pros::E_MOTOR_BRAKE_HOLD);
