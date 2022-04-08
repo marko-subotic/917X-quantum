@@ -13,13 +13,6 @@
 		if (targetAng > M_PI) targetAng -= 2* M_PI;
 		else if (targetAng < -M_PI) targetAng += 2* M_PI;
 
-        int index = 0;
-        for (int i = 0; i < division; i++) {
-            if (fabs(targetAng) <= (i + 1) * M_PI / division) {
-                index = i;
-                break;
-            }
-        }
         
         double firstAng = targetAng;
         lift.move_absolute(Utils::redMotConv(liftPos) * LIFT_RATIO, 100);
@@ -42,17 +35,18 @@
             if (targetAng > M_PI) targetAng -= 2* M_PI;
 			else if (targetAng < -M_PI) targetAng += 2*M_PI;
 
-			if (fabs(targetAng) < AngleUntilLinear[index][mogoState]) {
-				targetSpd = linSpd[index][mogoState];
+
+			if (fabs(targetAng) < AngleUntilLinear[mogoState]) {
+				targetSpd = linSpd;
                 
-			}else if (fabs(targetAng) > AngleWhenDecelerate[index][mogoState]) {
+			}else if (fabs(targetAng-lookAhead) > AngleWhenDecelerate[mogoState]) {
 				targetSpd = oSpeed[mogoState];
 			}
 			else {
 				
-                //https://www.desmos.com/calculator/6r8xr8tr6r
-                targetSpd = kParabola * (pow((fabs(targetAng) - AngleUntilLinear[index][mogoState]), turnPow)) + linSpd[index][mogoState];
-               
+
+                targetSpd = kParabola * (pow((fabs(targetAng-lookAhead) - AngleUntilLinear[mogoState]), turnPow)) + linSpd;
+                
                 
 			}
             int coefficient = 1;
@@ -63,13 +57,17 @@
           
             //printf("index:%d\n", index);
 
-            rightBack.move(Utils::perToVol(targetSpd * coefficient));
-            rightMid.move(Utils::perToVol(targetSpd * coefficient));
-            rightFront.move(Utils::perToVol(targetSpd * coefficient));
+
+            //printf("%f, %f, %f, %f\n", targetAng, targetSpd, aveRealVelo, spd);
+
+            rightBack.move(Utils::perToVol(spd * coefficient));
+            rightMid.move(Utils::perToVol(spd * coefficient));
+            rightFront.move(Utils::perToVol(spd * coefficient));
 
             leftMid.move(Utils::perToVol((targetSpd) * -coefficient));
             leftBack.move(Utils::perToVol((targetSpd) * -coefficient));
             leftFront.move(Utils::perToVol((targetSpd) * -coefficient));
+          
             rightBack.tare_position();
             rightFront.tare_position();
             rightMid.tare_position();
@@ -107,6 +105,7 @@
         lift.move_absolute(Utils::redMotConv(liftPos) * LIFT_RATIO, 100);
         if (targetAng > M_PI) targetAng -= M_PI;
         else if (targetAng < -M_PI) targetAng += M_PI;
+        printf("targetAng: %f", targetAng);
         if (inSpd < 0) {
             //if (targetAng > 0) targetAng -= M_PI;
             //else targetAng += M_PI;
@@ -262,4 +261,5 @@
         leftMid.move_velocity(0);
         leftBack.move_velocity(0);
         leftFront.move_velocity(0);
+        printf("(x,y): (%f,%f)\n", state->getPos().x, state->getPos().y);
 	};

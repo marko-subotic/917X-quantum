@@ -11,15 +11,10 @@ private:
     static constexpr int division = 3;
     static constexpr int turnPow = 4;
     static constexpr double minErrorDegrees = 1*M_PI/180;
-    static constexpr double linSpd[division][2] = { {25, 25},
-                                                  {30, 25},
-                                                  {25, 25}};
-    static constexpr double AngleWhenDecelerate[division][2] = { { 55 * M_PI / 180, 60 * M_PI / 180 }, 
-                                                        { 75 * M_PI / 180, 95 * M_PI / 180 }, 
-                                                        { 107* M_PI / 180, 108 * M_PI / 180 } };
-    static constexpr double AngleUntilLinear[division][2] = { { 7 * M_PI / 180, 10 * M_PI / 180 }, 
-                                                     { 7 * M_PI / 180, 10 * M_PI / 180 }, 
-                                                     { 7 * M_PI / 180, 5 * M_PI / 180 } };
+
+    static constexpr double linSpd = 5;
+    static constexpr double AngleWhenDecelerate [2] = { 179 * M_PI / 180, 179  * M_PI / 180 };
+    static constexpr double AngleUntilLinear[2] = { 177 * M_PI / 180, 177 * M_PI / 180 };
     static constexpr double oSpeed[2] = { 100, 100};
     static constexpr int rpms = 300;
     static constexpr double bigDiam = 4.1;
@@ -34,7 +29,7 @@ private:
     static constexpr double kCor[2] = { 1.3, .35 };
     static constexpr double AngleForMaxError[2] = { 10 * M_PI / 180, 17 * M_PI / 180 };
     //if final is greater than 20 risk of not finishing straight heightens
-    static constexpr double finalSpeedForward[2] = { 30, 25 };
+    static constexpr double finalSpeedForward[2] = { 30, 20 };
     //if init is great than 35 risk of not going straight heightens
     static constexpr double initialSpeedForward[2] = { 50, 50 };
     static constexpr double finalSpeedBackward[2] = { 30, 20 };
