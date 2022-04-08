@@ -263,6 +263,6 @@ void autonomous() {
     //state.switchDir();
     lift.set_encoder_units(pros::E_MOTOR_ENCODER_COUNTS);
     pros::Task odomTasks(odomFunctions);
-    pros::Task driveTask(test);
+    pros::Task driveTask(prog);
 
 }

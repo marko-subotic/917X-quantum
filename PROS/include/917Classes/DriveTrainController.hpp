@@ -11,8 +11,8 @@ private:
     static constexpr int turnPow = 4;
     static constexpr double minErrorDegrees = 1*M_PI/180;
     static constexpr double linSpd = 5;
-    static constexpr double AngleWhenDecelerate [2] = { 50 * M_PI / 180, 40  * M_PI / 180 };
-    static constexpr double AngleUntilLinear[2] = { 7 * M_PI / 180, 5 * M_PI / 180 };
+    static constexpr double AngleWhenDecelerate [2] = { 179 * M_PI / 180, 179  * M_PI / 180 };
+    static constexpr double AngleUntilLinear[2] = { 177 * M_PI / 180, 177 * M_PI / 180 };
     static constexpr double oSpeed[2] = { 100, 100};
     static constexpr double kOsc[2] = { .85, 1.2 };
     static constexpr int rpms = 300;
@@ -30,7 +30,7 @@ private:
     static constexpr double kCor[2] = { 1.3, .35 };
     static constexpr double AngleForMaxError[2] = { 7 * M_PI / 180, 13 * M_PI / 180 };
     //if final is greater than 20 risk of not finishing straight heightens
-    static constexpr double finalSpeedForward[2] = { 30, 25 };
+    static constexpr double finalSpeedForward[2] = { 30, 20 };
     //if init is great than 35 risk of not going straight heightens
     static constexpr double initialSpeedForward[2] = { 50, 50 };
     static constexpr double finalSpeedBackward[2] = { 30, 20 };

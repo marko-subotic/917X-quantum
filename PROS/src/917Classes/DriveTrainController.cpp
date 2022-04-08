@@ -35,33 +35,15 @@
 
 			if (fabs(targetAng) < AngleUntilLinear[mogoState]) {
 				targetSpd = linSpd;
-                /*if (aveRealVelo < targetSpd) {
-                    spd = targetSpd + compensation;
-                    compensation += fabs(targetSpd-aveRealVelo);
-                }
-                else {
-                    compensation -= fabs(targetSpd - aveRealVelo);
-
-                }
-                spd = targetSpd + compensation;*/
+                
 			}else if (fabs(targetAng-lookAhead) > AngleWhenDecelerate[mogoState]) {
 				targetSpd = oSpeed[mogoState];
 			}
 			else {
-				/*//https://www.desmos.com/calculator/frano6ozhv
-				spd = (oSpeed[mogoState] - linSpd) / 2 * (1 + cos(M_PI/(M_PI-AngleWhenDecelerate[mogoState])*(M_PI-AngleWhenDecelerate[mogoState]-fabs(targetAng)))) + linSpd;
-                */
+				
                 //https://www.desmos.com/calculator/6r8xr8tr6r
                 targetSpd = kParabola * (pow((fabs(targetAng-lookAhead) - AngleUntilLinear[mogoState]), turnPow)) + linSpd;
-                /*if (aveRealVelo < targetSpd) {
-                    spd = targetSpd + compensation;
-                    compensation += fabs(targetSpd - aveRealVelo);
-                }
-                else {
-                    compensation -= fabs(targetSpd - aveRealVelo);
-
-                }
-                spd = targetSpd + compensation;*/
+                
                 
 			}
             int coefficient = 1;
@@ -83,7 +65,7 @@
             leftBack.move_velocity((spd) * -coefficient);
             leftFront.move_velocity((spd) * -coefficient);
             */
-            printf("%f, %f, %f, %f\n", targetAng, targetSpd, aveRealVelo, spd);
+            //printf("%f, %f, %f, %f\n", targetAng, targetSpd, aveRealVelo, spd);
 
             rightBack.move(Utils::perToVol(spd * coefficient));
             rightMid.move(Utils::perToVol(spd * coefficient));
@@ -129,6 +111,7 @@
         lift.move_absolute(Utils::redMotConv(liftPos) * LIFT_RATIO, 100);
         if (targetAng > M_PI) targetAng -= M_PI;
         else if (targetAng < -M_PI) targetAng += M_PI;
+        printf("targetAng: %f", targetAng);
         if (inSpd < 0) {
             //if (targetAng > 0) targetAng -= M_PI;
             //else targetAng += M_PI;
@@ -283,4 +266,5 @@
         leftMid.move_velocity(0);
         leftBack.move_velocity(0);
         leftFront.move_velocity(0);
+        printf("(x,y): (%f,%f)\n", state->getPos().x, state->getPos().y);
 	};
