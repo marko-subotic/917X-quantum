@@ -8,13 +8,16 @@
 //right mid auton
 //DriveTrainState state(103.5, 12, 0);
 //for skills
-//DriveTrainState state(27, 10.5, M_PI/2);
+DriveTrainState state(27, 10.5, M_PI/2);
 // for testing
-DriveTrainState state(25, 25, 0);
+//DriveTrainState state(25, 25, 0);
 
 void odomFunctions(void* p) {
-    rightEnc.reset();
-    leftEnc.reset();
+    rightEnc.reset_position();
+    if (!rightEnc.get_reversed()) {
+        rightEnc.reverse();
+    }
+    leftEnc.reset_position();
     horEnc.reset();
     lv_obj_clean(lv_scr_act());
     OdomDisplay display(lv_scr_act());
@@ -22,8 +25,8 @@ void odomFunctions(void* p) {
     double prevRight = 0;
     double prevLeft = 0;
     double prevMid = 0;
-    double covRight = rightEnc.get_value();
-    double covLeft = leftEnc.get_value();
+    double covRight = rightEnc.get_position()/100;
+    double covLeft = leftEnc.get_position()/100;
     double covMid = horEnc.get_value();
     double deltaRight = covRight - prevRight;
     double deltaLeft = covLeft - prevLeft;
@@ -37,7 +40,7 @@ void odomFunctions(void* p) {
         //double targetAng = pointAng - state.getTheta();
         //printf("%f\n", std::max(deltaRight, std::max(deltaLeft, deltaMid)));
         if (std::max(fabs(deltaRight), std::max(fabs(deltaLeft), fabs(deltaMid))) < DriveTrainState::minTicks) {
-            covRight = rightEnc.get_value(), covLeft = leftEnc.get_value(), covMid = horEnc.get_value();
+            covRight = rightEnc.get_position()/100, covLeft = leftEnc.get_position()/100, covMid = horEnc.get_value();
             deltaRight = covRight - prevRight, deltaLeft = covLeft - prevLeft, deltaMid = covMid - prevMid;
             //printf("charging\n");
             continue;
@@ -47,11 +50,11 @@ void odomFunctions(void* p) {
         state.step(deltaLeft, deltaRight, deltaMid);
         theta = state.getTheta();
         display.setState(state.getPos(), theta);
-        display.encoderDebug(covMid, "angle to point: ");
+        display.encoderDebug(deltaLeft, "angle to point: ");
         prevRight = covRight, prevLeft = covLeft, prevMid = covMid;
-        covRight = rightEnc.get_value(), covLeft = leftEnc.get_value(), covMid = horEnc.get_value();
+        covRight = rightEnc.get_position()/100, covLeft = leftEnc.get_position()/100, covMid = horEnc.get_value();
         deltaRight = covRight - prevRight, deltaLeft = covLeft - prevLeft, deltaMid = covMid - prevMid;
-        pros::delay(5);
+        pros::delay(10);
     }
 }
 
@@ -63,13 +66,14 @@ void rightSide(void* p) {
     Point pointFour(130.5, 39);
     Point pointFive(132, 78);
     Point pointSix(125, 30);
-    printf("looping through motor");
     //DriveTrainController::turnToPoint(&state, pointOne, 0, 0);
-    DriveTrainController::driveToPoint(&state, pointOne, -100, 5,1);
+    DriveTrainController::driveToPoint(&state, pointOne, -100, 0,1);
     clamp.set_value(true);
+    printf("looping through motor");
+
     state.switchDir();
     DriveTrainController::driveToPoint(&state, pointTwo, 100, -20,0);
-    DriveTrainController::turnToPoint(&state, pointThree, -20, 0);
+    /*DriveTrainController::turnToPoint(&state, pointThree, -20, 0);
     DriveTrainController::turnToPoint(&state, pointThree, -20, 0);
     DriveTrainController::driveToPoint(&state, pointThree,100, -10, 0);
     tilter.set_value(true);
@@ -82,7 +86,7 @@ void rightSide(void* p) {
     state.switchDir();
     DriveTrainController::turnToPoint(&state, pointSix, -20, 0);
     DriveTrainController::driveToPoint(&state, pointSix, 100, -20, 0);
-
+    */
     //pros::delay(700);
 
     //DriveTrainController::turnToPoint(&state, pointTwo, .25, -10);
@@ -139,17 +143,19 @@ void midTow(void* p) {
 void prog(void* p) {
     
     lift.tare_position();
-    Point pointOne(35, 62);
-    Point pointTwo(66, 112);
-    Point pointThree(65, 94);
-    Point pointFour(62, 90);
-    Point pointFive(70, 105);
-    Point pointSix(70, 107.5);
-    Point pointSeven(26.75, 116);
+    Point pointOne(33, 62);
+    Point pointTwo(66, 109);
+    Point pointThree(60, 90);
+    Point pointFour(59, 80);
+    Point pointFive(70, 97);
+    Point pointSix(71, 107.5);
+    Point pointSeven(20.75, 113);
+    Point pointSevenOh(45, 113);
     Point pointEight(66, 78);
     Point pointNine(64, 33.5);
-    Point pointTen(64, 45);
-    Point pointEleven(64, 37);
+    Point pointTen(64, 55);
+    Point pointEleven(64, 60);
+    Point pointTwelve(64, 42);
 
     //printf("%f\n", Utils::perToVol(100));
     
@@ -159,7 +165,7 @@ void prog(void* p) {
     intake.move(-127);
 
     //pros::delay(1000);
-    DriveTrainController::driveToPoint(&state, pointOne, -100, 0, 0);
+    DriveTrainController::driveToPoint(&state, pointOne, -100, 6, 0);
     clamp.set_value(true);
     pros::delay(500);
     
@@ -177,6 +183,7 @@ void prog(void* p) {
     state.switchDir();
     DriveTrainController::turnToPoint(&state, pointFive, 0, 1);
     tilter.set_value(false);
+    pros::delay(300);
     DriveTrainController::driveToPoint(&state, pointFive, -100, 0, 1);
     DriveTrainController::turnToPoint(&state, pointFour, -20, 1);
     DriveTrainController::driveToPoint(&state, pointFour, -100, 4, 1);
@@ -187,9 +194,24 @@ void prog(void* p) {
     clamp.set_value(false);
     state.switchDir();
     DriveTrainController::turnToPoint(&state, pointThree, -90, 1);
+    DriveTrainController::turnToPoint(&state, pointThree, -90, 1);
+
     DriveTrainController::driveToPoint(&state, pointThree, 100, -90, 1);
-    pros::delay(500);
+    pros::delay(300);
+
+    DriveTrainController::turnToPoint(&state, pointSevenOh, 0, 1);
+    DriveTrainController::turnToPoint(&state, pointSevenOh, 0, 1);
+    pros::delay(300);
+
+    DriveTrainController::driveToPoint(&state, pointSevenOh, 100, 0, 1);
+    pros::delay(300);
+
     DriveTrainController::turnToPoint(&state, pointSeven, 0, 1);
+    DriveTrainController::turnToPoint(&state, pointSeven, 0, 1);
+    
+    pros::delay(300);
+    double targetAng = Utils::angleToPoint(Point(pointSeven.x - state.getPos().x, pointSeven.y - state.getPos().y));
+    //printf("%f, %f\n", targetAng, state.getTheta());
     DriveTrainController::driveToPoint(&state, pointSeven, 100, 0, 1);
     tilter.set_value(true);
     state.switchDir();
@@ -197,16 +219,17 @@ void prog(void* p) {
     DriveTrainController::driveToPoint(&state, pointEight, -100, 0, 0);
     clamp.set_value(true);
     DriveTrainController::turnToPoint(&state, pointNine, -20, 0);
-    DriveTrainController::driveToPoint(&state, pointNine, -90, -76, 0);
+    DriveTrainController::driveToPoint(&state, pointNine, -60, -74, 0);
+    pros::delay(500);
     clamp.set_value(false);
     pros::delay(500);
     state.switchDir();
-    DriveTrainController::turnToPoint(&state, pointTen, -76, 0);
-    DriveTrainController::driveToPoint(&state, pointTen, 100, -83, 0);
+    DriveTrainController::turnToPoint(&state, pointTen, -71, 0);
+    DriveTrainController::driveToPoint(&state, pointTen, 100, -71, 0);
     tilter.set_value(false);
     state.switchDir();
-    DriveTrainController::turnToPoint(&state, pointNine, 0, 1);
-    DriveTrainController::driveToPoint(&state, pointNine, -100, 0, 1);
+    DriveTrainController::turnToPoint(&state, pointTwelve, 0, 1);
+    DriveTrainController::driveToPoint(&state, pointTwelve, -100, 0, 1);
 
     DriveTrainController::turnToPoint(&state, pointEleven, 0, 1);
     DriveTrainController::driveToPoint(&state, pointEleven, -100, 0, 1);
@@ -230,10 +253,20 @@ void test(void* p) {
     Point pointFour(62, 90);
     Point pointFive(70, 105);
     Point pointSix(70, 107.5);
-    //tilter.set_value(true);
+   //tilter.set_value(true);
 
     DriveTrainController::turnToPoint(&state, end, 0, 1);
+    pros::delay(100);
     DriveTrainController::driveToPoint(&state, end, -100, 0, 1);
+
+    DriveTrainController::turnToPoint(&state, forward, 0, 1);
+    pros::delay(100);
+    DriveTrainController::driveToPoint(&state, forward, -100, 0, 1);
+
+    DriveTrainController::turnToPoint(&state, start, 0, 1);
+    pros::delay(100);
+    DriveTrainController::driveToPoint(&state, start, -100, 0, 1);
+
     /*state.switchDir();
     state.setState(pointTwo, Utils::angleToPoint(Point(pointThree.x-pointTwo.x, pointThree.y-pointTwo.y)));
     DriveTrainController::turnToPoint(&state, pointThree, -79, 0);

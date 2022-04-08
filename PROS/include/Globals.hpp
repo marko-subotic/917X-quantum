@@ -1,7 +1,7 @@
 #include "main.h"
 #pragma once
-extern pros::ADIEncoder rightEnc;
-extern pros::ADIEncoder leftEnc;
+extern pros::Rotation rightEnc;
+extern pros::Rotation leftEnc;
 extern pros::ADIEncoder horEnc;
 extern pros::Motor rightFront;
 extern pros::Motor rightMid;
@@ -14,3 +14,4 @@ extern pros::Motor lift;
 extern pros::ADIDigitalOut clamp;
 extern pros::ADIDigitalOut tilter;
 extern pros::Controller cont;
+extern pros::ADIDigitalOut cover;

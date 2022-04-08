@@ -106,10 +106,12 @@ void miscFunctions(void* p) {
     lift.set_brake_mode(MOTOR_BRAKE_BRAKE);
     bool clampToggle = false;
     bool tiltToggle = true;
+    bool coverToggle = false;
     tilter.set_value(tiltToggle);
     double liftLock = lift.get_raw_position(NULL);
     lift.set_encoder_units(pros::E_MOTOR_ENCODER_COUNTS);
-
+    double prevLeft = leftEnc.get_position();
+    double prevRight = rightEnc.get_position();
     while (true) {
         bool R2 = cont.get_digital(E_CONTROLLER_DIGITAL_R2);
         bool R1 = cont.get_digital(E_CONTROLLER_DIGITAL_R1);
@@ -117,8 +119,14 @@ void miscFunctions(void* p) {
         bool L1 = cont.get_digital_new_press(E_CONTROLLER_DIGITAL_L1);
         bool x = cont.get_digital_new_press(DIGITAL_X);
         bool y = cont.get_digital_new_press(DIGITAL_Y);
+        bool left = cont.get_digital_new_press(DIGITAL_LEFT);
 
 
+        double deltaTheta = (fabs(leftEnc.get_position() / 100 - prevLeft) + fabs(rightEnc.get_position() / 100 - prevRight)) / 2;
+        //double encoderRPM = deltaTheta / (loopDelay / 1000) / 360;
+        double aveRealVelo = deltaTheta / 20 * 1000 / 360 * 2.75 / 4 * 60 / 300 * 100;//(fabs(rightMid.get_actual_velocity()) + fabs(rightBack.get_actual_velocity()) + fabs(rightFront.get_actual_velocity()) + fabs(leftMid.get_actual_velocity()) + fabs(leftBack.get_actual_velocity()) + fabs(leftFront.get_actual_velocity())) / 6;
+        prevLeft = leftEnc.get_position() / 100, prevRight = rightEnc.get_position() / 100;
+        printf("%f\n", aveRealVelo);
         if (R2) {
             lift.move(127);
             liftLock = lift.get_raw_position(NULL);
@@ -142,6 +150,9 @@ void miscFunctions(void* p) {
         }if (y) {
             tiltToggle = !tiltToggle;
             tilter.set_value(tiltToggle);
+        }if (left) {
+            coverToggle = !coverToggle;
+            cover.set_value(coverToggle);
         }
         pros::delay(20);
     }
@@ -149,8 +160,11 @@ void miscFunctions(void* p) {
 }
 
 void odomFunctionsOP(void* p) {
-    rightEnc.reset();
-    leftEnc.reset();
+    rightEnc.reset_position();
+    if (!rightEnc.get_reversed()) {
+        rightEnc.reverse();
+    }
+    leftEnc.reset_position();
     horEnc.reset();
     lv_obj_clean(lv_scr_act());
     OdomDisplay display(lv_scr_act());
@@ -158,8 +172,8 @@ void odomFunctionsOP(void* p) {
     double prevRight = 0;
     double prevLeft = 0;
     double prevMid = 0;
-    double covRight = rightEnc.get_value();
-    double covLeft = leftEnc.get_value();
+    double covRight = rightEnc.get_position() / 100;
+    double covLeft = leftEnc.get_position() / 100;
     double covMid = horEnc.get_value();
     double deltaRight = covRight - prevRight;
     double deltaLeft = covLeft - prevLeft;
@@ -168,12 +182,12 @@ void odomFunctionsOP(void* p) {
     display.setState(place.getPos(), theta);
     Point pointTwo(0, 0);
     while (1) {
-        
-        //double pointAng = Utils::angleToPoint(Point(pointTwo.x - place.getPos().x, pointTwo.y - place.getPos().y));
-        //double targetAng = pointAng - place.getTheta();
-        printf("%f\n", std::max(deltaRight, std::max(deltaLeft, deltaMid)));
+
+        //double pointAng = Utils::angleToPoint(Point(pointTwo.x - state.getPos().x, pointTwo.y - state.getPos().y));
+        //double targetAng = pointAng - state.getTheta();
+        //printf("%f\n", std::max(deltaRight, std::max(deltaLeft, deltaMid)));
         if (std::max(fabs(deltaRight), std::max(fabs(deltaLeft), fabs(deltaMid))) < DriveTrainState::minTicks) {
-            covRight = rightEnc.get_value(), covLeft = leftEnc.get_value(), covMid = horEnc.get_value();
+            covRight = rightEnc.get_position() / 100, covLeft = leftEnc.get_position() / 100, covMid = horEnc.get_value();
             deltaRight = covRight - prevRight, deltaLeft = covLeft - prevLeft, deltaMid = covMid - prevMid;
             //printf("charging\n");
             continue;
@@ -183,11 +197,11 @@ void odomFunctionsOP(void* p) {
         place.step(deltaLeft, deltaRight, deltaMid);
         theta = place.getTheta();
         display.setState(place.getPos(), theta);
-        display.encoderDebug(covRight, "angle to point: ");
+        display.encoderDebug(deltaLeft, "angle to point: ");
         prevRight = covRight, prevLeft = covLeft, prevMid = covMid;
-        covRight = rightEnc.get_value(), covLeft = leftEnc.get_value(), covMid = horEnc.get_value();
+        covRight = rightEnc.get_position() / 100, covLeft = leftEnc.get_position() / 100, covMid = horEnc.get_value();
         deltaRight = covRight - prevRight, deltaLeft = covLeft - prevLeft, deltaMid = covMid - prevMid;
-        pros::delay(1);
+        pros::delay(10);
     }
 }
 
@@ -202,7 +216,7 @@ void opcontrol() {
     leftFront.set_brake_mode(pros::E_MOTOR_BRAKE_COAST);
     std::string driveTaskName("Drive Task");
     std::string intakeTaskName("Misc Task");
-    //pros::Task odomTasks(odomFunctionsOP);
+   // pros::Task odomTasks(odomFunctionsOP);
     Task driveTask(tankDrive, &driveTaskName);
     Task intakeTask(miscFunctions, &intakeTaskName);
 

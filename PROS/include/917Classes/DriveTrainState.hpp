@@ -12,7 +12,7 @@ class DriveTrainState{
         double m_theta;
         const double encWheelSize = 2.775;
         const double horEncWheelSize = 2.775;
-        const double distanceYs = 14.72;
+        const double distanceYs = 14.695;
         const double distanceX = 4.4;
         const Point leftEnc = Point(-distanceYs/2, distanceX);
         const Point rightEnc = Point(distanceYs/2,distanceX);
@@ -28,7 +28,7 @@ class DriveTrainState{
         double deltaTheta(double leftEnc, double rightEnc);
 
     public:
-        static const int minTicks = 2;
+        static const int minTicks = 0;
 	    //default constructor gives point and theta values to 0;
 	    DriveTrainState();
 

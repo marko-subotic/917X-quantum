@@ -1,8 +1,8 @@
 #define _USE_MATH_DEFINES
 #include "pch.h"
 #include "CppUnitTest.h"
-#include "917Classes\DriveTrainState.hpp"
-#include "917Classes\Utils.hpp"
+#include "DriveTrainState.hpp"
+#include "Utils.hpp"
 #include "math.h"
 #include <vector>
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
