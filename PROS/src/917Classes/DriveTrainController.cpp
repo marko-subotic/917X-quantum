@@ -18,7 +18,8 @@
         lift.move_absolute(Utils::redMotConv(liftPos) * LIFT_RATIO, 100);
 
 
-        double kParabola = (oSpeed[mogoState] - linSpd[index][mogoState]) / (pow((AngleWhenDecelerate[index][mogoState]-AngleUntilLinear[index][mogoState]), turnPow));
+        double kParabola = (oSpeed[mogoState] - linSpd) / (pow((AngleWhenDecelerate[mogoState]-AngleUntilLinear[mogoState]), turnPow));
+        double spd = 20;
         double prevLeft = leftEnc.get_position()/100;
         double prevRight = rightEnc.get_position()/100;
 
@@ -53,20 +54,23 @@
 			if (targetAng < 0) {
 				coefficient *= -1;
 			}
-
+            double compensation = (targetSpd - aveRealVelo) * kOsc[mogoState];
+            spd += compensation;
+            if (spd > 100) spd = 100;
+            else if (spd < minCorrect[mogoState]) spd = -minCorrect[mogoState];
           
-            //printf("index:%d\n", index);
+            //printf("speed: %f\n", spd);
 
 
-            //printf("%f, %f, %f, %f\n", targetAng, targetSpd, aveRealVelo, spd);
+            //printf("targetAng: %f, targetSpd: %f, realVelo: %f, spd: %f\n", targetAng, targetSpd, aveRealVelo, spd);
 
             rightBack.move(Utils::perToVol(spd * coefficient));
             rightMid.move(Utils::perToVol(spd * coefficient));
             rightFront.move(Utils::perToVol(spd * coefficient));
 
-            leftMid.move(Utils::perToVol((targetSpd) * -coefficient));
-            leftBack.move(Utils::perToVol((targetSpd) * -coefficient));
-            leftFront.move(Utils::perToVol((targetSpd) * -coefficient));
+            leftMid.move(Utils::perToVol((spd) * -coefficient));
+            leftBack.move(Utils::perToVol((spd) * -coefficient));
+            leftFront.move(Utils::perToVol((spd) * -coefficient));
           
             rightBack.tare_position();
             rightFront.tare_position();
@@ -105,7 +109,7 @@
         lift.move_absolute(Utils::redMotConv(liftPos) * LIFT_RATIO, 100);
         if (targetAng > M_PI) targetAng -= M_PI;
         else if (targetAng < -M_PI) targetAng += M_PI;
-        printf("targetAng: %f", targetAng);
+        printf("targetAng: %f\n", targetAng);
         if (inSpd < 0) {
             //if (targetAng > 0) targetAng -= M_PI;
             //else targetAng += M_PI;
@@ -133,6 +137,7 @@
         }
         //printf("%f")
         double distanceDecelerating = DistanceUntilDecelerateInches[mogoState] ;
+        int crashCounter = 0;
         while (fabs(error) >= MinErrorInches) {
             lift.move_absolute(Utils::redMotConv(liftPos) * LIFT_RATIO, 100);
             double targetSpd;
@@ -143,6 +148,15 @@
             bool isAccel = false;
             bool isDecel = false;
             double distanceCovered = dist-error;
+            if (aveRealVelo < 1) {
+                crashCounter++;
+            }
+            else {
+                crashCounter = 0;
+            }
+            if (crashCounter > 10) {
+                break;
+            }
             if (fabs(dist) < NonMaxSpeedDist) {
                 if (error > dist * (DistanceUntilDecelerateInches[mogoState] / (NonMaxSpeedDist)))
                 {
@@ -236,7 +250,7 @@
             leftFront.tare_position();
             pros::delay(loopDelay);
         }
-        printf("(x,y,theta): (%f,%f,%f)\n", state->getPos().x, state->getPos().y, targetAng);
+        printf("(x,y): (%f,%f)\n", state->getPos().x, state->getPos().y);
 
         rightBack.set_brake_mode(pros::E_MOTOR_BRAKE_HOLD);
         rightMid.set_brake_mode(pros::E_MOTOR_BRAKE_HOLD);
