@@ -23,6 +23,7 @@ private:
     static constexpr double lookAhead = 0 * M_PI / 180;
     static constexpr int loopDelay = 20;
     static constexpr double minCorrect[2] = { -35, -20 };
+    static constexpr double kDist = .5;
 
 
     //drive to point constants
@@ -38,7 +39,10 @@ private:
     static constexpr double initialSpeedForward[2] = { 50, 50 };
     static constexpr double finalSpeedBackward[2] = { 30, 20 };
     static constexpr double initialSpeedBackward[2] = { 50, 127 };
+
+    
 public:
+    static Point pointAligner(Point state, Point target, double finalAng);
     static void turnToPoint(DriveTrainState* state, Point target, double liftPos, int mogoState);
     static void driveToPoint(DriveTrainState* state, Point target, double inSpd, double liftPos, int mogoState);
 };
