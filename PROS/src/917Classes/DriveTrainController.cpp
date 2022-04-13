@@ -4,7 +4,36 @@
 #include "Globals.hpp"
 #include <math.h>
 
+Point DriveTrainController::pointAligner(Point state, Point target, double finalAng) {
+    double xPerp, yPerp;
+    Point alignPoint(0, 0);
+    if (abs(finalAng) < .01 || abs(abs(finalAng) - M_PI) < .01) {
+        xPerp = target.x;
+        yPerp = state.y;
+    }else if (abs(abs(finalAng)-M_PI/2.0) < .01 || abs(abs(finalAng) - 3*M_PI/2) < .01) {
+        xPerp = state.x;
+        yPerp = target.y;
+    }
+    else {
+        xPerp = (state.y - target.y + 1/tan(finalAng) * target.x + state.x * tan(finalAng)) / (1/tan(finalAng) + tan(finalAng));
+        yPerp = (-tan(finalAng))*(xPerp - state.x) + state.y;
+        printf("%f, %f\n", xPerp, yPerp);
 
+    }
+    //if (state.x <= target.x) {
+        alignPoint.x = xPerp + (target.x - xPerp) * kDist;
+    //}
+    //else {
+    //    alignPoint.x = xPerp - (target.x - xPerp) * kDist;
+    //}
+    //if (state.y <= target.y) {
+        alignPoint.y = yPerp + (target.y - yPerp) * kDist;
+    /* }
+    else {
+
+    }*/
+    return alignPoint;
+    }
 
 	void DriveTrainController::turnToPoint(DriveTrainState * state, Point target, double liftPos, int mogoState) {
 		double pointAng = Utils::angleToPoint(Point(target.x-state->getPos().x, target.y-state->getPos().y));
@@ -99,12 +128,14 @@
         leftFront.move_absolute(0, 100);
 	};
 
-	void DriveTrainController::driveToPoint(DriveTrainState* state, Point target, double inSpd, double liftPos, int mogoState) {
+	void DriveTrainController::driveToPoint(DriveTrainState* state, Point target, double inSpd, double liftPos, int mogoState, int finalAng) {
         
 
         double finalSpeed = finalSpeedForward[mogoState];
         double initialSpeed = initialSpeedForward[mogoState];
-        double pointAng = Utils::angleToPoint(Point(target.x - state->getPos().x, target.y - state->getPos().y));
+        finalAng *= M_PI / 180;
+        Point alignPoint = DriveTrainController::pointAligner(state->getPos(), target, finalAng);
+        double pointAng = Utils::angleToPoint(Point(alignPoint.x - state->getPos().x, alignPoint.y - state->getPos().y)); 
         double targetAng = pointAng - state->getTheta();
         lift.move_absolute(Utils::redMotConv(liftPos) * LIFT_RATIO, 100);
         if (targetAng > M_PI) targetAng -= M_PI;
@@ -195,7 +226,8 @@
             spd = targetSpd;
             if (spd > 100) spd = 100;
             else if (spd < -100) spd = -100;
-            pointAng = Utils::angleToPoint(Point(target.x - state->getPos().x, target.y - state->getPos().y));
+            alignPoint = DriveTrainController::pointAligner(state->getPos(), target, finalAng);
+            pointAng = Utils::angleToPoint(Point(alignPoint.x - state->getPos().x, alignPoint.y - state->getPos().y)); 
             targetAng = pointAng - state->getTheta();
             if (targetAng > M_PI) targetAng -= 2*M_PI;
             else if (targetAng < -M_PI) targetAng += 2*M_PI;
