@@ -207,6 +207,7 @@ void odomFunctionsOP(void* p) {
 
 void opcontrol() {
     clamp.set_value(true);
+    inAuton = false;
     rightBack.set_brake_mode(pros::E_MOTOR_BRAKE_COAST);
     rightMid.set_brake_mode(pros::E_MOTOR_BRAKE_COAST);
     rightFront.set_brake_mode(pros::E_MOTOR_BRAKE_COAST);

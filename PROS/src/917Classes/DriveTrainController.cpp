@@ -109,6 +109,9 @@ Point DriveTrainController::pointAligner(Point state, Point target, double final
             leftBack.tare_position();
             leftFront.tare_position();
 			pros::delay(loopDelay);
+            if (!inAuton) {
+                return;
+            }
 
 		}
         rightBack.set_brake_mode(pros::E_MOTOR_BRAKE_HOLD);
@@ -128,19 +131,20 @@ Point DriveTrainController::pointAligner(Point state, Point target, double final
         leftFront.move_absolute(0, 100);
 	};
 
-	void DriveTrainController::driveToPoint(DriveTrainState* state, Point target, double inSpd, double liftPos, int mogoState, int finalAng) {
+	void DriveTrainController::driveToPoint(DriveTrainState* state, Point target, double inSpd, double liftPos, int mogoState, double finalAng) {
         
 
         double finalSpeed = finalSpeedForward[mogoState];
         double initialSpeed = initialSpeedForward[mogoState];
-        finalAng *= M_PI / 180;
+        finalAng *= (M_PI / 180.0);
         Point alignPoint = DriveTrainController::pointAligner(state->getPos(), target, finalAng);
         double pointAng = Utils::angleToPoint(Point(alignPoint.x - state->getPos().x, alignPoint.y - state->getPos().y)); 
         double targetAng = pointAng - state->getTheta();
+        turnToPoint(state, alignPoint, liftPos, mogoState);
         lift.move_absolute(Utils::redMotConv(liftPos) * LIFT_RATIO, 100);
         if (targetAng > M_PI) targetAng -= M_PI;
         else if (targetAng < -M_PI) targetAng += M_PI;
-        printf("targetAng: %f\n", targetAng);
+        printf("targetAng: %f\n", finalAng);
         if (inSpd < 0) {
             //if (targetAng > 0) targetAng -= M_PI;
             //else targetAng += M_PI;
@@ -170,6 +174,9 @@ Point DriveTrainController::pointAligner(Point state, Point target, double final
         double distanceDecelerating = DistanceUntilDecelerateInches[mogoState] ;
         int crashCounter = 0;
         while (fabs(error) >= MinErrorInches) {
+            if (!inAuton) {
+                return;
+            }
             lift.move_absolute(Utils::redMotConv(liftPos) * LIFT_RATIO, 100);
             double targetSpd;
             double deltaTheta = (fabs(leftEnc.get_position()/100 - prevLeft) + fabs(rightEnc.get_position()/100 - prevRight)) / 2;
@@ -237,7 +244,7 @@ Point DriveTrainController::pointAligner(Point state, Point target, double final
             //speed correction keeps robot pointed towards the point it wants to drive too
             //spd/ospeed makes the corrections get bigger the faster the bot goes, angle for max error
             //is a constant that needs to be tuned
-            double speedCorrection = pow(spd / origSpeed, 3)* (spd / AngleForMaxError[mogoState])* pow(targetAng, 1);
+            double speedCorrection = pow(error / dist, 1)* (spd / AngleForMaxError[mogoState])* pow(targetAng, 1);
             /*printf("correction: %f\n", speedCorrection);
             printf("(x,y,theta): (%f,%f,%f)\n", state->getPos().x, state->getPos().y, targetAng);
             // printf("%f\n", state->getPos().y);
