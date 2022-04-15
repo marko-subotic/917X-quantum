@@ -51,20 +51,24 @@ Point DriveTrainController::pointAligner(Point state, Point target, double final
         double spd = 20;
         double prevLeft = leftEnc.get_position()/100;
         double prevRight = rightEnc.get_position()/100;
-
+        double veloAng;
+        double dif;
         while (std::abs(targetAng)> minErrorDegrees&&firstAng*targetAng>0) {
             lift.move_absolute(Utils::redMotConv(liftPos) * LIFT_RATIO, 100);
 			pointAng = Utils::angleToPoint(Point(target.x - state->getPos().x, target.y - state->getPos().y));
 			targetAng = pointAng - state->getTheta();
             double targetSpd;
-            
+
+
+            double corSpd;
             double deltaTheta = (fabs(leftEnc.get_position()/100 - prevLeft) + fabs(rightEnc.get_position()/100 - prevRight)) / 2;
             //double encoderRPM = deltaTheta / (loopDelay / 1000) / 360;
             double aveRealVelo = deltaTheta / loopDelay * 1000 / 360 * smallDiam / bigDiam * 60 / rpms * 100;//(fabs(rightMid.get_actual_velocity()) + fabs(rightBack.get_actual_velocity()) + fabs(rightFront.get_actual_velocity()) + fabs(leftMid.get_actual_velocity()) + fabs(leftBack.get_actual_velocity()) + fabs(leftFront.get_actual_velocity())) / 6;
+            dif = targetSpd - aveRealVelo;
+
             prevLeft = leftEnc.get_position()/100, prevRight = rightEnc.get_position()/100;
             if (targetAng > M_PI) targetAng -= 2* M_PI;
 			else if (targetAng < -M_PI) targetAng += 2*M_PI;
-
 
 			if (fabs(targetAng) < AngleUntilLinear[mogoState]) {
 				targetSpd = linSpd;
@@ -73,17 +77,27 @@ Point DriveTrainController::pointAligner(Point state, Point target, double final
 				targetSpd = oSpeed[mogoState];
 			}
 			else {
-				
-
                 targetSpd = kParabola * (pow((fabs(targetAng-lookAhead) - AngleUntilLinear[mogoState]), turnPow)) + linSpd;
-                
-                
 			}
+            veloAng = fabs(targetAng) - 2 / fabs(dif);
+            if (veloAng < 0) {
+                veloAng = 0;
+            }
+
+            if (fabs(veloAng) < AngleUntilLinear[mogoState]) {
+                corSpd = linSpd;
+            }
+            else if (fabs(veloAng) > AngleWhenDecelerate[mogoState]) {
+                corSpd = oSpeed[mogoState];
+            }
+            else {
+                corSpd = kParabola * (pow((fabs(veloAng) - AngleUntilLinear[mogoState]), turnPow)) + linSpd;
+            }
             int coefficient = 1;
 			if (targetAng < 0) {
 				coefficient *= -1;
 			}
-            double compensation = (targetSpd - aveRealVelo) * kOsc[mogoState];
+            double compensation = (corSpd - aveRealVelo) * kOsc[mogoState];
             spd += compensation;
             if (spd > 100) spd = 100;
             else if (spd < minCorrect[mogoState]) spd = -minCorrect[mogoState];
@@ -91,7 +105,7 @@ Point DriveTrainController::pointAligner(Point state, Point target, double final
             //printf("speed: %f\n", spd);
 
 
-            //printf("targetAng: %f, targetSpd: %f, realVelo: %f, spd: %f\n", targetAng, targetSpd, aveRealVelo, spd);
+            printf("veloAng: %f, targetSpd: %f, realVelo: %f, spd: %f\n", corSpd, targetSpd, aveRealVelo, spd);
 
             rightBack.move(Utils::perToVol(spd * coefficient));
             rightMid.move(Utils::perToVol(spd * coefficient));

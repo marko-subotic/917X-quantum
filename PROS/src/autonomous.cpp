@@ -8,9 +8,9 @@
 //right mid auton
 //DriveTrainState state(103.5, 12, 0);
 //for skills
-DriveTrainState state(27, 10.5, M_PI/2);
+//DriveTrainState state(27, 10.5, M_PI/2);
 // for testing
-//DriveTrainState state(25, 25, 0);
+DriveTrainState state(25, 25, 0);
 
 void odomFunctions(void* p) {
     rightEnc.reset_position();
@@ -173,16 +173,20 @@ void prog(void* p) {
 
 void test(void* p) {
     lift.tare_position();
-    Point forward(35, 40);
+    Point forward(35, 30);
 
-    DriveTrainController::driveToPoint(&state, forward, -30, 0, 1, 45);
+    DriveTrainController::turnToPoint(&state, forward, 0, 1);
     Point print;
+    pros::delay(500);
+    double pointAng = Utils::angleToPoint(Point(forward.x - state.getPos().x, forward.y - state.getPos().y));
+    double targetAng = pointAng - state.getTheta();
+    printf("targetAng: %f \n", targetAng);
    
 }
 void autonomous() {
     //state.switchDir();
     lift.set_encoder_units(pros::E_MOTOR_ENCODER_COUNTS);
     pros::Task odomTasks(odomFunctions);
-    pros::Task driveTask(prog);
+    pros::Task driveTask(test);
 
 }
