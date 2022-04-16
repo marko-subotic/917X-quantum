@@ -20,18 +20,8 @@ Point DriveTrainController::pointAligner(Point state, Point target, double final
         printf("%f, %f\n", xPerp, yPerp);
 
     }
-    //if (state.x <= target.x) {
-        alignPoint.x = xPerp + (target.x - xPerp) * kDist;
-    //}
-    //else {
-    //    alignPoint.x = xPerp - (target.x - xPerp) * kDist;
-    //}
-    //if (state.y <= target.y) {
-        alignPoint.y = yPerp + (target.y - yPerp) * kDist;
-    /* }
-    else {
-
-    }*/
+    alignPoint.x = xPerp + (target.x - xPerp) * kDist;
+    alignPoint.y = yPerp + (target.y - yPerp) * kDist;
     return alignPoint;
     }
 
@@ -47,73 +37,45 @@ Point DriveTrainController::pointAligner(Point state, Point target, double final
         lift.move_absolute(Utils::redMotConv(liftPos) * LIFT_RATIO, 100);
 
 
-        double kParabola = (oSpeed[mogoState] - linSpd) / (pow((AngleWhenDecelerate[mogoState]-AngleUntilLinear[mogoState]), turnPow));
-        double spd = 20;
-        double prevLeft = leftEnc.get_position()/100;
-        double prevRight = rightEnc.get_position()/100;
-        double veloAng;
-        double dif;
-        while (std::abs(targetAng)> minErrorDegrees&&firstAng*targetAng>0) {
+        double spd;
+        double integral;
+        double prevAng = targetAng;
+        while (std::abs(targetAng)> minErrorDegrees) {
+
             lift.move_absolute(Utils::redMotConv(liftPos) * LIFT_RATIO, 100);
-			pointAng = Utils::angleToPoint(Point(target.x - state->getPos().x, target.y - state->getPos().y));
+			//calculating targetAng
+            pointAng = Utils::angleToPoint(Point(target.x - state->getPos().x, target.y - state->getPos().y));
 			targetAng = pointAng - state->getTheta();
-            double targetSpd;
+            if (targetAng > M_PI) targetAng -= 2 * M_PI;
+            else if (targetAng < -M_PI) targetAng += 2 * M_PI;
 
-
-            double corSpd;
-            double deltaTheta = (fabs(leftEnc.get_position()/100 - prevLeft) + fabs(rightEnc.get_position()/100 - prevRight)) / 2;
-            //double encoderRPM = deltaTheta / (loopDelay / 1000) / 360;
-            double aveRealVelo = deltaTheta / loopDelay * 1000 / 360 * smallDiam / bigDiam * 60 / rpms * 100;//(fabs(rightMid.get_actual_velocity()) + fabs(rightBack.get_actual_velocity()) + fabs(rightFront.get_actual_velocity()) + fabs(leftMid.get_actual_velocity()) + fabs(leftBack.get_actual_velocity()) + fabs(leftFront.get_actual_velocity())) / 6;
-            dif = targetSpd - aveRealVelo;
-
-            prevLeft = leftEnc.get_position()/100, prevRight = rightEnc.get_position()/100;
-            if (targetAng > M_PI) targetAng -= 2* M_PI;
-			else if (targetAng < -M_PI) targetAng += 2*M_PI;
-
-			if (fabs(targetAng) < AngleUntilLinear[mogoState]) {
-				targetSpd = linSpd;
-                
-			}else if (fabs(targetAng-lookAhead) > AngleWhenDecelerate[mogoState]) {
-				targetSpd = oSpeed[mogoState];
-			}
-			else {
-                targetSpd = kParabola * (pow((fabs(targetAng-lookAhead) - AngleUntilLinear[mogoState]), turnPow)) + linSpd;
-			}
-            veloAng = fabs(targetAng) - 2 / fabs(dif);
-            if (veloAng < 0) {
-                veloAng = 0;
-            }
-
-            if (fabs(veloAng) < AngleUntilLinear[mogoState]) {
-                corSpd = linSpd;
-            }
-            else if (fabs(veloAng) > AngleWhenDecelerate[mogoState]) {
-                corSpd = oSpeed[mogoState];
+            //calculating PID components
+            double prop = targetAng * 80;// kProp[mogoState];
+            double deriv = (targetAng - prevAng) * 225;
+            if (fabs(targetAng)<15.0*M_PI/180) {
+                    integral += targetAng * 8;// kInteg[mogoState].4,240;       
             }
             else {
-                corSpd = kParabola * (pow((fabs(veloAng) - AngleUntilLinear[mogoState]), turnPow)) + linSpd;
+                integral = 0;
             }
+            
+            prevAng = targetAng;
+            spd = integral + deriv + prop;
+            			
             int coefficient = 1;
 			if (targetAng < 0) {
 				coefficient *= -1;
 			}
-            double compensation = (corSpd - aveRealVelo) * kOsc[mogoState];
-            spd += compensation;
-            if (spd > 100) spd = 100;
-            else if (spd < minCorrect[mogoState]) spd = -minCorrect[mogoState];
-          
-            //printf("speed: %f\n", spd);
 
+            printf("targetAng: %f, p: %f, i: %f, d: %f\n", targetAng, prop, integral, deriv);
 
-            printf("veloAng: %f, targetSpd: %f, realVelo: %f, spd: %f\n", corSpd, targetSpd, aveRealVelo, spd);
+            rightBack.move(Utils::perToVol(spd));
+            rightMid.move(Utils::perToVol(spd));
+            rightFront.move(Utils::perToVol(spd));
 
-            rightBack.move(Utils::perToVol(spd * coefficient));
-            rightMid.move(Utils::perToVol(spd * coefficient));
-            rightFront.move(Utils::perToVol(spd * coefficient));
-
-            leftMid.move(Utils::perToVol((spd) * -coefficient));
-            leftBack.move(Utils::perToVol((spd) * -coefficient));
-            leftFront.move(Utils::perToVol((spd) * -coefficient));
+            leftMid.move(Utils::perToVol(-spd));
+            leftBack.move(Utils::perToVol(-spd));
+            leftFront.move(Utils::perToVol(-spd));
           
             rightBack.tare_position();
             rightFront.tare_position();
