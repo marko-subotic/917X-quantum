@@ -50,10 +50,10 @@ Point DriveTrainController::pointAligner(Point state, Point target, double final
             else if (targetAng < -M_PI) targetAng += 2 * M_PI;
 
             //calculating PID components
-            double prop = targetAng * 80;// kProp[mogoState];
-            double deriv = (targetAng - prevAng) * 225;
-            if (fabs(targetAng)<15.0*M_PI/180) {
-                    integral += targetAng * 8;// kInteg[mogoState].4,240;       
+            double prop = targetAng * kProp[mogoState];
+            double deriv = (targetAng - prevAng) * kDer[mogoState];
+            if (fabs(targetAng)<10.0*M_PI/180) {
+                    integral += targetAng * kInteg[mogoState];       
             }
             else {
                 integral = 0;
