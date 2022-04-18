@@ -168,7 +168,7 @@ Point DriveTrainController::pointAligner(Point state, Point target, double final
             else {
                 crashCounter = 0;
             }
-            if (crashCounter > 10) {
+            if (crashCounter > 6) {
                 break;
             }
             if (fabs(dist) < NonMaxSpeedDist) {
