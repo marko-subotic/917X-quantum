@@ -107,7 +107,7 @@ Point DriveTrainController::pointAligner(Point state, Point target, double final
         leftFront.move_absolute(0, 100);
 	};
 
-	void DriveTrainController::driveToPoint(DriveTrainState* state, Point target, double inSpd, double liftPos, int mogoState, double finalAng, double percent) {
+	void DriveTrainController::driveToPoint(DriveTrainState* state, Point target, double inSpd, double liftPos, int mogoState, double finalAng, double tiltPercent, double liftPercent) {
         
 
         double finalSpeed = finalSpeedForward[mogoState];
@@ -134,6 +134,7 @@ Point DriveTrainController::pointAligner(Point state, Point target, double final
             initialSpeed=finalSpeed;
         }
         double dist = error;
+        double currentLift = lift.get_position();
         double origSpeed = std::abs(inSpd);
         double spd = initialSpeed;
         double prevLeft = leftEnc.get_position()/100;
@@ -153,7 +154,11 @@ Point DriveTrainController::pointAligner(Point state, Point target, double final
             if (!inAuton) {
                 return;
             }
-            lift.move_absolute(Utils::redMotConv(liftPos) * LIFT_RATIO, 100);
+            if(!distanceCovered/dist>liftPercent){
+                lift.move_absolute(currentLift, 100);
+            }else{
+                lift.move_absolute(Utils::redMotConv(liftPos) * LIFT_RATIO, 100);
+            }
             double targetSpd;
             double deltaTheta = (fabs(leftEnc.get_position()/100 - prevLeft) + fabs(rightEnc.get_position()/100 - prevRight)) / 2;
             //double encoderRPM = deltaTheta / (loopDelay / 1000) / 360;
@@ -298,3 +303,11 @@ Point DriveTrainController::pointAligner(Point state, Point target, double final
         leftFront.move_velocity(0);
         printf("(x,y): (%f,%f)\n", state->getPos().x, state->getPos().y);
 	};
+
+    static void driveToPoint(DriveTrainState* state, Point target, double inSpd, double liftPos, int mogoState, double finalAng){
+        driveToPoint(state, target, inSpd, liftPos, mogoState, finalAng, 110, -1);
+    };
+    static void driveToPoint(DriveTrainState* state, Point target, double inSpd, double liftPos, int mogoState, double finalAng, double tiltPercent){
+        driveToPoint(state, target, inSpd, liftPos, mogoState, finalAng, tiltPercent, -1);
+
+    };

@@ -77,33 +77,33 @@ void prog(void* p) {
     pros::delay(100);
 
     //pros::delay(1000);
-    DriveTrainController::driveToPoint(&state, pointOne, -100, 6, 0,0, 110);
+    DriveTrainController::driveToPoint(&state, pointOne, -100, 6, 0,0);
     clamp.set_value(true);
     intake.move(-127);
 
     //pros::delay(500);
 
-    DriveTrainController::driveToPoint(&state, pointTwoOh, -100, -100, 0, 29, 110);
+    DriveTrainController::driveToPoint(&state, pointTwoOh, -100, -100, 0, 29);
     lift.move_absolute(Utils::redMotConv(-61)*LIFT_RATIO, 100);
     pros::delay(500);
     clamp.set_value(false);
     state.switchDir();
-    DriveTrainController::driveToPoint(&state, pointThree, 100, -65, 0, Utils::angleBetweenPoints(pointThree, pointTwoOh), 110);
+    DriveTrainController::driveToPoint(&state, pointThree, 100, -65, 0, Utils::angleBetweenPoints(pointThree, pointTwoOh));
     state.switchDir();
     tilter.set_value(false);
-    DriveTrainController::driveToPoint(&state, pointFour, -100, -65, 0, 84, 110);
+    DriveTrainController::driveToPoint(&state, pointFour, -100, -65, 0, 84);
     state.switchDir();
-    DriveTrainController::driveToPoint(&state, pointFive, 60, 0, 1, -40, 110);
+    DriveTrainController::driveToPoint(&state, pointFive, 60, 0, 1, -40);
     tilter.set_value(true);
     state.switchDir();
-    DriveTrainController::driveToPoint(&state, pointSix, -100, 3, 0, -9, 110);
+    DriveTrainController::driveToPoint(&state, pointSix, -100, 3, 0, -9);
     clamp.set_value(true);
-    DriveTrainController::driveToPoint(&state, pointSeven, -100, -75, 0, -45, 110);
+    DriveTrainController::driveToPoint(&state, pointSeven, -100, -75, 0, -45);
     clamp.set_value(false);
     state.switchDir();
-    DriveTrainController::driveToPoint(&state, pointEight, 100, -70, 0, -26, 110);
+    DriveTrainController::driveToPoint(&state, pointEight, 100, -70, 0, -26);
     state.switchDir();
-    DriveTrainController::driveToPoint(&state, pointNine, -100, 0, 0, 17, 110);
+    DriveTrainController::driveToPoint(&state, pointNine, -100, 0, 0, 17);
     clamp.set_value(true);
 
 
