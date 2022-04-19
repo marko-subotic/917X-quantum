@@ -58,6 +58,10 @@ double Utils::angleToPoint(Point target) {
     return 0;
 };
 
+double Utils::angleBetweenPoints(Point one, Point two) {
+    return -180 * M_PI * Utils::angleToPoint(Point(one.x - two.x, one.y - two.y));
+};
+
 double Utils::distanceBetweenPoints(Point one, Point two) {
     return sqrt(pow(one.x - two.x, 2) + pow(one.y - two.y, 2));
 };

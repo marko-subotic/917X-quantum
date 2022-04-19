@@ -107,7 +107,7 @@ Point DriveTrainController::pointAligner(Point state, Point target, double final
         leftFront.move_absolute(0, 100);
 	};
 
-	void DriveTrainController::driveToPoint(DriveTrainState* state, Point target, double inSpd, double liftPos, int mogoState, double finalAng) {
+	void DriveTrainController::driveToPoint(DriveTrainState* state, Point target, double inSpd, double liftPos, int mogoState, double finalAng, double percent) {
         
 
         double finalSpeed = finalSpeedForward[mogoState];
@@ -162,6 +162,7 @@ Point DriveTrainController::pointAligner(Point state, Point target, double final
             bool isAccel = false;
             bool isDecel = false;
             double distanceCovered = dist-error;
+
             if (aveRealVelo < 1) {
                 crashCounter++;
             }
@@ -170,6 +171,11 @@ Point DriveTrainController::pointAligner(Point state, Point target, double final
             }
             if (crashCounter > 6) {
                 break;
+            }
+
+            if (distanceCovered / dist>percent/100) {
+                tilter.set_value(false);
+                //pros::delay(250);
             }
             if (fabs(dist) < NonMaxSpeedDist) {
                 if (error > dist * (DistanceUntilDecelerateInches[mogoState] / (NonMaxSpeedDist)))

@@ -12,6 +12,10 @@ class Utils{
         //returns angle from the positive y-axis of any point to the origin, from [0,2PI)
         static double angleToPoint(Point target);
 
+        //returns angle from positive y-axis in degrees, angle is positive to the right, used for auton
+        static double angleBetweenPoints(Point one, Point two);
+
+
         //returns distance between 2 points
         static double distanceBetweenPoints(Point one, Point two);
 

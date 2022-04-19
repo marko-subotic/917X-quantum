@@ -9,8 +9,8 @@ class DriveTrainController {
 private:
     //index of arrays is state of the bot, index 0 is 1 mogo in back, index 1 is no mogo
     static constexpr double minErrorDegrees = .5*M_PI/180;
-    static constexpr double kProp [2] = { 140, 90 };
-    static constexpr double kInteg[2] = { 15, 15 };
+    static constexpr double kProp [2] = { 145, 95 };
+    static constexpr double kInteg[2] = { 16.5, 15 };
     static constexpr double kDer[2] = { 505, 495};
     
     static constexpr int loopDelay = 20;
@@ -38,5 +38,5 @@ private:
 public:
     static Point pointAligner(Point state, Point target, double finalAng);
     static void turnToPoint(DriveTrainState* state, Point target, double liftPos, int mogoState);
-    static void driveToPoint(DriveTrainState* state, Point target, double inSpd, double liftPos, int mogoState, double finalAng);
+    static void driveToPoint(DriveTrainState* state, Point target, double inSpd, double liftPos, int mogoState, double finalAng, double percent);
 };
