@@ -17,7 +17,7 @@ Point DriveTrainController::pointAligner(Point state, Point target, double final
     else {
         xPerp = (state.y - target.y + 1/tan(finalAng) * target.x + state.x * tan(finalAng)) / (1/tan(finalAng) + tan(finalAng));
         yPerp = (-tan(finalAng))*(xPerp - state.x) + state.y;
-        printf("%f, %f\n", xPerp, yPerp);
+        //printf("%f, %f\n", xPerp, yPerp);
 
     }
     alignPoint.x = xPerp + (target.x - xPerp) * kDist;
@@ -67,7 +67,7 @@ Point DriveTrainController::pointAligner(Point state, Point target, double final
 				coefficient *= -1;
 			}
 
-            printf("targetAng: %f, p: %f, i: %f, d: %f\n", targetAng, prop, integral, deriv);
+            //printf("targetAng: %f, p: %f, i: %f, d: %f\n", targetAng, prop, integral, deriv);
 
             rightBack.move(Utils::perToVol(spd));
             rightMid.move(Utils::perToVol(spd));
@@ -116,11 +116,18 @@ Point DriveTrainController::pointAligner(Point state, Point target, double final
         Point alignPoint = DriveTrainController::pointAligner(state->getPos(), target, finalAng);
         double pointAng = Utils::angleToPoint(Point(alignPoint.x - state->getPos().x, alignPoint.y - state->getPos().y)); 
         double targetAng = pointAng - state->getTheta();
-        turnToPoint(state, alignPoint, liftPos, mogoState);
-        lift.move_absolute(Utils::redMotConv(liftPos) * LIFT_RATIO, 100);
+        double currentLift = lift.get_position();
+        if (liftPercent > 0) {
+            turnToPoint(state, alignPoint, currentLift*360/LIFT_ENCODER/LIFT_RATIO, mogoState);
+        }
+        else {
+            turnToPoint(state, alignPoint, liftPos, mogoState);
+
+        }
+        //lift.move_absolute(Utils::redMotConv(liftPos) * LIFT_RATIO, 100);
         if (targetAng > M_PI) targetAng -= M_PI;
         else if (targetAng < -M_PI) targetAng += M_PI;
-        printf("targetAng: %f\n", finalAng);
+        //printf("targetAng: %f\n", finalAng);
         if (inSpd < 0) {
             //if (targetAng > 0) targetAng -= M_PI;
             //else targetAng += M_PI;
@@ -134,7 +141,7 @@ Point DriveTrainController::pointAligner(Point state, Point target, double final
             initialSpeed=finalSpeed;
         }
         double dist = error;
-        double currentLift = lift.get_position();
+        //lift.set_encoder_units(pros::E_MOTOR_ENCODER_COUNTS);
         double origSpeed = std::abs(inSpd);
         double spd = initialSpeed;
         double prevLeft = leftEnc.get_position()/100;
@@ -154,11 +161,21 @@ Point DriveTrainController::pointAligner(Point state, Point target, double final
             if (!inAuton) {
                 return;
             }
-            if(!distanceCovered/dist>liftPercent){
-                lift.move_absolute(currentLift, 100);
-            }else{
+            double distanceCovered = dist - error;
+            printf("liftPos: %f, startingPos: %f\n", lift.get_position(), currentLift);
+
+            if(distanceCovered/dist>liftPercent/100){
                 lift.move_absolute(Utils::redMotConv(liftPos) * LIFT_RATIO, 100);
+
+            }else{
+                lift.move_absolute(currentLift, 100);
+
             }
+            if (distanceCovered / dist > tiltPercent / 100) {
+                tilter.set_value(false);
+                //pros::delay(250);
+            }
+
             double targetSpd;
             double deltaTheta = (fabs(leftEnc.get_position()/100 - prevLeft) + fabs(rightEnc.get_position()/100 - prevRight)) / 2;
             //double encoderRPM = deltaTheta / (loopDelay / 1000) / 360;
@@ -166,7 +183,6 @@ Point DriveTrainController::pointAligner(Point state, Point target, double final
             prevLeft = leftEnc.get_position()/100, prevRight = rightEnc.get_position()/100;
             bool isAccel = false;
             bool isDecel = false;
-            double distanceCovered = dist-error;
 
             if (aveRealVelo < 1) {
                 crashCounter++;
@@ -178,10 +194,7 @@ Point DriveTrainController::pointAligner(Point state, Point target, double final
                 break;
             }
 
-            if (distanceCovered / dist>percent/100) {
-                tilter.set_value(false);
-                //pros::delay(250);
-            }
+            
             if (fabs(dist) < NonMaxSpeedDist) {
                 if (error > dist * (DistanceUntilDecelerateInches[mogoState] / (NonMaxSpeedDist)))
                 {
@@ -274,9 +287,10 @@ Point DriveTrainController::pointAligner(Point state, Point target, double final
             leftMid.tare_position();
             leftBack.tare_position();
             leftFront.tare_position();
+            //printf("(x,y): (%f,%f)\n", distanceCovered / dist, state->getPos().y);
+
             pros::delay(loopDelay);
         }
-        printf("(x,y): (%f,%f)\n", state->getPos().x, state->getPos().y);
 
         rightBack.set_brake_mode(pros::E_MOTOR_BRAKE_HOLD);
         rightMid.set_brake_mode(pros::E_MOTOR_BRAKE_HOLD);
@@ -301,13 +315,13 @@ Point DriveTrainController::pointAligner(Point state, Point target, double final
         leftMid.move_velocity(0);
         leftBack.move_velocity(0);
         leftFront.move_velocity(0);
-        printf("(x,y): (%f,%f)\n", state->getPos().x, state->getPos().y);
+        //printf("(x,y): (%f,%f)\n", state->getPos().x, state->getPos().y);
 	};
 
-    static void driveToPoint(DriveTrainState* state, Point target, double inSpd, double liftPos, int mogoState, double finalAng){
-        driveToPoint(state, target, inSpd, liftPos, mogoState, finalAng, 110, -1);
+    void DriveTrainController::driveToPoint(DriveTrainState* state, Point target, double inSpd, double liftPos, int mogoState, double finalAng){
+        DriveTrainController::driveToPoint(state, target, inSpd, liftPos, mogoState, finalAng, 110, -1);
     };
-    static void driveToPoint(DriveTrainState* state, Point target, double inSpd, double liftPos, int mogoState, double finalAng, double tiltPercent){
-        driveToPoint(state, target, inSpd, liftPos, mogoState, finalAng, tiltPercent, -1);
+    void DriveTrainController::driveToPoint(DriveTrainState* state, Point target, double inSpd, double liftPos, int mogoState, double finalAng, double tiltPercent){
+        DriveTrainController::driveToPoint(state, target, inSpd, liftPos, mogoState, finalAng, tiltPercent, -1);
 
     };
