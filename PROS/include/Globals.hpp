@@ -15,4 +15,6 @@ extern pros::ADIDigitalOut clamp;
 extern pros::ADIDigitalOut tilter;
 extern pros::Controller cont;
 extern pros::ADIDigitalOut cover;
+extern pros::Imu inert;
+
 extern bool inAuton;

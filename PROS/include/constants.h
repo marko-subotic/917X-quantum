@@ -9,3 +9,5 @@
 
 #define LIFT_RATIO 5
 #define LIFT_ENCODER 1800
+
+#define ANGLE_IRRELEVANT 500

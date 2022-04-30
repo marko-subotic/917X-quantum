@@ -7,6 +7,7 @@ OdomDisplay::OdomDisplay(lv_obj_t* parent)
 
 OdomDisplay::OdomDisplay(lv_obj_t* parent, lv_color_t color) {
     //screen container creation
+    lv_obj_clean(parent);
     container = (lv_obj_create(parent, NULL));
     lv_obj_set_size(container, lv_obj_get_width(parent), lv_obj_get_height(parent));
     lv_obj_align(container, NULL, LV_ALIGN_CENTER, 0, 0);

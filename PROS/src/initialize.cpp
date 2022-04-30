@@ -14,7 +14,7 @@ void initTask(void* p) {
 
 void initialize()
 {   
-    pros::Task initer(initTask);
+   
     
 }
 

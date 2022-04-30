@@ -4,7 +4,7 @@
 #include "Globals.hpp"
 #include <math.h>
 
-Point DriveTrainController::pointAligner(Point state, Point target, double finalAng) {
+Point DriveTrainController::pointAligner(Point state, Point target, double finalAng, int distState) {
     double xPerp, yPerp;
     Point alignPoint(0, 0);
     if (abs(finalAng) < .01 || abs(abs(finalAng) - M_PI) < .01) {
@@ -20,8 +20,8 @@ Point DriveTrainController::pointAligner(Point state, Point target, double final
         //printf("%f, %f\n", xPerp, yPerp);
 
     }
-    alignPoint.x = xPerp + (target.x - xPerp) * kDist;
-    alignPoint.y = yPerp + (target.y - yPerp) * kDist;
+    alignPoint.x = xPerp + (target.x - xPerp) * kDist[distState];
+    alignPoint.y = yPerp + (target.y - yPerp) * kDist[distState];
     return alignPoint;
     }
 
@@ -107,13 +107,12 @@ Point DriveTrainController::pointAligner(Point state, Point target, double final
         leftFront.move_absolute(0, 100);
 	};
 
-	void DriveTrainController::driveToPoint(DriveTrainState* state, Point target, double inSpd, double liftPos, int mogoState, double finalAng, double tiltPercent, double liftPercent) {
+	void DriveTrainController::driveToPoint(DriveTrainState* state, Point target, double inSpd, double liftPos, int mogoState, double finalAng, double tiltPercent, double liftPercent, int radState, bool isClamping) {
         
-
         double finalSpeed = finalSpeedForward[mogoState];
         double initialSpeed = initialSpeedForward[mogoState];
         finalAng *= (M_PI / 180.0);
-        Point alignPoint = DriveTrainController::pointAligner(state->getPos(), target, finalAng);
+        Point alignPoint = DriveTrainController::pointAligner(state->getPos(), target, finalAng, radState);
         double pointAng = Utils::angleToPoint(Point(alignPoint.x - state->getPos().x, alignPoint.y - state->getPos().y)); 
         double targetAng = pointAng - state->getTheta();
         double currentLift = lift.get_position();
@@ -134,12 +133,32 @@ Point DriveTrainController::pointAligner(Point state, Point target, double final
             finalSpeed = finalSpeedBackward[mogoState];
             initialSpeed = initialSpeedBackward[mogoState];
         }
+        int radIndex;
+        if (radState != 0) {
+            if (!isClamping) {
+                radIndex = 0;
+            }
+            else {
+                if (inSpd > 0) {
+                    radIndex = 2;
+                }
+                else {
+                    radIndex = 1;
+                }
+            }
+            
+        }
+        else {
+            radIndex = 0;
+        }
         const double NonMaxSpeedDist = DistanceUntilDecelerateInches[mogoState]+DistanceUntilAccelerate;
-        double error = Utils::distanceBetweenPoints(target, state->getPos());
+        double error = Utils::distanceBetweenPoints(target, state->getPos())-MinErrorInches[radIndex];
         //to give the bot time to slow over small distance
         if (fabs(error) < NonMaxSpeedDist) {
             initialSpeed=finalSpeed;
         }
+        
+        double integral = 0;
         double dist = error;
         //lift.set_encoder_units(pros::E_MOTOR_ENCODER_COUNTS);
         double origSpeed = std::abs(inSpd);
@@ -157,12 +176,12 @@ Point DriveTrainController::pointAligner(Point state, Point target, double final
         //printf("%f")
         double distanceDecelerating = DistanceUntilDecelerateInches[mogoState] ;
         int crashCounter = 0;
-        while (fabs(error) >= MinErrorInches) {
+        while (error >= 0) {
             if (!inAuton) {
                 return;
             }
             double distanceCovered = dist - error;
-            printf("liftPos: %f, startingPos: %f\n", lift.get_position(), currentLift);
+            //printf("liftPos: %f, startingPos: %f\n", lift.get_position(), currentLift);
 
             if(distanceCovered/dist>liftPercent/100){
                 lift.move_absolute(Utils::redMotConv(liftPos) * LIFT_RATIO, 100);
@@ -229,11 +248,11 @@ Point DriveTrainController::pointAligner(Point state, Point target, double final
                 highestSpd = targetSpd;
             }
 
-            double compensation = (targetSpd - aveRealVelo) * kCor[mogoState];
             spd = targetSpd;
             if (spd > 100) spd = 100;
             else if (spd < -100) spd = -100;
-            alignPoint = DriveTrainController::pointAligner(state->getPos(), target, finalAng);
+            printf("%f, %f", alignPoint.x, alignPoint.y);
+            alignPoint = DriveTrainController::pointAligner(state->getPos(), target, finalAng, radState);
             pointAng = Utils::angleToPoint(Point(alignPoint.x - state->getPos().x, alignPoint.y - state->getPos().y)); 
             targetAng = pointAng - state->getTheta();
             if (targetAng > M_PI) targetAng -= 2*M_PI;
@@ -244,14 +263,20 @@ Point DriveTrainController::pointAligner(Point state, Point target, double final
             //speed correction keeps robot pointed towards the point it wants to drive too
             //spd/ospeed makes the corrections get bigger the faster the bot goes, angle for max error
             //is a constant that needs to be tuned
-            double speedCorrection = pow(error / dist, 1)* (spd / AngleForMaxError[mogoState])* pow(targetAng, 1);
+            if (abs(targetAng)< 10.0 * M_PI / 180) {
+                integral += targetAng;
+            }
+            else {
+                integral = 0;
+            }
+            double speedCorrection = pow(error / dist, 1) * (spd / AngleForMaxError[mogoState]) * pow(targetAng, 1);// +integral * kInteg[mogoState];
             /*printf("correction: %f\n", speedCorrection);
             printf("(x,y,theta): (%f,%f,%f)\n", state->getPos().x, state->getPos().y, targetAng);
             // printf("%f\n", state->getPos().y);
             //printf("%f\n", error);
             */
             //printf("%f, %f, %f\n", error, (spd), aveRealVelo);
-            //printf("(x,y,theta): (%f,%f,%f)\n", state->getPos().x, state->getPos().y, targetAng);
+            //printf("(targetAng, correction,theta): (%f,%f,%f)\n", targetAng, speedCorrection, targetAng);
 
             leftSpeed = spd - speedCorrection;
             rightSpeed = spd + speedCorrection;
@@ -279,7 +304,7 @@ Point DriveTrainController::pointAligner(Point state, Point target, double final
             leftMid.move(Utils::perToVol(leftSpeed));
             leftBack.move(Utils::perToVol(leftSpeed));
             leftFront.move(Utils::perToVol(leftSpeed));
-            error = Utils::distanceBetweenPoints(target, state->getPos());
+            error = Utils::distanceBetweenPoints(target, state->getPos())-MinErrorInches[radIndex];
             rightBack.tare_position();
             rightFront.tare_position();
             rightMid.tare_position();
@@ -287,7 +312,7 @@ Point DriveTrainController::pointAligner(Point state, Point target, double final
             leftMid.tare_position();
             leftBack.tare_position();
             leftFront.tare_position();
-            //printf("(x,y): (%f,%f)\n", distanceCovered / dist, state->getPos().y);
+            printf("(x,y): (%f,%f)\n", error, state->getPos().y);
 
             pros::delay(loopDelay);
         }
@@ -315,13 +340,26 @@ Point DriveTrainController::pointAligner(Point state, Point target, double final
         leftMid.move_velocity(0);
         leftBack.move_velocity(0);
         leftFront.move_velocity(0);
-        //printf("(x,y): (%f,%f)\n", state->getPos().x, state->getPos().y);
+        printf("(x,y): (%f,%f), theta: %f\n", state->getPos().x, state->getPos().y, state->getTheta());
 	};
 
-    void DriveTrainController::driveToPoint(DriveTrainState* state, Point target, double inSpd, double liftPos, int mogoState, double finalAng){
-        DriveTrainController::driveToPoint(state, target, inSpd, liftPos, mogoState, finalAng, 110, -1);
+    void DriveTrainController::driveToPoint(DriveTrainState* state, Point target, double inSpd, double liftPos, int mogoState, double finalAng, bool isClamping){
+        if (finalAng == ANGLE_IRRELEVANT) {
+            DriveTrainController::driveToPoint(state, target, inSpd, liftPos, mogoState, finalAng, 110, -1, 1, isClamping);
+        }
+        else {
+            DriveTrainController::driveToPoint(state, target, inSpd, liftPos, mogoState, finalAng, 110, -1, 0, isClamping);
+
+        }
     };
-    void DriveTrainController::driveToPoint(DriveTrainState* state, Point target, double inSpd, double liftPos, int mogoState, double finalAng, double tiltPercent){
-        DriveTrainController::driveToPoint(state, target, inSpd, liftPos, mogoState, finalAng, tiltPercent, -1);
+
+    void DriveTrainController::driveToPoint(DriveTrainState* state, Point target, double inSpd, double liftPos, int mogoState, double finalAng, double tiltPercent, bool isClamping){
+        if (finalAng == ANGLE_IRRELEVANT) {
+            DriveTrainController::driveToPoint(state, target, inSpd, liftPos, mogoState, finalAng, tiltPercent, -1, 1, isClamping);
+        }
+        else {
+            DriveTrainController::driveToPoint(state, target, inSpd, liftPos, mogoState, finalAng, tiltPercent, -1, 0, isClamping);
+
+        }
 
     };

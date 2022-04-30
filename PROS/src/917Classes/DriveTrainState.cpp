@@ -78,7 +78,7 @@ void DriveTrainState::step(double dLeftEnc, double dRightEnc, double dBottomEnc)
         }else{
             centerRotation = Point(centerRotateLX, centerRotateY);
         }
-        
+        //printf("dtheta: %f \n", dTheta);
         Point lastPoint = Utils::rotateAroundPoint(centerRotation, calcPoint, dTheta);
         shiftX = lastPoint.x - calcPoint.x;
         shiftY = lastPoint.y - calcPoint.y;
