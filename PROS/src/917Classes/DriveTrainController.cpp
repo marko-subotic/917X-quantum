@@ -38,7 +38,7 @@ Point DriveTrainController::pointAligner(Point state, Point target, double final
 
 
         double spd;
-        double integral;
+        double integral = 0;
         double prevAng = targetAng;
         while (std::abs(targetAng)> minErrorDegrees) {
 
@@ -97,7 +97,7 @@ Point DriveTrainController::pointAligner(Point state, Point target, double final
         leftBack.set_brake_mode(pros::E_MOTOR_BRAKE_HOLD);
         leftMid.set_brake_mode(pros::E_MOTOR_BRAKE_HOLD);
         leftFront.set_brake_mode(pros::E_MOTOR_BRAKE_HOLD);
-        //printf("exiting");
+       // printf("exiting\n");
         rightBack.move_absolute(0, 100);
         rightFront.move_absolute(0, 100);
         rightMid.move_absolute(0, 100);
@@ -116,13 +116,18 @@ Point DriveTrainController::pointAligner(Point state, Point target, double final
         double pointAng = Utils::angleToPoint(Point(alignPoint.x - state->getPos().x, alignPoint.y - state->getPos().y)); 
         double targetAng = pointAng - state->getTheta();
         double currentLift = lift.get_position();
-        if (liftPercent > 0) {
-            turnToPoint(state, alignPoint, currentLift*360/LIFT_ENCODER/LIFT_RATIO, mogoState);
-        }
-        else {
-            turnToPoint(state, alignPoint, liftPos, mogoState);
+        while (fabs(targetAng) > minErrorDegrees) {
+            pointAng = Utils::angleToPoint(Point(alignPoint.x - state->getPos().x, alignPoint.y - state->getPos().y));
+            targetAng = pointAng - state->getTheta();
+            if (liftPercent > 0) {
+                turnToPoint(state, alignPoint, currentLift * 360 / LIFT_ENCODER / LIFT_RATIO, mogoState);
+            }
+            else {
+                turnToPoint(state, alignPoint, liftPos, mogoState);
 
+            }
         }
+        
         //lift.move_absolute(Utils::redMotConv(liftPos) * LIFT_RATIO, 100);
         if (targetAng > M_PI) targetAng -= M_PI;
         else if (targetAng < -M_PI) targetAng += M_PI;
@@ -209,7 +214,7 @@ Point DriveTrainController::pointAligner(Point state, Point target, double final
             else {
                 crashCounter = 0;
             }
-            if (crashCounter > 6) {
+            if (crashCounter > 10) {
                 break;
             }
 
@@ -251,7 +256,7 @@ Point DriveTrainController::pointAligner(Point state, Point target, double final
             spd = targetSpd;
             if (spd > 100) spd = 100;
             else if (spd < -100) spd = -100;
-            printf("%f, %f", alignPoint.x, alignPoint.y);
+            //printf("%f, %f", alignPoint.x, alignPoint.y);
             alignPoint = DriveTrainController::pointAligner(state->getPos(), target, finalAng, radState);
             pointAng = Utils::angleToPoint(Point(alignPoint.x - state->getPos().x, alignPoint.y - state->getPos().y)); 
             targetAng = pointAng - state->getTheta();
@@ -276,7 +281,17 @@ Point DriveTrainController::pointAligner(Point state, Point target, double final
             //printf("%f\n", error);
             */
             //printf("%f, %f, %f\n", error, (spd), aveRealVelo);
-            //printf("(targetAng, correction,theta): (%f,%f,%f)\n", targetAng, speedCorrection, targetAng);
+            //printf("(targetAng, correction): (%f,%f)\n", targetAng, speedCorrection);
+            double tolerance = 180*M_PI / 180;
+            if (distanceCovered / dist < 80) {
+                if (fabs(targetAng) > tolerance) {
+                    spd = 0;
+                }
+                else {
+                    spd *= 1 - targetAng / tolerance;
+                }
+            }
+            
 
             leftSpeed = spd - speedCorrection;
             rightSpeed = spd + speedCorrection;
@@ -312,7 +327,7 @@ Point DriveTrainController::pointAligner(Point state, Point target, double final
             leftMid.tare_position();
             leftBack.tare_position();
             leftFront.tare_position();
-            printf("(x,y): (%f,%f)\n", error, state->getPos().y);
+            //printf("(x,y): (%f,%f)\n", error, state->getPos().y);
 
             pros::delay(loopDelay);
         }

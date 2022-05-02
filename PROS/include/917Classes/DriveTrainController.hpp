@@ -8,10 +8,10 @@
 class DriveTrainController {
 private:
     //index of arrays is state of the bot, index 0 is 1 mogo in back, index 1 is no mogo
-    static constexpr double minErrorDegrees = .5*M_PI/180;
-    static constexpr double kProp [2] = { 98, 95 };
-    static constexpr double kInteg[2] = { 17, 15 };
-    static constexpr double kDer[2] = { 525, 495};
+    static constexpr double minErrorDegrees = .7*M_PI/180;
+    static constexpr double kProp [2] = { 100, 95 };
+    static constexpr double kInteg[2] = { 13, 15 };
+    static constexpr double kDer[2] = { 655, 495};
     
     static constexpr int loopDelay = 20;
 
@@ -19,16 +19,16 @@ private:
     //drive to point constants
     static constexpr int decelPow = 5;
     static constexpr double MinErrorInches[3] = { 2, 9, 9.5 }; //front: 9 back: 12
-    static constexpr double DistanceUntilDecelerateInches[2] = { 16, 15 };
+    static constexpr double DistanceUntilDecelerateInches[2] = { 16, 17 };
     static constexpr double DistanceUntilAccelerate = 0.1;
     static constexpr double kDist[2] = { .35,1 };
-    static constexpr double AngleForMaxError[2] = { 16 * M_PI / 180,   17 * M_PI / 180 };
+    static constexpr double AngleForMaxError[2] = { 15 * M_PI / 180,   14 * M_PI / 180 };
     //if final is greater than 20 risk of not finishing straight heightens
-    static constexpr double finalSpeedForward[2] = { 30, 20 };
+    static constexpr double finalSpeedForward[3] = { 30, 20, 20 };
     //if init is great than 35 risk of not going straight heightens
-    static constexpr double initialSpeedForward[2] = { 30, 20 };
-    static constexpr double finalSpeedBackward[2] = { 30, 20 };
-    static constexpr double initialSpeedBackward[2] = { 20, 20};
+    static constexpr double initialSpeedForward[3] = { 20, 20, 20 };
+    static constexpr double finalSpeedBackward[3] = { 20, 20, 90 };
+    static constexpr double initialSpeedBackward[3] = { 20, 20, 90};
     static constexpr int rpms = 300;
     static constexpr double bigDiam = 4.1;
     static constexpr double smallDiam = 2.75;
