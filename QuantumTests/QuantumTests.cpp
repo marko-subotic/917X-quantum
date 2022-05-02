@@ -2,13 +2,13 @@
 #include "pch.h"
 #include "CppUnitTest.h"
 #include "DriveTrainState.hpp"
+#include "DriveTrainController.hpp"
 #include "Utils.hpp"
 #include "math.h"
 #include <vector>
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 
 namespace QuantumTest
-
 {
 	
 
@@ -225,6 +225,57 @@ namespace QuantumTest
 				else {
 					Assert::IsTrue(false, &printer);
 				}
+			}
+			TEST_METHOD(guidePoint1) {
+				Startup();
+				Point target(1, 1);
+				double theta = M_PI / 4;
+				double dif = .5 - DriveTrainController::pointAligner(target, theta).x;
+
+				wchar_t printer = (wchar_t)dif;
+				Assert::IsTrue(dif < minDif, &printer);
+			}
+			TEST_METHOD(guidePoint2) {
+				Startup();
+
+				wchar_t printer = (wchar_t)dif;
+				Assert::IsTrue(dif < minDif, &printer);
+			}
+			TEST_METHOD(guidePoint3) {
+				Startup();
+
+				wchar_t printer = (wchar_t)dif;
+				Assert::IsTrue(dif < minDif, &printer);
+			}
+			TEST_METHOD(guidePoint4) {
+				Startup();
+
+				wchar_t printer = (wchar_t)dif;
+				Assert::IsTrue(dif < minDif, &printer);
+			}
+			TEST_METHOD(guidePointS1) {
+				Startup();
+
+				wchar_t printer = (wchar_t)dif;
+				Assert::IsTrue(dif < minDif, &printer);
+			}
+			TEST_METHOD(guidePointS2) {
+				Startup();
+
+				wchar_t printer = (wchar_t)dif;
+				Assert::IsTrue(dif < minDif, &printer);
+			}
+			TEST_METHOD(guidePointS3) {
+				Startup();
+
+				wchar_t printer = (wchar_t)dif;
+				Assert::IsTrue(dif < minDif, &printer);
+			}
+			TEST_METHOD(guidePointS4) {
+				Startup();
+
+				wchar_t printer = (wchar_t)dif;
+				Assert::IsTrue(dif < minDif, &printer);
 			}
 	};
 	DriveTrainState QuantumTests::user;
