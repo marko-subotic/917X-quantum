@@ -2,7 +2,7 @@
 #pragma once
 extern pros::Rotation rightEnc;
 extern pros::Rotation leftEnc;
-extern pros::ADIEncoder horEnc;
+extern pros::Rotation horEnc;
 extern pros::Motor rightFront;
 extern pros::Motor rightMid;
 extern pros::Motor rightBack;
