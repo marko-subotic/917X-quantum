@@ -363,3 +363,27 @@ Point DriveTrainController::pointAligner(Point state, Point target, double final
         }
 
     };
+    void DriveTrainController::intakeTask(int* state){
+            int counter = 0;
+            double prev = intake.get_position();
+            while(true){
+                if(*state==0){
+                    if(fabs(intake.get_position()-prev)<2){
+                        counter++;
+                    }else{
+                        counter = 0;
+                    }
+                    if(counter >5){
+                        intake.move(127);
+                    }else{
+                        intake.move(-127);
+                    }
+                }else if(*state==1){
+                    intake.move(127);
+                }else{
+                    intake.move(0);
+                }
+                prev = intage.get_position();
+            }
+        }
+    };

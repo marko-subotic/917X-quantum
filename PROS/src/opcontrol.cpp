@@ -5,7 +5,7 @@
 
 using namespace pros;
 DriveTrainState stateO(27, 13.5, M_PI / 2 - .1463);
-int takein = 0;
+int takein = 2;
 const double intakemax = 127;
 
 int ScaleRawJoystick(int raw)
@@ -19,20 +19,20 @@ int ScaleRawJoystick(int raw)
 }
 
 void intakeInFunc() {
-    if (takein != intakemax) {
-        takein = intakemax;
+    if (takein != 1) {
+        takein = 1;
     }
-    else if (takein == intakemax) {
-        takein = 0;
+    else if (takein == 1) {
+        takein = 2;
     }
 }
 
 void intakeOutFunc() {
-    if (takein != -intakemax) {
-        takein = -intakemax;
-    }
-    else if (takein == -intakemax) {
+    if (takein != 0) {
         takein = 0;
+    }
+    else if (takein == 0) {
+        takein = 2;
     }
 }
 
@@ -115,12 +115,10 @@ void miscFunctions(void* p) {
     while (true) {
         bool R2 = cont.get_digital(E_CONTROLLER_DIGITAL_R2);
         bool R1 = cont.get_digital(E_CONTROLLER_DIGITAL_R1);
-        bool L2 = cont.get_digital_new_press(E_CONTROLLER_DIGITAL_L2);
-        bool L1 = cont.get_digital_new_press(E_CONTROLLER_DIGITAL_L1);
+        
         bool x = cont.get_digital_new_press(DIGITAL_X);
         bool y = cont.get_digital_new_press(DIGITAL_Y);
         bool left = cont.get_digital_new_press(DIGITAL_LEFT);
-
 
         double deltaTheta = (fabs(leftEnc.get_position() / 100 - prevLeft) + fabs(rightEnc.get_position() / 100 - prevRight)) / 2;
         //double encoderRPM = deltaTheta / (loopDelay / 1000) / 360;
@@ -137,13 +135,7 @@ void miscFunctions(void* p) {
         }if (!R1 && !R2) {
             lift.move_absolute(liftLock, 10);
         }
-        if (L2) {
-            intakeInFunc();
-        }
-        else if (L1) {
-            intakeOutFunc();
-        }
-        intake.move(takein);
+       
         if (x) {
             clampToggle = !clampToggle;
             clamp.set_value(clampToggle);
@@ -158,7 +150,22 @@ void miscFunctions(void* p) {
     }
     clamp.set_value(false);
 }
+void intakeTask(void* p){
 
+        DriveTrainController::intakeTask(&takein);
+        while(true){
+            bool L2 = cont.get_digital_new_press(E_CONTROLLER_DIGITAL_L2);
+            bool L1 = cont.get_digital_new_press(E_CONTROLLER_DIGITAL_L1);
+            if (L2) {
+                intakeInFunc();
+            }
+            else if (L1) {
+                intakeOutFunc();
+            }
+            pros::delay(20);
+        }
+        
+}
 void odomFunctionsOP(void* p) {
     rightEnc.reset_position();
     if (!rightEnc.get_reversed()) {
