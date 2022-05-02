@@ -18,7 +18,10 @@ void odomFunctions(void* p) {
         rightEnc.reverse();
     }
     leftEnc.reset_position();
-    horEnc.reset();
+    if(!horEnc.get_reversed()){
+        horEnc.reverse();
+    }
+    horEnc.reset_position();
     lv_obj_clean(lv_scr_act());
     OdomDisplay display(lv_scr_act());
 
@@ -27,7 +30,7 @@ void odomFunctions(void* p) {
     double prevMid = 0;
     double covRight = rightEnc.get_position() / 100.0;
     double covLeft = leftEnc.get_position() / 100.0;
-    double covMid = horEnc.get_value();
+    double covMid = horEnc.get_position()/100.0;
     double deltaRight = covRight - prevRight;
     double deltaLeft = covLeft - prevLeft;
     double deltaMid = covMid - prevMid;
@@ -50,7 +53,7 @@ void odomFunctions(void* p) {
         display.setState(state.getPos(), theta);
         display.encoderDebug(covRight, "angle to point: ");
         prevRight = covRight, prevLeft = covLeft, prevMid = covMid;
-        covRight = rightEnc.get_position() / 100.0, covLeft = leftEnc.get_position() / 100.0, covMid = horEnc.get_value();
+        covRight = rightEnc.get_position() / 100.0, covLeft = leftEnc.get_position() / 100.0, covMid = horEnc.get_position()/100.0;
         deltaRight = covRight - prevRight, deltaLeft = covLeft - prevLeft, deltaMid = covMid - prevMid;
         pros::delay(20);
     }
