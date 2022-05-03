@@ -380,8 +380,10 @@ Point DriveTrainController::pointAligner(Point state, Point target, double final
                     }
                 }else if(*state==1){
                     intake.move(127);
-                }else{
+                }else if(*state==2){
                     intake.move(0);
+                }else{
+                    break;
                 }
                 prev = intage.get_position();
             }

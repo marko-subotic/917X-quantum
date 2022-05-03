@@ -59,7 +59,7 @@ void odomFunctions(void* p) {
     }
 }
 
-void prog(void* p) {
+void prog(void* intakeState) {
     int speed = 70;
     lift.tare_position();
     Point pointOne(35, 72);
@@ -82,8 +82,7 @@ void prog(void* p) {
     //pros::delay(1000);
     DriveTrainController::driveToPoint(&state, pointOne, -100, 6, 0, ANGLE_IRRELEVANT, true);
     clamp.set_value(true);
-    intake.move(-127);
-
+    *intakeState = 0;
     //pros::delay(500);
 
     DriveTrainController::driveToPoint(&state, pointTwoOh, -speed, -100, 0, 29, false);
@@ -148,10 +147,16 @@ void test(void* p) {
     printf("targetAng: %f \n", targetAng);
    
 }
-void autonomous() {
+
+void intakeTask(void* intakeState){
+    DriveTrainController::intakeTask(intakeState);
+}
+void autonomous() { 
+    int intakeState = 2;
     //state.switchDir();
     lift.set_encoder_units(pros::E_MOTOR_ENCODER_COUNTS);
     pros::Task odomTasks(odomFunctions);
-    pros::Task driveTask(prog);
+    pros::Task driveTask(prog, &intakeState);
+    pros::Task intakeTask(intake, (void*)&intakeState);
 
 }
