@@ -52,7 +52,7 @@ Point DriveTrainController::pointAligner(Point state, Point target, double final
             //calculating PID components
             double prop = targetAng * kProp[mogoState];
             double deriv = (targetAng - prevAng) * kDer[mogoState];
-            if (fabs(targetAng)<19.0*M_PI/180) {
+            if (fabs(targetAng)<13.0*M_PI/180) {
                     integral += targetAng * kInteg[mogoState];       
             }
             else {
@@ -74,7 +74,7 @@ Point DriveTrainController::pointAligner(Point state, Point target, double final
             else {
                 counter = 0;
             }
-            if (counter > 10) {
+            if (counter > 50) {
                 spd *= 3;
             }
             rightBack.move(Utils::perToVol(spd));
@@ -124,7 +124,11 @@ Point DriveTrainController::pointAligner(Point state, Point target, double final
         double pointAng = Utils::angleToPoint(Point(alignPoint.x - state->getPos().x, alignPoint.y - state->getPos().y)); 
         double targetAng = pointAng - state->getTheta();
         double currentLift = lift.get_position();
+
         while (fabs(targetAng) > minErrorDegrees) {
+            if (!inAuton) {
+                return;
+            }
             pointAng = Utils::angleToPoint(Point(alignPoint.x - state->getPos().x, alignPoint.y - state->getPos().y));
             targetAng = pointAng - state->getTheta();
             if (liftPercent > 0) {
@@ -218,7 +222,7 @@ Point DriveTrainController::pointAligner(Point state, Point target, double final
             else {
                 crashCounter = 0;
             }
-            if (crashCounter > 10) {
+            if (crashCounter > 20) {
                 break;
             }
 
@@ -382,13 +386,12 @@ Point DriveTrainController::pointAligner(Point state, Point target, double final
         }
 
     };
-    void DriveTrainController::intakeTask(int * state){
+    void DriveTrainController::intakeTask(int* state){
         int counter = 0;
         double prev = intake.get_position();
         while(true){
-            printf("inLoop%d\n", *state);
             if(*state==0){
-                if(fabs(intake.get_position()-prev)<10){
+                if(fabs(intake.get_position()-prev)<2){
                     counter++;
                 }else{
                     counter = 0;
@@ -396,13 +399,21 @@ Point DriveTrainController::pointAligner(Point state, Point target, double final
                 if(counter >5){
                     intake.move(127);
                     pros::delay(200);
-                }else{
-                    intake.move(-127);
+
+                }
+                else if (*state == 2) {
+                    intake.move(0);
+                }
+                else {
+                    break;
                 }
             }else if(*state==1){
                 intake.move(127);
-            }else{
+            }else if(*state==2){
                 intake.move(0);
+            }
+            else {
+                break;
             }
             prev = intake.get_position();
             pros::delay(20);

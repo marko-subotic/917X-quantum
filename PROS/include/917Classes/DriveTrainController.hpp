@@ -9,7 +9,7 @@ class DriveTrainController {
 private:
     //index of arrays is state of the bot, index 0 is 1 mogo in back, index 1 is no mogo
     static constexpr double minErrorDegrees = .7*M_PI/180;
-    static constexpr double kProp [2] = { 115, 115 };
+    static constexpr double kProp [2] = { 95, 95 };
     static constexpr double kInteg[2] = { 13, 11 };
     static constexpr double kDer[2] = { 755, 755};
     
@@ -17,7 +17,7 @@ private:
 
     //drive to point constants
     static constexpr int decelPow = 5;
-    static constexpr double MinErrorInches[3] = { 2, 9, 9.5 }; //front: 9 back: 12
+    static constexpr double MinErrorInches[3] = { 2, 12, 11 }; //front: 9 back: 12
     static constexpr double DistanceUntilDecelerateInches[2] = { 16, 17 };
     static constexpr double DistanceUntilAccelerate = 0.1;
     static constexpr double kDist[2] = { .35,1 };

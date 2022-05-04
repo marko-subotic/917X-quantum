@@ -107,6 +107,7 @@ void miscFunctions(void* p) {
     bool clampToggle = false;
     bool tiltToggle = true;
     bool coverToggle = false;
+    bool highToggle = false;
     tilter.set_value(tiltToggle);
     double liftLock = lift.get_raw_position(NULL);
     lift.set_encoder_units(pros::E_MOTOR_ENCODER_COUNTS);
@@ -120,6 +121,7 @@ void miscFunctions(void* p) {
         bool x = cont.get_digital_new_press(DIGITAL_X);
         bool y = cont.get_digital_new_press(DIGITAL_Y);
         bool left = cont.get_digital_new_press(DIGITAL_LEFT);
+        bool b = cont.get_digital_new_press(DIGITAL_B);
 
         double deltaTheta = (fabs(leftEnc.get_position() / 100 - prevLeft) + fabs(rightEnc.get_position() / 100 - prevRight)) / 2;
         //double encoderRPM = deltaTheta / (loopDelay / 1000) / 360;
@@ -137,7 +139,10 @@ void miscFunctions(void* p) {
             lift.move_absolute(liftLock, 10);
         }
         
-
+        if (b) {
+            highToggle = !highToggle;
+            highRelease.set_value(highToggle);
+        }
         if (L2) {
             intakeInFunc();
 
