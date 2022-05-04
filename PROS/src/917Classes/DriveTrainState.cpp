@@ -83,6 +83,8 @@ void DriveTrainState::step(double dLeftEnc, double dRightEnc, double dBottomEnc)
         shiftX = lastPoint.x - calcPoint.x;
         shiftY = lastPoint.y - calcPoint.y;
     }
+    double deltaTheta = (fabs(rawLeft) + fabs(rawRight)) / 2;
+    velocity = deltaTheta / loopDelay * 1000 / 360 * encWheelSize / bigDiam * 60 / rpms * 100;
     LockGuard lockGuard(&mtx);
     m_x += shiftX * cos(-m_theta) + shiftY * sin(-m_theta);
     m_y += shiftY * cos(-m_theta) - shiftX * sin(-m_theta);
@@ -93,4 +95,8 @@ void DriveTrainState::switchDir() {
     m_theta = Utils::thetaConverter(m_theta + M_PI);
     facingForward = !facingForward;
 
+}
+
+double DriveTrainState::getVelo() {
+    return velocity;
 }

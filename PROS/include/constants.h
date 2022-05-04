@@ -7,7 +7,7 @@
 #define JoystickScaleConst 1
 #define DriveDeadzone 10
 
-#define LIFT_RATIO 5
+#define LIFT_RATIO 7
 #define LIFT_ENCODER 1800
 
 #define ANGLE_IRRELEVANT 500

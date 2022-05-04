@@ -4,7 +4,7 @@
 #include <algorithm>    // std::max
 
 using namespace pros;
-DriveTrainState stateO(27, 13.5, M_PI / 2 - .1463);
+DriveTrainState stateO(0, 0, 0);
 int takein = 2;
 const double intakemax = 127;
 
@@ -115,7 +115,8 @@ void miscFunctions(void* p) {
     while (true) {
         bool R2 = cont.get_digital(E_CONTROLLER_DIGITAL_R2);
         bool R1 = cont.get_digital(E_CONTROLLER_DIGITAL_R1);
-        
+        bool L2 = cont.get_digital_new_press(E_CONTROLLER_DIGITAL_L2);
+        bool L1 = cont.get_digital_new_press(E_CONTROLLER_DIGITAL_L1);
         bool x = cont.get_digital_new_press(DIGITAL_X);
         bool y = cont.get_digital_new_press(DIGITAL_Y);
         bool left = cont.get_digital_new_press(DIGITAL_LEFT);
@@ -135,6 +136,18 @@ void miscFunctions(void* p) {
         }if (!R1 && !R2) {
             lift.move_absolute(liftLock, 10);
         }
+        
+
+        if (L2) {
+            intakeInFunc();
+
+        }
+        else if (L1) {
+            intakeOutFunc();
+            printf("re%d\n", takein);
+
+        }
+        pros::delay(20);
        
         if (x) {
             clampToggle = !clampToggle;
@@ -151,28 +164,19 @@ void miscFunctions(void* p) {
     clamp.set_value(false);
 }
 void intakeTask(void* p){
-
-        DriveTrainController::intakeTask(&takein);
-        while(true){
-            bool L2 = cont.get_digital_new_press(E_CONTROLLER_DIGITAL_L2);
-            bool L1 = cont.get_digital_new_press(E_CONTROLLER_DIGITAL_L1);
-            if (L2) {
-                intakeInFunc();
-            }
-            else if (L1) {
-                intakeOutFunc();
-            }
-            pros::delay(20);
-        }
-        
+    DriveTrainController::intakeTask(&takein);       
 }
 void odomFunctionsOP(void* p) {
     rightEnc.reset_position();
     if (!rightEnc.get_reversed()) {
         rightEnc.reverse();
+
     }
     leftEnc.reset_position();
-    horEnc.reset();
+    horEnc.reset_position();
+    if (!horEnc.get_reversed()) {
+        horEnc.reverse();
+    }
     lv_obj_clean(lv_scr_act());
     OdomDisplay display(lv_scr_act());
 
@@ -181,7 +185,7 @@ void odomFunctionsOP(void* p) {
     double prevMid = 0;
     double covRight = rightEnc.get_position() / 100.0;
     double covLeft = leftEnc.get_position() / 100.0;
-    double covMid = horEnc.get_value();
+    double covMid = horEnc.get_position()/100.0;
     double deltaRight = covRight - prevRight;
     double deltaLeft = covLeft - prevLeft;
     double deltaMid = covMid - prevMid;
@@ -204,7 +208,7 @@ void odomFunctionsOP(void* p) {
         display.setState(stateO.getPos(), theta);
         display.encoderDebug(covRight, "angle to point: ");
         prevRight = covRight, prevLeft = covLeft, prevMid = covMid;
-        covRight = rightEnc.get_position() / 100.0, covLeft = leftEnc.get_position() / 100.0, covMid = horEnc.get_value();
+        covRight = rightEnc.get_position() / 100.0, covLeft = leftEnc.get_position() / 100.0, covMid = horEnc.get_position()/100.0;
         deltaRight = covRight - prevRight, deltaLeft = covLeft - prevLeft, deltaMid = covMid - prevMid;
         pros::delay(20);
     }
@@ -222,7 +226,7 @@ void opcontrol() {
     leftFront.set_brake_mode(pros::E_MOTOR_BRAKE_COAST);
     std::string driveTaskName("Drive Task");
     std::string intakeTaskName("Misc Task");
-    //pros::Task odomTasks(odomFunctionsOP);
+    pros::Task odomTasks(intakeTask);
     Task driveTask(tankDrive, &driveTaskName);
     Task intakeTask(miscFunctions, &intakeTaskName);
 

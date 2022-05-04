@@ -36,7 +36,7 @@ Point DriveTrainController::pointAligner(Point state, Point target, double final
         double firstAng = targetAng;
         lift.move_absolute(Utils::redMotConv(liftPos) * LIFT_RATIO, 100);
 
-
+        int counter = 0;
         double spd;
         double integral = 0;
         double prevAng = targetAng;
@@ -48,11 +48,11 @@ Point DriveTrainController::pointAligner(Point state, Point target, double final
 			targetAng = pointAng - state->getTheta();
             if (targetAng > M_PI) targetAng -= 2 * M_PI;
             else if (targetAng < -M_PI) targetAng += 2 * M_PI;
-
+            
             //calculating PID components
             double prop = targetAng * kProp[mogoState];
             double deriv = (targetAng - prevAng) * kDer[mogoState];
-            if (fabs(targetAng)<10.0*M_PI/180) {
+            if (fabs(targetAng)<19.0*M_PI/180) {
                     integral += targetAng * kInteg[mogoState];       
             }
             else {
@@ -68,7 +68,15 @@ Point DriveTrainController::pointAligner(Point state, Point target, double final
 			}
 
             //printf("targetAng: %f, p: %f, i: %f, d: %f\n", targetAng, prop, integral, deriv);
-
+            if (state->getVelo() < 1   ) {
+                counter++;
+            }
+            else {
+                counter = 0;
+            }
+            if (counter > 10) {
+                spd *= 3;
+            }
             rightBack.move(Utils::perToVol(spd));
             rightMid.move(Utils::perToVol(spd));
             rightFront.move(Utils::perToVol(spd));
@@ -201,14 +209,10 @@ Point DriveTrainController::pointAligner(Point state, Point target, double final
             }
 
             double targetSpd;
-            double deltaTheta = (fabs(leftEnc.get_position()/100 - prevLeft) + fabs(rightEnc.get_position()/100 - prevRight)) / 2;
-            //double encoderRPM = deltaTheta / (loopDelay / 1000) / 360;
-            double aveRealVelo = deltaTheta / loopDelay * 1000 / 360 * smallDiam / bigDiam * 60 / rpms * 100;//(fabs(rightMid.get_actual_velocity()) + fabs(rightBack.get_actual_velocity()) + fabs(rightFront.get_actual_velocity()) + fabs(leftMid.get_actual_velocity()) + fabs(leftBack.get_actual_velocity()) + fabs(leftFront.get_actual_velocity())) / 6;
-            prevLeft = leftEnc.get_position()/100, prevRight = rightEnc.get_position()/100;
             bool isAccel = false;
             bool isDecel = false;
 
-            if (aveRealVelo < 1) {
+            if (state->getVelo() < 2) {
                 crashCounter++;
             }
             else {
@@ -378,27 +382,29 @@ Point DriveTrainController::pointAligner(Point state, Point target, double final
         }
 
     };
-    void DriveTrainController::intakeTask(int* state){
-            int counter = 0;
-            double prev = intake.get_position();
-            while(true){
-                if(*state==0){
-                    if(fabs(intake.get_position()-prev)<2){
-                        counter++;
-                    }else{
-                        counter = 0;
-                    }
-                    if(counter >5){
-                        intake.move(127);
-                    }else{
-                        intake.move(-127);
-                    }
-                }else if(*state==1){
-                    intake.move(127);
+    void DriveTrainController::intakeTask(int * state){
+        int counter = 0;
+        double prev = intake.get_position();
+        while(true){
+            printf("inLoop%d\n", *state);
+            if(*state==0){
+                if(fabs(intake.get_position()-prev)<10){
+                    counter++;
                 }else{
-                    intake.move(0);
+                    counter = 0;
                 }
-                prev = intage.get_position();
+                if(counter >5){
+                    intake.move(127);
+                    pros::delay(200);
+                }else{
+                    intake.move(-127);
+                }
+            }else if(*state==1){
+                intake.move(127);
+            }else{
+                intake.move(0);
             }
+            prev = intake.get_position();
+            pros::delay(20);
         }
     };

@@ -12,8 +12,8 @@ class DriveTrainState{
         double m_theta;
         const double encWheelSize = 2.775;
         const double horEncWheelSize = 2.775;
-        const double distanceYs = 14.327;
-        const double distanceX = 5.14;
+        const double distanceYs = 14.175;
+        const double distanceX = 3.13;
         const Point leftEnc = Point(-distanceYs/2, distanceX);
         const Point rightEnc = Point(distanceYs/2,distanceX);
         const Point bottomEnc = Point(0,0);
@@ -21,7 +21,11 @@ class DriveTrainState{
         const double minimumForRotation = .01;
         bool facingForward = true;
 
-                    
+        static constexpr int loopDelay = 20;
+        static constexpr int rpms = 300;
+        static constexpr double bigDiam = 4.1;
+
+        double velocity;
        
 
         //static method to calculate change in theta given the change in the 2 vertical encoders
@@ -54,5 +58,7 @@ class DriveTrainState{
         //sets the the x and y to the param point vals and theta to param theta, used to reset/special cases
        //for testing
         void setState(Point resetPoint, double theta);
+
+        double getVelo();
         
 };
