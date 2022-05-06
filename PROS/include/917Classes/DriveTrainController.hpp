@@ -9,9 +9,9 @@ class DriveTrainController {
 private:
     //index of arrays is state of the bot, index 0 is 1 mogo in back, index 1 is no mogo
     static constexpr double minErrorDegrees = .7*M_PI/180;
-    static constexpr double kProp [2] = { 95, 95 };
+    static constexpr double kProp [2] = { 65, 65 };
     static constexpr double kInteg[2] = { 13, 11 };
-    static constexpr double kDer[2] = { 755, 755};
+    static constexpr double kDer[2] = { 600, 600};
     
 
 

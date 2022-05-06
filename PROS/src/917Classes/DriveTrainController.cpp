@@ -75,7 +75,7 @@ Point DriveTrainController::pointAligner(Point state, Point target, double final
                 counter = 0;
             }
             if (counter > 50) {
-                spd *= 3;
+                spd *= 4;
             }
             rightBack.move(Utils::perToVol(spd));
             rightMid.move(Utils::perToVol(spd));

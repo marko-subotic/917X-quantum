@@ -206,25 +206,25 @@ void prog(void* p) {
     int speed = 70;
     lift.tare_position();
     Point pointZero(28, 13);
-    Point pointOne(34, 72);
-    Point pointTwoOh(57, 118);
-    Point pointThree(53, 108);
+    Point pointOne(33, 72);
+    Point pointTwoOh(62, 118);
+    Point pointThree(60, 105);
     Point pointFour(120, 112);
-    Point pointFive(91, 144);
-    Point pointSix(108.5, 80);
-    Point pointSeven(78, 124);
+    Point pointFive(89, 144);
+    Point pointSix(106, 80);
+    Point pointSeven(73, 124);
     Point pointEight(80, 113);
-    Point pointNine(70, 75);
+    Point pointNine(69, 75);
     Point pointTen(63, 125);
-    Point pointEleven(67, 109);
-    Point pointTwelve(140, 57);
-    Point pointTwelveOh(129, 59);
-    Point pointThirteen(74, 128);
-    Point pointFourteen(74, 114);
-    Point pointFifteen(40, 92);
-    Point pointSixteen(53, 120);
-    Point pointSeventeen(49, 100);
-    Point pointEighteen(10, 87);
+    Point pointEleven(68, 100);
+    Point pointTwelve(133, 57);
+    Point pointTwelveOh(124, 70);
+    Point pointThirteen(60, 112);
+    Point pointFourteen(66, 102);
+    Point pointFifteen(40, 90);
+    Point pointSixteen(45, 117);
+    Point pointSeventeen(41, 98);
+    Point pointEighteen(0, 87);
     Point pointNineteen(50, 10);
     Point balance(72, 12);
     //printf("%f\n", Utils::perToVol(100));
@@ -243,7 +243,7 @@ void prog(void* p) {
     intake.move(-127);
     //pros::delay(500);
 
-    DriveTrainController::driveToPoint(&state, pointTwoOh, -50, -90, 0, 29, false);
+    DriveTrainController::driveToPoint(&state, pointTwoOh, -50, -90, 0, 10, false);
     lift.move_absolute(Utils::redMotConv(-50)*LIFT_RATIO, 100);
     pros::delay(500);
     clamp.set_value(false);
@@ -252,15 +252,16 @@ void prog(void* p) {
     DriveTrainController::driveToPoint(&state, pointThree, speed, -65, 0, ANGLE_IRRELEVANT, false);
     state.switchDir();
     tilter.set_value(false);
-    
+    intake.move(0);
     DriveTrainController::driveToPoint(&state, pointFour, -speed, -65, 1, 83, false);
     state.switchDir();
     pros::delay(500);
-    DriveTrainController::driveToPoint(&state, pointFive, speed, -100, 1, ANGLE_IRRELEVANT, true);
+    DriveTrainController::driveToPoint(&state, pointFive, 70, -10, 1, ANGLE_IRRELEVANT, true);
     tilter.set_value(true);
+    intake.move(-127);
     state.switchDir();
     
-    DriveTrainController::driveToPoint(&state, pointSix, -speed, 3, 0, ANGLE_IRRELEVANT, true);
+    DriveTrainController::driveToPoint(&state, pointSix, -speed, 3, 0, ANGLE_IRRELEVANT, 110, 70, 1, true);
     clamp.set_value(true);
     
     DriveTrainController::driveToPoint(&state, pointSeven, -60, -75, 0, ANGLE_IRRELEVANT, false);
@@ -271,18 +272,19 @@ void prog(void* p) {
     state.switchDir();
     
     DriveTrainController::turnToPoint(&state, pointNine, 0, 0);
-    DriveTrainController::driveToPoint(&state, pointNine, -speed, 2, 0, ANGLE_IRRELEVANT, true);
+    DriveTrainController::driveToPoint(&state, pointNine, -speed, 2, 0, ANGLE_IRRELEVANT, 110, 80, 1, true);
     clamp.set_value(true);
     
     DriveTrainController::turnToPoint(&state, pointTen, -75, 0);
     DriveTrainController::driveToPoint(&state, pointTen, -speed, -68, 0, ANGLE_IRRELEVANT, false);
-    lift.move_absolute(Utils::redMotConv(-53) * LIFT_RATIO, 100);
+    lift.move_absolute(Utils::redMotConv(-64) * LIFT_RATIO, 100);
     pros::delay(750);
     clamp.set_value(false);
     state.switchDir();
-    DriveTrainController::driveToPoint(&state, pointEleven, speed, -60, 0, ANGLE_IRRELEVANT, 110, 10, 0, false);
+    DriveTrainController::driveToPoint(&state, pointEleven, speed, -70, 0, ANGLE_IRRELEVANT, 110, 10, 0, false);
     state.switchDir();
-    DriveTrainController::driveToPoint(&state, pointTwelve, -speed, 0, 0, -60, true);
+    DriveTrainController::turnToPoint(&state, pointTwelve, -15, 0);
+    DriveTrainController::driveToPoint(&state, pointTwelve, -speed, 0, 0, -72, 110, 80, 1, true);
     clamp.set_value(true);
     state.switchDir();
     DriveTrainController::driveToPoint(&state, pointTwelveOh, speed, -10, 0, ANGLE_IRRELEVANT,false);

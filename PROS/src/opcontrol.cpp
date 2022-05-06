@@ -19,20 +19,20 @@ int ScaleRawJoystick(int raw)
 }
 
 void intakeInFunc() {
-    if (takein != 1) {
-        takein = 1;
+    if (takein != 127) {
+        takein = 127;
     }
-    else if (takein == 1) {
-        takein = 2;
+    else if (takein == 127) {
+        takein = 0;
     }
 }
 
 void intakeOutFunc() {
-    if (takein != 0) {
-        takein = 0;
+    if (takein != -127) {
+        takein = -127;
     }
-    else if (takein == 0) {
-        takein = 2;
+    else if (takein == -127) {
+        takein = 0;
     }
 }
 
@@ -105,7 +105,7 @@ void tankDrive(void* p) {
 void miscFunctions(void* p) {
     lift.set_brake_mode(MOTOR_BRAKE_BRAKE);
     bool clampToggle = false;
-    bool tiltToggle = true;
+    bool tiltToggle = false;
     bool coverToggle = false;
     bool highToggle = false;
     tilter.set_value(tiltToggle);
@@ -153,7 +153,7 @@ void miscFunctions(void* p) {
 
         }
         pros::delay(20);
-       
+        intake.move(takein);
         if (x) {
             clampToggle = !clampToggle;
             clamp.set_value(clampToggle);
@@ -169,7 +169,7 @@ void miscFunctions(void* p) {
     clamp.set_value(false);
 }
 void intakeTask(void* p){
-    DriveTrainController::intakeTask(&takein);       
+    //DriveTrainController::intakeTask(&takein);       
 }
 void odomFunctionsOP(void* p) {
     rightEnc.reset_position();
@@ -220,7 +220,7 @@ void odomFunctionsOP(void* p) {
 }
 
 void opcontrol() {
-    clamp.set_value(true);
+    //clamp.set_value(true);
     inAuton = false;
     rightBack.set_brake_mode(pros::E_MOTOR_BRAKE_COAST);
     rightMid.set_brake_mode(pros::E_MOTOR_BRAKE_COAST);
