@@ -9,7 +9,7 @@ class DriveTrainController {
 private:
     //index of arrays is state of the bot, index 0 is 1 mogo in back, index 1 is no mogo
     static constexpr double minErrorDegrees = .7*M_PI/180;
-    static constexpr double kProp [2] = { 65, 65 };
+    static constexpr double kProp [2] = { 80, 80 };
     static constexpr double kInteg[2] = { 13, 11 };
     static constexpr double kDer[2] = { 600, 600};
     
@@ -26,7 +26,7 @@ private:
     static constexpr double finalSpeedForward[3] = { 30, 20, 20 };
     //if init is great than 35 risk of not going straight heightens
     static constexpr double initialSpeedForward[3] = { 20, 20, 20 };
-    static constexpr double finalSpeedBackward[3] = { 20, 20, 90 };
+    static constexpr double finalSpeedBackward[3] = { 20, 20, 30 };
     static constexpr double initialSpeedBackward[3] = { 20, 20, 90};
     static constexpr int loopDelay = 20;
 

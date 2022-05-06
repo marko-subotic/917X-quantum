@@ -75,7 +75,7 @@ Point DriveTrainController::pointAligner(Point state, Point target, double final
                 counter = 0;
             }
             if (counter > 50) {
-                spd *= 4;
+                spd *= 5;
             }
             rightBack.move(Utils::perToVol(spd));
             rightMid.move(Utils::perToVol(spd));
@@ -138,6 +138,7 @@ Point DriveTrainController::pointAligner(Point state, Point target, double final
                 turnToPoint(state, alignPoint, liftPos, mogoState);
 
             }
+            
         }
         
         //lift.move_absolute(Utils::redMotConv(liftPos) * LIFT_RATIO, 100);

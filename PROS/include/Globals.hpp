@@ -13,7 +13,8 @@ extern pros::Motor intake;
 extern pros::Motor lift;
 extern pros::ADIDigitalOut clamp;
 extern pros::ADIDigitalOut tilter;
-extern pros::ADIDigitalOut highRelease;
+extern pros::ADIDigitalOut highReleaseL;
+extern pros::ADIDigitalOut highReleaseR;
 
 extern pros::Controller cont;
 extern pros::ADIDigitalOut cover;

@@ -107,7 +107,7 @@ void miscFunctions(void* p) {
     bool clampToggle = false;
     bool tiltToggle = false;
     bool coverToggle = false;
-    bool highToggle = false;
+    bool highToggle = true;
     tilter.set_value(tiltToggle);
     double liftLock = lift.get_raw_position(NULL);
     lift.set_encoder_units(pros::E_MOTOR_ENCODER_COUNTS);
@@ -141,7 +141,9 @@ void miscFunctions(void* p) {
         
         if (b) {
             highToggle = !highToggle;
-            highRelease.set_value(highToggle);
+            highReleaseL.set_value(highToggle);
+            highReleaseR.set_value(highToggle);
+
         }
         if (L2) {
             intakeInFunc();
