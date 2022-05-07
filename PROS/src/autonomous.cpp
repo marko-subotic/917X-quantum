@@ -104,6 +104,7 @@ void rightSide(void* p) {
     pros::delay(1000);
     state.switchDir();
     DriveTrainController::driveToPoint(&state, pointNine, -30, -0, 0, ANGLE_IRRELEVANT, false);
+    tilter.set_value(false);
     highReleaseR.set_value(true);
     highReleaseL.set_value(true);
 
@@ -191,6 +192,7 @@ void leftSide(void* p) {
     state.switchDir();
     state.setState(Point(24, 5), M_PI);
 
+    tilter.set_value(false);
     DriveTrainController::driveToPoint(&state, pointSix, 100, -0, 0, ANGLE_IRRELEVANT, false);
     state.switchDir();
     DriveTrainController::driveToPoint(&state, pointFive, -80, 0, 0, ANGLE_IRRELEVANT, false);
@@ -217,9 +219,9 @@ void prog(void* p) {
     Point pointSeven(71, 124);
     Point pointEight(80, 113);
     Point pointNine(69, 75);
-    Point pointTen(61, 125);
+    Point pointTen(59, 125);
     Point pointEleven(68, 100);
-    Point pointTwelve(144, 46);
+    Point pointTwelve(146, 48);
     Point pointTwelveOh(124, 70);
     Point pointThirteen(60, 116);
     Point pointFourteen(66, 102);
@@ -268,7 +270,7 @@ void prog(void* p) {
     DriveTrainController::driveToPoint(&state, pointSix, -speed, 3, 0, ANGLE_IRRELEVANT, 110, 70, 1, true);
     clamp.set_value(true);
     
-    DriveTrainController::driveToPoint(&state, pointSeven, -60, -71, 0, ANGLE_IRRELEVANT, false);
+    DriveTrainController::driveToPoint(&state, pointSeven, -60, -68, 0, ANGLE_IRRELEVANT, false);
     clamp.set_value(false);
     state.switchDir();
     
@@ -288,7 +290,7 @@ void prog(void* p) {
     DriveTrainController::driveToPoint(&state, pointEleven, speed, -70, 0, ANGLE_IRRELEVANT, 110, 10, 0, false);
     state.switchDir();
     DriveTrainController::turnToPoint(&state, pointTwelve, -15, 0);
-    DriveTrainController::driveToPoint(&state, pointTwelve, -speed, 0, 0, -72, 110, 70, 1, true);
+    DriveTrainController::driveToPoint(&state, pointTwelve, -speed, 0, 0, -72, 110, 57, 1, true);
     clamp.set_value(true);
     state.switchDir();
     DriveTrainController::driveToPoint(&state, pointTwelveOh, speed, -10, 0, ANGLE_IRRELEVANT,false);

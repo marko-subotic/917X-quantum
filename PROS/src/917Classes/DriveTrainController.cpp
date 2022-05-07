@@ -138,6 +138,7 @@ Point DriveTrainController::pointAligner(Point state, Point target, double final
                 turnToPoint(state, alignPoint, liftPos, mogoState);
 
             }
+            break;
             
         }
         
