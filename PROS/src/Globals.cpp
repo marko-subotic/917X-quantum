@@ -6,4 +6,5 @@ leftFront(11, pros::E_MOTOR_GEARSET_36, 1), leftMid(1, pros::E_MOTOR_GEARSET_36,
 pros::Controller cont(pros::E_CONTROLLER_MASTER);
 pros::ADIDigitalOut clamp('E', false), tilter('F', false) , cover('D', false), highReleaseL('A', false), highReleaseR('B', false);
 pros::Rotation rightEnc(15), leftEnc(13);
+pros::Vision vision(16);
 bool inAuton = true;

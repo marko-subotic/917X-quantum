@@ -421,3 +421,53 @@ Point DriveTrainController::pointAligner(Point state, Point target, double final
             pros::delay(20);
         }
     };
+    void DriveTrainController::driveToMogo(DriveTrainState* state, Point target, double inSpd, double liftPos, int mogoState, double finalAng, double tiltPercent, double liftPercent, int radState, bool isClamping, int colorID) {
+
+        driveToPoint(state, target, inSpd, liftPos, mogoState, finalAng, tiltPercent, liftPercent, radState, isClamping);
+        
+        pros::vision_object_s_t rtn = vision.get_by_sig(0, colorID);
+
+        while (rtn.width < mogoWidth) {
+            rtn = vision.get_by_sig(0, colorID);
+            int spd = 30;
+            int correction = (rtn.left_coord + rtn.width / 2 - 158)*kMogo/rtn.width;
+        }
+   
+        /*rightBack.move_absolute(0, 30);
+        rightFront.move_absolute(0, 30);
+        rightMid.move_absolute(0, 30);
+
+        leftMid.move_absolute(0, 30);
+        leftBack.move_absolute(0, 30);
+        leftFront.move_absolute(0, 30);
+        */
+        rightBack.move_velocity(0);
+        rightFront.move_velocity(0);
+        rightMid.move_velocity(0);
+
+        leftMid.move_velocity(0);
+        leftBack.move_velocity(0);
+        leftFront.move_velocity(0);
+        printf("(x,y): (%f,%f), theta: %f\n", state->getPos().x, state->getPos().y, state->getTheta());
+    };
+
+    void DriveTrainController::driveToMogo(DriveTrainState* state, Point target, double inSpd, double liftPos, int mogoState, double finalAng, bool isClamping, int colorID) {
+        if (finalAng == ANGLE_IRRELEVANT) {
+            DriveTrainController::driveToMogo(state, target, inSpd, liftPos, mogoState, finalAng, 110, -1, 1, isClamping, colorID);
+        }
+        else {  
+            DriveTrainController::driveToMogo(state, target, inSpd, liftPos, mogoState, finalAng, 110, -1, 0, isClamping, colorID);
+
+        }
+    };
+
+    void DriveTrainController::driveToMogo(DriveTrainState* state, Point target, double inSpd, double liftPos, int mogoState, double finalAng, double tiltPercent, bool isClamping, int colorID) {
+        if (finalAng == ANGLE_IRRELEVANT) {
+            DriveTrainController::driveToMogo(state, target, inSpd, liftPos, mogoState, finalAng, tiltPercent, -1, 1, isClamping, colorID);
+        }
+        else {
+            DriveTrainController::driveToMogo(state, target, inSpd, liftPos, mogoState, finalAng, tiltPercent, -1, 0, isClamping, colorID);
+
+        }
+
+    };

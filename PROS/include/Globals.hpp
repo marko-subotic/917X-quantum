@@ -15,6 +15,7 @@ extern pros::ADIDigitalOut clamp;
 extern pros::ADIDigitalOut tilter;
 extern pros::ADIDigitalOut highReleaseL;
 extern pros::ADIDigitalOut highReleaseR;
+extern pros::Vision vision;
 
 extern pros::Controller cont;
 extern pros::ADIDigitalOut cover;

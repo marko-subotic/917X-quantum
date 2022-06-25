@@ -1,6 +1,8 @@
 #pragma once
 #define _USE_MATH_DEFINES
 #include <math.h>
+#include "main.h"
+
 #include "structDefs.hpp"
 #include "DriveTrainState.hpp"
 
@@ -30,6 +32,17 @@ private:
     static constexpr double initialSpeedBackward[3] = { 20, 20, 90};
     static constexpr int loopDelay = 20;
 
+
+    static constexpr int mogoWidth = 120;
+    static constexpr int kMogo = 10;
+    static constexpr  pros::vision_signature_s_t RED_SIG =
+        pros::Vision::signature_from_utility(RED_ID, 4017, 10127, 7072, -203, 1147, 472, 1.600, 0);
+    static constexpr pros::vision_signature_s_t BLUE_SIG =
+        pros::Vision::signature_from_utility(BLUE_ID, -3399, -1305, -2352, 4617, 12149, 8383, 1.400, 0);
+    static constexpr pros::vision_signature_s_t YELLOW_SIG =
+        pros::Vision::signature_from_utility(YELLOW_ID, 1401, 3747, 2574, -5439, -4681, -5060, 2.100, 0);
+    
+
     
 public:
     static Point pointAligner(Point state, Point target, double finalAng, int distState);
@@ -38,4 +51,7 @@ public:
     static void driveToPoint(DriveTrainState* state, Point target, double inSpd, double liftPos, int mogoState, double finalAng, bool isClamping);
     static void driveToPoint(DriveTrainState* state, Point target, double inSpd, double liftPos, int mogoState, double finalAng, double tiltPercent, bool isClamping);
     static void intakeTask(int* state);
+    static void driveToMogo(DriveTrainState* state, Point target, double inSpd, double liftPos, int mogoState, double finalAng, double tiltPercent, double liftPercent, int radState, bool isClamping, int colorID);
+    static void driveToMogo(DriveTrainState* state, Point target, double inSpd, double liftPos, int mogoState, double finalAng, bool isClamping, int colorID);
+    static void driveToMogo(DriveTrainState* state, Point target, double inSpd, double liftPos, int mogoState, double finalAng, double tiltPercent, bool isClamping, int colorID);
 };
