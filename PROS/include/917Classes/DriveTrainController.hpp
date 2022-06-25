@@ -2,7 +2,7 @@
 #define _USE_MATH_DEFINES
 #include <math.h>
 #include "main.h"
-
+#include "constants.h"
 #include "structDefs.hpp"
 #include "DriveTrainState.hpp"
 
@@ -19,7 +19,7 @@ private:
 
     //drive to point constants
     static constexpr int decelPow = 5;
-    static constexpr double MinErrorInches[3] = { 2, 12, 11 }; //front: 9 back: 12
+    static constexpr double MinErrorInches[4] = { 2, 12, 11, 15 }; //front: 9 back: 12
     static constexpr double DistanceUntilDecelerateInches[2] = { 16, 17 };
     static constexpr double DistanceUntilAccelerate = 0.1;
     static constexpr double kDist[2] = { .35,1 };
@@ -33,13 +33,13 @@ private:
     static constexpr int loopDelay = 20;
 
 
-    static constexpr int mogoWidth = 120;
+    static constexpr int mogoWidth = 260;
     static constexpr int kMogo = 10;
-    static constexpr  pros::vision_signature_s_t RED_SIG =
+    pros::vision_signature_s_t RED_SIG =
         pros::Vision::signature_from_utility(RED_ID, 4017, 10127, 7072, -203, 1147, 472, 1.600, 0);
-    static constexpr pros::vision_signature_s_t BLUE_SIG =
+    pros::vision_signature_s_t BLUE_SIG =
         pros::Vision::signature_from_utility(BLUE_ID, -3399, -1305, -2352, 4617, 12149, 8383, 1.400, 0);
-    static constexpr pros::vision_signature_s_t YELLOW_SIG =
+    pros::vision_signature_s_t YELLOW_SIG =
         pros::Vision::signature_from_utility(YELLOW_ID, 1401, 3747, 2574, -5439, -4681, -5060, 2.100, 0);
     
 

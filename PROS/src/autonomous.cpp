@@ -10,9 +10,9 @@
 //for skills
 //DriveTrainState state(27, 13.5, M_PI/2-.1463);
 //left neutral auton
-DriveTrainState state(24, 18, 0);
+//DriveTrainState state(24, 18, 0);
 // for testing
-//DriveTrainState state(0, 0, 0);
+DriveTrainState state(0, 0, 0);
 int intakeState = 2;
 
 void odomFunctions(void* p) {
@@ -347,7 +347,7 @@ void leftWPFirst(void* p) {
 
 void test(void* p) {
     lift.tare_position();
-    Point forward(0.5, -10);
+    Point forward(0, 24);
 
     Point climb(25, 75);
     //intake.move(127);
@@ -356,14 +356,8 @@ void test(void* p) {
 
     //DriveTrainController::driveToPoint(&state, forward, -100, 0, 0, 0, false);
     //DriveTrainController::driveToPoint(&state, climb, -100, 0, 1, 0);
-    double pointAng = Utils::angleToPoint(Point(forward.x - state.getPos().x, forward.y - state.getPos().y));
-    double targetAng = pointAng - state.getTheta();
-    while (targetAng > .5 * M_PI / 180) {
-        pointAng = Utils::angleToPoint(Point(forward.x - state.getPos().x, forward.y - state.getPos().y));
-        targetAng = pointAng - state.getTheta();
-        DriveTrainController::turnToPoint(&state, forward, 0, 0);
-    }
-    //DriveTrainController::driveToPoint(&state, forward, -70, 0, 0, 0, false);
+    
+    DriveTrainController::driveToMogo(&state, forward, -70, 0, 0, 0, false, RED_ID);
     Point print;
     //intake.move(0);
     pros::delay(500);
@@ -376,16 +370,16 @@ void test(void* p) {
 void autonIntake(void* p) {
     DriveTrainController::intakeTask(&intakeState);
 }
-/*void autonomous() {
+/**/void autonomous() {
     //state.switchDir();
     lift.set_encoder_units(pros::E_MOTOR_ENCODER_COUNTS);
     pros::Task odomTasks(odomFunctions);
-    pros::Task driveTask(leftSide);
+    pros::Task driveTask(test);
     //pros::Task autonIntakeTask(autonIntake);
 
-}*/
+}
 
-void autonomous() {
+/*void autonomous() {
 
 
     pros::vision_signature_s_t RED_SIG =
@@ -412,4 +406,4 @@ void autonomous() {
             leftFront.move(Utils::perToVol(place));
         }
     }
-}
+}*/

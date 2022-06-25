@@ -154,6 +154,9 @@ Point DriveTrainController::pointAligner(Point state, Point target, double final
         }
         int radIndex;
         if (radState != 0) {
+            if (radState = 4) {
+                radIndex = 3;
+            }
             if (!isClamping) {
                 radIndex = 0;
             }
@@ -429,8 +432,16 @@ Point DriveTrainController::pointAligner(Point state, Point target, double final
 
         while (rtn.width < mogoWidth) {
             rtn = vision.get_by_sig(0, colorID);
-            int spd = 30;
-            int correction = (rtn.left_coord + rtn.width / 2 - 158)*kMogo/rtn.width;
+            int spd = -30;
+            int correction = (rtn.left_coord + rtn.width / 2 - 158)*kMogo;
+
+            rightBack.move(Utils::perToVol(spd-correction));
+            rightMid.move(Utils::perToVol(spd- correction));
+            rightFront.move(Utils::perToVol(spd- correction));
+
+            leftMid.move(Utils::perToVol(spd+ correction));
+            leftBack.move(Utils::perToVol(spd+ correction));
+            leftFront.move(Utils::perToVol(spd+ correction));
         }
    
         /*rightBack.move_absolute(0, 30);
@@ -453,20 +464,19 @@ Point DriveTrainController::pointAligner(Point state, Point target, double final
 
     void DriveTrainController::driveToMogo(DriveTrainState* state, Point target, double inSpd, double liftPos, int mogoState, double finalAng, bool isClamping, int colorID) {
         if (finalAng == ANGLE_IRRELEVANT) {
-            DriveTrainController::driveToMogo(state, target, inSpd, liftPos, mogoState, finalAng, 110, -1, 1, isClamping, colorID);
+            DriveTrainController::driveToMogo(state, target, inSpd, liftPos, mogoState, finalAng, 110, -1, 4, isClamping, colorID);
         }
         else {  
-            DriveTrainController::driveToMogo(state, target, inSpd, liftPos, mogoState, finalAng, 110, -1, 0, isClamping, colorID);
-
+            DriveTrainController::driveToMogo(state, target, inSpd, liftPos, mogoState, finalAng, 110, -1, 4, isClamping, colorID);
         }
     };
 
     void DriveTrainController::driveToMogo(DriveTrainState* state, Point target, double inSpd, double liftPos, int mogoState, double finalAng, double tiltPercent, bool isClamping, int colorID) {
         if (finalAng == ANGLE_IRRELEVANT) {
-            DriveTrainController::driveToMogo(state, target, inSpd, liftPos, mogoState, finalAng, tiltPercent, -1, 1, isClamping, colorID);
+            DriveTrainController::driveToMogo(state, target, inSpd, liftPos, mogoState, finalAng, tiltPercent, -1, 4, isClamping, colorID);
         }
         else {
-            DriveTrainController::driveToMogo(state, target, inSpd, liftPos, mogoState, finalAng, tiltPercent, -1, 0, isClamping, colorID);
+            DriveTrainController::driveToMogo(state, target, inSpd, liftPos, mogoState, finalAng, tiltPercent, -1, 4, isClamping, colorID);
 
         }
 
