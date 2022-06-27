@@ -363,47 +363,122 @@ void test(void* p) {
     pros::delay(500);
     //double pointAng = Utils::angleToPoint(Point(forward.x - state.getPos().x, forward.y - state.getPos().y));
     //double targetAng = pointAng - state.getTheta();
-    printf("targetAng: %f \n", targetAng);
+    //printf("targetAng: %f \n", targetAng);
 
 }
 
 void autonIntake(void* p) {
     DriveTrainController::intakeTask(&intakeState);
 }
-/**/void autonomous() {
+/*void autonomous() {
     //state.switchDir();
     lift.set_encoder_units(pros::E_MOTOR_ENCODER_COUNTS);
     pros::Task odomTasks(odomFunctions);
     pros::Task driveTask(test);
     //pros::Task autonIntakeTask(autonIntake);
 
-}
+}*/
 
-/*void autonomous() {
+/*
+void autonomous() {
 
 
     pros::vision_signature_s_t RED_SIG =
-        pros::Vision::signature_from_utility(2, 4017, 10127, 7072, -203, 1147, 472, 1.600, 0);
+        pros::Vision::signature_from_utility(2, 7677, 12161, 9919, -1239, -363, -801, 2.600, 0);
     vision.set_signature(2, &RED_SIG);
     pros::vision_object_s_t rtn = vision.get_by_sig(0, 2);
-    while (true) {
+    printf("%d\n", rtn.width);
+    int counter = 0;
+    while (vision.get_object_count()>0) {
         rtn = vision.get_by_sig(0, 2);
         int place = rtn.left_coord + rtn.width/2 - 158;
-        printf("%d\n", place);
-        pros::delay(100);
+        printf("%d\n", rtn.width);
+        pros::delay(20);
 
-        if (abs(place) < 18){
-        continue;
+        if (rtn.width > 210&&abs(place)<18) {
+            counter++;
         }
         else {
-            place *= .25;
-            rightBack.move(Utils::perToVol(-place));
-            rightMid.move(Utils::perToVol(-place));
-            rightFront.move(Utils::perToVol(-place));
-
-            leftMid.move(Utils::perToVol(place));
-            leftBack.move(Utils::perToVol(place));
-            leftFront.move(Utils::perToVol(place));
+            counter = 0;
         }
+        if (counter > 3) {
+            break;
+        }
+        place *= .25;
+        int spd = -30;
+        int correction = (rtn.left_coord + rtn.width / 2 - 158) * .25;
+
+        rightBack.move(Utils::perToVol(spd - correction));
+        rightMid.move(Utils::perToVol(spd - correction));
+        rightFront.move(Utils::perToVol(spd - correction));
+
+        leftMid.move(Utils::perToVol(spd + correction));
+        leftBack.move(Utils::perToVol(spd + correction));
+        leftFront.move(Utils::perToVol(spd + correction));
     }
+    rightBack.move_velocity(0);
+    rightFront.move_velocity(0);
+    rightMid.move_velocity(0);
+
+    leftMid.move_velocity(0);
+    leftBack.move_velocity(0);
+    leftFront.move_velocity(0);
 }*/
+
+void autonomous(){
+
+    lv_obj_clean(lv_scr_act());
+    lv_obj_t* container = (lv_obj_create(lv_scr_act(), NULL));
+    lv_obj_set_size(container, lv_obj_get_width(lv_scr_act()), lv_obj_get_height(lv_scr_act()));
+    lv_obj_align(container, NULL, LV_ALIGN_CENTER, 0, 0);
+    lv_style_t* cStyle = lv_obj_get_style(container);
+    cStyle->body.main_color = LV_COLOR_BLACK;
+    cStyle->body.grad_color = LV_COLOR_BLACK;
+    cStyle->body.border.color = LV_COLOR_RED;
+    cStyle->body.border.width = 2;
+    cStyle->body.radius = 0;
+
+    lv_obj_t* screen = lv_obj_create(container, container);
+    double scalar = 1;
+    lv_obj_set_size(screen, (int16_t)(VISION_FOV_WIDTH*scalar), (int16_t)(VISION_FOV_HEIGHT*scalar));
+    lv_obj_align(screen, container, LV_ALIGN_CENTER, 0, 0);
+
+
+    
+    vision.set_signature(RED_ID, &RED_SIG);
+    //vision.set_signature(BLUE_ID, &BLUE_SIG);
+    //vision.set_signature(YELLOW_ID, &YELLOW_SIG);
+
+    pros::vision_object_s_t rtn = vision.get_by_sig(0, RED_ID);
+
+    lv_obj_t* mogo = lv_obj_create(screen, NULL);
+    lv_obj_set_size(mogo, (int16_t)(rtn.width * scalar), (int16_t)(rtn.height * scalar));
+    lv_obj_set_pos(mogo, (int16_t)(rtn.left_coord * scalar), (int16_t)(rtn.top_coord * scalar));
+    lv_style_t mStyle;
+    lv_style_copy(&mStyle, cStyle);
+    mStyle.body.main_color = LV_COLOR_RED;
+    mStyle.body.grad_color = LV_COLOR_RED;
+    lv_obj_set_style(mogo, &mStyle);
+    while (true) {
+        pros::delay(20);
+        rtn = vision.get_by_sig(0, RED_ID);
+        printf("%d\n", rtn.signature);
+        /*if (rtn.signature = RED_ID) {
+            mStyle->body.main_color = LV_COLOR_RED;
+            mStyle->body.grad_color = LV_COLOR_RED;
+
+        }
+        else if (rtn.signature = BLUE_ID) {
+            mStyle->body.main_color = LV_COLOR_BLUE;
+            mStyle->body.grad_color = LV_COLOR_BLUE;
+        }
+        else {
+            mStyle->body.main_color = LV_COLOR_YELLOW;
+            mStyle->body.grad_color = LV_COLOR_YELLOW;
+        }*/
+        lv_obj_set_size(mogo, (int16_t)(rtn.width * scalar), (int16_t)(rtn.height * scalar));
+        lv_obj_set_pos(mogo, (int16_t)(rtn.left_coord*scalar), (int16_t)(rtn.top_coord*scalar));
+        lv_obj_invalidate(mogo);
+    }
+   
+}

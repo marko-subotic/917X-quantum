@@ -20,5 +20,8 @@ extern pros::Vision vision;
 extern pros::Controller cont;
 extern pros::ADIDigitalOut cover;
 extern pros::Imu inert;
+extern pros::vision_signature_s_t RED_SIG;
+extern pros::vision_signature_s_t BLUE_SIG;
+extern pros::vision_signature_s_t YELLOW_SIG;
 
 extern bool inAuton;

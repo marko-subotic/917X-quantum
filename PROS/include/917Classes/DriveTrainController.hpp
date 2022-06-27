@@ -35,12 +35,7 @@ private:
 
     static constexpr int mogoWidth = 260;
     static constexpr int kMogo = 10;
-    pros::vision_signature_s_t RED_SIG =
-        pros::Vision::signature_from_utility(RED_ID, 4017, 10127, 7072, -203, 1147, 472, 1.600, 0);
-    pros::vision_signature_s_t BLUE_SIG =
-        pros::Vision::signature_from_utility(BLUE_ID, -3399, -1305, -2352, 4617, 12149, 8383, 1.400, 0);
-    pros::vision_signature_s_t YELLOW_SIG =
-        pros::Vision::signature_from_utility(YELLOW_ID, 1401, 3747, 2574, -5439, -4681, -5060, 2.100, 0);
+    
     
 
     

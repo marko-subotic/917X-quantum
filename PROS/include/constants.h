@@ -15,5 +15,5 @@
 
 #define RED_ID 2
 #define BLUE_ID 1
-#define YELLOW_ID 0
+#define YELLOW_ID 3
 #define ANGLE_IRRELEVANT 500
