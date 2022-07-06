@@ -9,9 +9,16 @@ pros::Rotation rightEnc(15), leftEnc(13);
 pros::Vision vision(16);
 
 pros::vision_signature_s_t RED_SIG =
-pros::Vision::signature_from_utility(RED_ID, 6929, 12233, 9581, -1707, -91, -899, 2.800, 0);
+pros::Vision::signature_from_utility(RED_ID, 8033, 9981, 9007, -1421, -697, -1059, 4.900, 0);
 pros::vision_signature_s_t BLUE_SIG =
-pros::Vision::signature_from_utility(BLUE_ID, -3399, -1305, -2352, 4617, 12149, 8383, 1.400, 0);
+pros::Vision::signature_from_utility(BLUE_ID, -3473, -2639, -3056, 9517, 11293, 10405, 5.400, 0);
 pros::vision_signature_s_t YELLOW_SIG =
-pros::Vision::signature_from_utility(YELLOW_ID, 1401, 3747, 2574, -5439, -4681, -5060, 2.100, 0);
+pros::Vision::signature_from_utility(YELLOW_ID, 203, 2305, 1254, -5593, -5127, -5360, 4.800, 0);
+
+pros::vision_signature_s_t DARK_YELLOW =
+pros::Vision::signature_from_utility(5, 2513, 3101, 2808, -5101, -4715, -4908, 4.500, 1);
+pros::vision_signature_s_t LIGHT_YELLOW =
+pros::Vision::signature_from_utility(6, -1, 597, 298, -5973, -5419, -5696, 3.100, 1);
+pros::vision_color_code_t blred =
+vision.pros::Vision::create_color_code(RED_ID,BLUE_ID);
 bool inAuton = true;

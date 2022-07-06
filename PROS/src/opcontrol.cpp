@@ -21,6 +21,7 @@ int ScaleRawJoystick(int raw)
 void intakeInFunc() {
     if (takein != 127) {
         takein = 127;
+
     }
     else if (takein == 127) {
         takein = 0;

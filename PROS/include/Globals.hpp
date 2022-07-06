@@ -24,4 +24,7 @@ extern pros::vision_signature_s_t RED_SIG;
 extern pros::vision_signature_s_t BLUE_SIG;
 extern pros::vision_signature_s_t YELLOW_SIG;
 
+extern pros::vision_signature_s_t DARK_YELLOW;
+extern pros::vision_signature_s_t LIGHT_YELLOW;
+extern pros::vision_color_code_t blred;
 extern bool inAuton;

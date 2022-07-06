@@ -70,7 +70,6 @@ void DriveTrainState::step(double dLeftEnc, double dRightEnc, double dBottomEnc)
         double centerRotateRX = rightEnc.x-dRightEnc/dTheta;
         double centerRotateLX = leftEnc.x-dLeftEnc/dTheta;
         centerRotateY = dBottomEnc / dTheta;
-        Point centerRotation;
         //These 2 if statements are to set the calculation point to either the left or right encoder
         //because the encoder further from the center of rotation is more accurate
         if(fabs(dRightEnc)>=fabs(dLeftEnc)){
@@ -99,4 +98,8 @@ void DriveTrainState::switchDir() {
 
 double DriveTrainState::getVelo() {
     return velocity;
+}
+
+Point DriveTrainState::getCOR() {
+    return centerRotation;
 }

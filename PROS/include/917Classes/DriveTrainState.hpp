@@ -18,6 +18,7 @@ class DriveTrainState{
         const Point rightEnc = Point(distanceYs/2,distanceX);
         const Point bottomEnc = Point(0,0);
         const Point calcPoint = Point((rightEnc.x + leftEnc.x) / 2, (rightEnc.y + leftEnc.y) / 2);
+        Point centerRotation;
         const double minimumForRotation = .01;
         bool facingForward = true;
 
@@ -60,5 +61,7 @@ class DriveTrainState{
         void setState(Point resetPoint, double theta);
 
         double getVelo();
+
+        Point getCOR();
         
 };

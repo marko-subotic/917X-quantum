@@ -22,7 +22,7 @@ private:
     static constexpr double MinErrorInches[4] = { 2, 12, 11, 15 }; //front: 9 back: 12
     static constexpr double DistanceUntilDecelerateInches[2] = { 16, 17 };
     static constexpr double DistanceUntilAccelerate = 0.1;
-    static constexpr double kDist[2] = { .35,1 };
+    static constexpr double kDist[3] = { .35, 1.0, 1.0};
     static constexpr double AngleForMaxError[2] = { 15 * M_PI / 180,   14 * M_PI / 180 };
     //if final is greater than 20 risk of not finishing straight heightens
     static constexpr double finalSpeedForward[3] = { 30, 20, 20 };
@@ -34,7 +34,7 @@ private:
 
 
     static constexpr int mogoWidth = 260;
-    static constexpr int kMogo = 10;
+    static constexpr double kMogo = .2;
     
     
 
