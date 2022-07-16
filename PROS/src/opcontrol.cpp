@@ -222,6 +222,79 @@ void odomFunctionsOP(void* p) {
     }
 }
 
+
+void angleCalibrate(void* p) {
+
+    double hi = 13.5;
+    double lo = 14.5;
+    int status = 0;
+    stateO.distanceYs = lo + (hi - lo) / 2;
+    while (true) {
+        pros::delay(20);
+
+        bool pressed = cont.get_digital_new_press(DIGITAL_A);
+        bool bressed = cont.get_digital_new_press(DIGITAL_RIGHT);
+        //printf("%f, %f\n", stateO.centerRotation.y - stateO.distanceX, );
+
+        if (bressed) {
+            stateO.setState(Point(0, 0), 0);
+
+        }
+        if (pressed) {
+            
+            
+            status++;
+            if (stateO.getTheta() > 3M_PI/2) {
+                hi = lo + (hi - lo) / 2;
+            }
+            else{
+                lo = lo + (hi - lo) / 2;
+            }
+            stateO.distanceYs = lo + (hi - lo) / 2;
+            
+        }
+        double bruh = 30;
+        double straight = 30;
+        /*
+        if (status%4 == 0) {
+            leftFront.move(0);
+            leftMid.move(0);
+            leftBack.move(0);
+            rightFront.move(0);
+            rightMid.move(0);
+            rightBack.move(0);
+            
+        }
+        else if (status % 4 == 1) {
+            leftFront.move(-1 * straight);
+            leftMid.move(-1 * straight);
+            leftBack.move(-1 * straight);
+            rightFront.move(-1 * straight);
+            rightMid.move(-1 * straight);
+            rightBack.move(-1 * straight);
+        }
+        else if (status % 4 == 2) {
+            leftFront.move(-1 * bruh);
+            leftMid.move(-1 * bruh);
+            leftBack.move(-1 * bruh);
+            rightFront.move(1 * bruh);
+            rightMid.move(1 * bruh);
+            rightBack.move(1 * bruh);
+        }
+        else if (status % 4 == 3) {
+            if (1) {
+                leftFront.move(1 * straight);
+                leftMid.move(1 * straight);
+                leftBack.move(1 * straight);
+                rightFront.move(1 * straight);
+                rightMid.move(1 * straight);
+                rightBack.move(1 * straight);
+            }
+            
+        }*/
+    }
+    //DriveTrainController::intakeTask(&takein);       
+}
 void opcontrol() {
     //clamp.set_value(true);
     inAuton = false;
@@ -232,10 +305,12 @@ void opcontrol() {
     leftBack.set_brake_mode(pros::E_MOTOR_BRAKE_COAST);
     leftMid.set_brake_mode(pros::E_MOTOR_BRAKE_COAST);
     leftFront.set_brake_mode(pros::E_MOTOR_BRAKE_COAST);
+    tilter.set_value(true);
     std::string driveTaskName("Drive Task");
     std::string intakeTaskName("Misc Task");
-    pros::Task odomTasks(intakeTask);
-    Task driveTask(tankDrive, &driveTaskName);
+    pros::Task odomTasks(odomFunctionsOP);
+    pros::Task calibrationTasks(angleCalibrate);
+    //Task driveTask(tankDrive, &driveTaskName);
     Task intakeTask(miscFunctions, &intakeTaskName);
 
     

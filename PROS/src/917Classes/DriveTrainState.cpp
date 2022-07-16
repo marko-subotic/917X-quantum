@@ -82,6 +82,8 @@ void DriveTrainState::step(double dLeftEnc, double dRightEnc, double dBottomEnc)
         shiftX = lastPoint.x - calcPoint.x;
         shiftY = lastPoint.y - calcPoint.y;
     }
+    printf("%f, %f, %f\n", dBottomEnc, dTheta, centerRotation.y - distanceX);
+
     double deltaTheta = (fabs(rawLeft) + fabs(rawRight)) / 2;
     velocity = deltaTheta / loopDelay * 1000 / 360 * encWheelSize / bigDiam * 60 / rpms * 100;
     LockGuard lockGuard(&mtx);

@@ -12,13 +12,11 @@ class DriveTrainState{
         double m_theta;
         const double encWheelSize = 2.775;
         const double horEncWheelSize = 2.775;
-        const double distanceYs = 14.175;
-        const double distanceX = 3.13;
+
         const Point leftEnc = Point(-distanceYs/2, distanceX);
         const Point rightEnc = Point(distanceYs/2,distanceX);
         const Point bottomEnc = Point(0,0);
         const Point calcPoint = Point((rightEnc.x + leftEnc.x) / 2, (rightEnc.y + leftEnc.y) / 2);
-        Point centerRotation;
         const double minimumForRotation = .01;
         bool facingForward = true;
 
@@ -34,6 +32,12 @@ class DriveTrainState{
 
     public:
         static const int minTicks = 0;
+        double distanceYs = 13.751953;//14.242188;
+        double distanceX = 2.53;
+        Point centerRotation;
+
+        //14.242188
+
 	    //default constructor gives point and theta values to 0;
 	    DriveTrainState();
 

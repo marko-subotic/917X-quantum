@@ -510,8 +510,8 @@ void autonomous() {
 
     lift.set_encoder_units(pros::E_MOTOR_ENCODER_COUNTS);
     pros::Task odomTasks(odomFunctions);
-    //pros::Task displayTask(visualDebug, &debugTaskName);
-    pros::Task bruh(centerOfRotation);
+    pros::Task displayTask(visualDebug, &debugTaskName);
+    //pros::Task bruh(centerOfRotation);
     //pros::Task driveTask(prog);
     //pros::Task autonIntakeTask(autonIntake);
 
