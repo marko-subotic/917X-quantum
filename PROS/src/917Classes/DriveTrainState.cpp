@@ -1,5 +1,6 @@
 #include "DriveTrainState.hpp"
 #include "Utils.hpp"
+#include "Globals.hpp"
 #include "LockGuard.hpp"
 #include "pros/rtos.hpp"
 #define _USE_MATH_DEFINES
@@ -67,8 +68,8 @@ void DriveTrainState::step(double dLeftEnc, double dRightEnc, double dBottomEnc)
     } else{
         dTheta = deltaTheta(dLeftEnc, dRightEnc);
         double centerRotateY;
-        double centerRotateRX = rightEnc.x-dRightEnc/dTheta;
-        double centerRotateLX = leftEnc.x-dLeftEnc/dTheta;
+        double centerRotateRX = rightEncP.x-dRightEnc/dTheta;
+        double centerRotateLX = leftEncP.x-dLeftEnc/dTheta;
         centerRotateY = dBottomEnc / dTheta;
         //These 2 if statements are to set the calculation point to either the left or right encoder
         //because the encoder further from the center of rotation is more accurate
@@ -82,7 +83,7 @@ void DriveTrainState::step(double dLeftEnc, double dRightEnc, double dBottomEnc)
         shiftX = lastPoint.x - calcPoint.x;
         shiftY = lastPoint.y - calcPoint.y;
     }
-    printf("%f, %f, %f\n", dBottomEnc, dTheta, centerRotation.y - distanceX);
+    //printf("%f, %f, %f, %f\n", dLeftEnc, dRightEnc, dBottomEnc, dTheta);
 
     double deltaTheta = (fabs(rawLeft) + fabs(rawRight)) / 2;
     velocity = deltaTheta / loopDelay * 1000 / 360 * encWheelSize / bigDiam * 60 / rpms * 100;

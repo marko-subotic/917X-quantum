@@ -46,7 +46,14 @@ void odomFunctions(void* p) {
         //double pointAng = Utils::angleToPoint(Point(pointTwo.x - state.getPos().x, pointTwo.y - state.getPos().y));
         //double targetAng = pointAng - state.getTheta();
         //printf("%f, %f\n", covRight, covLeft);
+        pros::delay(20);
 
+        if (std::max(fabs(deltaRight), std::max(fabs(deltaLeft), fabs(deltaMid))) < DriveTrainState::minTicks) {
+            covRight = rightEnc.get_position() / 100, covLeft = leftEnc.get_position() / 100, covMid = horEnc.get_position()/100;
+            deltaRight = covRight - prevRight, deltaLeft = covLeft - prevLeft, deltaMid = covMid - prevMid;
+            printf("charging\n");
+            continue;
+        }
         //printf("not charging\n");
         
         state.step(deltaLeft, deltaRight, deltaMid);
@@ -55,7 +62,6 @@ void odomFunctions(void* p) {
         prevRight = covRight, prevLeft = covLeft, prevMid = covMid;
         covRight = rightEnc.get_position() / 100.0, covLeft = leftEnc.get_position() / 100.0, covMid = horEnc.get_position()/100.0;
         deltaRight = covRight - prevRight, deltaLeft = covLeft - prevLeft, deltaMid = covMid - prevMid;
-        pros::delay(20);
     }
 }
 

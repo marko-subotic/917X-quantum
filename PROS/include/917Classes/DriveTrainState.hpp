@@ -13,10 +13,10 @@ class DriveTrainState{
         const double encWheelSize = 2.775;
         const double horEncWheelSize = 2.775;
 
-        const Point leftEnc = Point(-distanceYs/2, distanceX);
-        const Point rightEnc = Point(distanceYs/2,distanceX);
-        const Point bottomEnc = Point(0,0);
-        const Point calcPoint = Point((rightEnc.x + leftEnc.x) / 2, (rightEnc.y + leftEnc.y) / 2);
+        const Point leftEncP = Point(-distanceYs/2, distanceX);
+        const Point rightEncP = Point(distanceYs/2,distanceX);
+        const Point bottomEncP = Point(0,0);
+        const Point calcPoint = Point((rightEncP.x + leftEncP.x) / 2, (rightEncP.y + leftEncP.y) / 2);
         const double minimumForRotation = .01;
         bool facingForward = true;
 
@@ -31,7 +31,7 @@ class DriveTrainState{
         double deltaTheta(double leftEnc, double rightEnc);
 
     public:
-        static const int minTicks = 0;
+        static const int minTicks = 360;
         double distanceYs = 13.751953;//14.242188;
         double distanceX = 2.53;
         Point centerRotation;

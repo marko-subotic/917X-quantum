@@ -203,7 +203,13 @@ void odomFunctionsOP(void* p) {
     while (1) {
         bool aPress = cont.get_digital_new_press(DIGITAL_LEFT);
         if (aPress) {
-            printf("current: %f, %f, %f \n", stateO.getPos().x, stateO.getPos().y, stateO.getTheta());
+            printf("current: %d, %d, %d \n", leftEnc.get_position(), rightEnc.get_position(), horEnc.get_position());
+        }
+        if (std::max(fabs(deltaRight), std::max(fabs(deltaLeft), fabs(deltaMid))) < DriveTrainState::minTicks) {
+            covRight = rightEnc.get_position() / 100, covLeft = leftEnc.get_position() / 100, covMid = horEnc.get_position() / 100;
+            deltaRight = covRight - prevRight, deltaLeft = covLeft - prevLeft, deltaMid = covMid - prevMid;
+            //printf("charging\n");
+            continue;
         }
         //double pointAng = Utils::angleToPoint(Point(pointTwo.x - state.getPos().x, pointTwo.y - state.getPos().y));
         //double targetAng = pointAng - state.getTheta();
@@ -244,14 +250,14 @@ void angleCalibrate(void* p) {
             
             
             status++;
-            if (stateO.getTheta() > 3M_PI/2) {
+            if (stateO.getTheta() < 3*M_PI/2) {
                 hi = lo + (hi - lo) / 2;
             }
             else{
                 lo = lo + (hi - lo) / 2;
             }
             stateO.distanceYs = lo + (hi - lo) / 2;
-            
+            printf("%f\n", stateO.distanceYs);
         }
         double bruh = 30;
         double straight = 30;
