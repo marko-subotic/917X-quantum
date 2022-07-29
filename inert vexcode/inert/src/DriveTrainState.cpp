@@ -1,13 +1,11 @@
-#include "DriveTrainState.hpp"
-#include "Utils.hpp"
-#include "Globals.hpp"
-#include "LockGuard.hpp"
-#include "pros/rtos.hpp"
+#include "DriveTrainState.h"
+#include "Utils.h"
+#include "Globals.h"
 #define _USE_MATH_DEFINES
 #include <cstdio>
 #include <math.h>
-
-pros::Mutex mtx;
+#include "vex.h"
+vex::mutex mtx;
 
 DriveTrainState::DriveTrainState() {
     m_x = 0;
@@ -36,24 +34,23 @@ double DriveTrainState::deltaTheta(double leftEnc, double rightEnc) {
 
 
 Point DriveTrainState::getPos(){
-    LockGuard lockGuard(&mtx);
+    mtx.lock();
     return Point(m_x,m_y);
 };
 
 
 double DriveTrainState::getTheta(){
-    LockGuard lockGuard(&mtx);
+    mtx.lock();
     return m_theta;
 }
 
-void DriveTrainState::step(double dLeftEnc, double dRightEnc, double dBottomEnc){
+void DriveTrainState::step(double dLeftEnc, double dRightEnc, double dBottomEnc, double dTheta){
     double rawRight = dRightEnc;
     double rawLeft = dLeftEnc;
     dLeftEnc = dLeftEnc/360*encWheelSize*M_PI;
     dRightEnc = dRightEnc / 360 * encWheelSize * M_PI;
     dBottomEnc = dBottomEnc / 360 * horEncWheelSize * M_PI;
-    double dTheta;
-	double shiftY; 
+	  double shiftY; 
     double shiftX;
     if (!facingForward) {
         double temp = dRightEnc;
@@ -64,9 +61,8 @@ void DriveTrainState::step(double dLeftEnc, double dRightEnc, double dBottomEnc)
     if(fabs(rawRight-rawLeft)<minimumForRotation){
         dTheta = 0;
         shiftY = (dLeftEnc + dRightEnc) / 2;
-		shiftX = dBottomEnc;
+		    shiftX = dBottomEnc;
     } else{
-        dTheta = deltaTheta(dLeftEnc, dRightEnc);
         double centerRotateY;
         double centerRotateRX = rightEncP.x-dRightEnc/dTheta;
         double centerRotateLX = leftEncP.x-dLeftEnc/dTheta;
@@ -87,7 +83,7 @@ void DriveTrainState::step(double dLeftEnc, double dRightEnc, double dBottomEnc)
 
     double deltaTheta = (fabs(rawLeft) + fabs(rawRight)) / 2;
     velocity = deltaTheta / loopDelay * 1000 / 360 * encWheelSize / bigDiam * 60 / rpms * 100;
-    LockGuard lockGuard(&mtx);
+    mtx.lock();
     m_x += shiftX * cos(-m_theta) + shiftY * sin(-m_theta);
     m_y += shiftY * cos(-m_theta) - shiftX * sin(-m_theta);
     m_theta = Utils::thetaConverter(m_theta + dTheta);
@@ -106,7 +102,6 @@ double DriveTrainState::getVelo() {
 Point DriveTrainState::getCOR() {
     return centerRotation;
 }
-
 
 std::vector<double> DriveTrainState::calcAbsTheta(double leftEncAbs, double rightEncAbs) {
     abs_theta = (rightEncAbs - leftEncAbs) / 360 * encWheelSize * M_PI / distanceYs;

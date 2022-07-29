@@ -14,7 +14,11 @@ void initTask(void* p) {
 
 void initialize()
 {   
-   
+    inert.reset();
+    while (inert.is_calibrating()) {
+        pros::delay(20);
+    }
+    cont.set_text(0, 0, "bruh");
     
 }
 

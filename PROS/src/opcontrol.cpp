@@ -201,12 +201,17 @@ void odomFunctionsOP(void* p) {
     display.setState(stateO.getPos(), theta);
     Point pointTwo(0, 0);
     while (1) {
+        pros::delay(20);
         bool aPress = cont.get_digital_new_press(DIGITAL_LEFT);
         if (aPress) {
-            printf("current: %d, %d, %d \n", leftEnc.get_position(), rightEnc.get_position(), horEnc.get_position());
+            std::vector<double> rtn = stateO.calcAbsTheta(covLeft, covRight);
+
+            printf("%f, %f, %f, %f \n", rtn[0], rtn[1], rtn[2], rtn[3]);
         }
+
+        printf("%f\n", inert.get_heading());
         if (std::max(fabs(deltaRight), std::max(fabs(deltaLeft), fabs(deltaMid))) < DriveTrainState::minTicks) {
-            covRight = rightEnc.get_position() / 100, covLeft = leftEnc.get_position() / 100, covMid = horEnc.get_position() / 100;
+            covRight = rightEnc.get_position() / 100.0, covLeft = leftEnc.get_position() / 100.0, covMid = horEnc.get_position() / 100.0;
             deltaRight = covRight - prevRight, deltaLeft = covLeft - prevLeft, deltaMid = covMid - prevMid;
             //printf("charging\n");
             continue;
@@ -224,7 +229,6 @@ void odomFunctionsOP(void* p) {
         prevRight = covRight, prevLeft = covLeft, prevMid = covMid;
         covRight = rightEnc.get_position() / 100.0, covLeft = leftEnc.get_position() / 100.0, covMid = horEnc.get_position()/100.0;
         deltaRight = covRight - prevRight, deltaLeft = covLeft - prevLeft, deltaMid = covMid - prevMid;
-        pros::delay(20);
     }
 }
 
