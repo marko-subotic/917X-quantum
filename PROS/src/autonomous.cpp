@@ -56,7 +56,7 @@ void odomFunctions(void* p) {
         }
         //printf("not charging\n");
         
-        state.step(deltaLeft, deltaRight, deltaMid);
+        state.step(deltaLeft, deltaRight, deltaMid,0);
         theta = state.getTheta();
         
         prevRight = covRight, prevLeft = covLeft, prevMid = covMid;

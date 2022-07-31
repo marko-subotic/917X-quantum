@@ -197,7 +197,10 @@ void odomFunctionsOP(void* p) {
     double deltaRight = covRight - prevRight;
     double deltaLeft = covLeft - prevLeft;
     double deltaMid = covMid - prevMid;
-    double theta = stateO.getTheta();
+    double theta = inert.get_heading();
+    double prevTheta = theta;
+    double kInert = 1080.0 / (1080 + 12);
+
     display.setState(stateO.getPos(), theta);
     Point pointTwo(0, 0);
     while (1) {
@@ -209,7 +212,6 @@ void odomFunctionsOP(void* p) {
             printf("%f, %f, %f, %f \n", rtn[0], rtn[1], rtn[2], rtn[3]);
         }
 
-        printf("%f\n", inert.get_heading());
         if (std::max(fabs(deltaRight), std::max(fabs(deltaLeft), fabs(deltaMid))) < DriveTrainState::minTicks) {
             covRight = rightEnc.get_position() / 100.0, covLeft = leftEnc.get_position() / 100.0, covMid = horEnc.get_position() / 100.0;
             deltaRight = covRight - prevRight, deltaLeft = covLeft - prevLeft, deltaMid = covMid - prevMid;
@@ -221,9 +223,20 @@ void odomFunctionsOP(void* p) {
         //printf("%f, %f\n", covRight, covLeft);
         
         //printf("not charging\n");
+        prevTheta = theta;
+        theta = -Utils::inertToRad(inert.get_yaw());
+        double dTheta = (theta - prevTheta) * kInert;
 
-        stateO.step(deltaLeft, deltaRight, deltaMid);
-        theta = stateO.getTheta();
+        if (dTheta > 2 * M_PI) {
+            dTheta -= 2 * M_PI;
+        }
+        else if (dTheta < -2* M_PI) {
+            dTheta += 2 * M_PI;
+        }
+        stateO.step(deltaLeft, deltaRight, deltaMid, dTheta);
+
+        printf("%f, %f, %f, %f\n", deltaLeft, deltaRight, deltaMid, dTheta);
+
         display.setState(stateO.getPos(), theta);
         display.encoderDebug(covRight, "angle to point: ");
         prevRight = covRight, prevLeft = covLeft, prevMid = covMid;

@@ -14,6 +14,9 @@ class DriveTrainState{
         double abs_theta;
         const double encWheelSize = 2.775;
         const double horEncWheelSize = 2.775;
+        double distanceX = 2.53;
+        const double distanceYs = 14.1;
+
 
         const Point leftEncP = Point(-distanceYs/2, distanceX);
         const Point rightEncP = Point(distanceYs/2,distanceX);
@@ -33,9 +36,8 @@ class DriveTrainState{
         double deltaTheta(double leftEnc, double rightEnc);
 
     public:
-        static const int minTicks = 360;
-        double distanceYs = 14.1;
-        double distanceX = 2.53;
+        static const int minTicks = 0;
+        
         Point centerRotation;
 
         //14.242188
@@ -48,6 +50,9 @@ class DriveTrainState{
 
 
         //This will update the position of the object to the internal 3 main values m_x, m_y, m_theta
+        void step(double dLeftEnc, double dRightEnc, double dBottomEnc, double dTheta);
+
+        //using step without inertial sensor, encoder values give dTheta
         void step(double dLeftEnc, double dRightEnc, double dBottomEnc);
 
         //returns the point of the m_x and m_y coordinates, n

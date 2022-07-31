@@ -1,7 +1,7 @@
 #pragma once
 #define _USE_MATH_DEFINES
 #include <math.h>
-#include "main.h"
+//#include "main.h"
 #include "constants.h"
 #include "structDefs.hpp"
 #include "DriveTrainState.hpp"
@@ -22,7 +22,6 @@ private:
     static constexpr double MinErrorInches[4] = { 2, 12, 11, 15 }; //front: 9 back: 12
     static constexpr double DistanceUntilDecelerateInches[2] = { 16, 17 };
     static constexpr double DistanceUntilAccelerate = 0.1;
-    static constexpr double kDist[3] = { .35, 1.0, 1.0};
     static constexpr double AngleForMaxError[2] = { 15 * M_PI / 180,   14 * M_PI / 180 };
     //if final is greater than 20 risk of not finishing straight heightens
     static constexpr double finalSpeedForward[3] = { 30, 20, 20 };
@@ -40,7 +39,6 @@ private:
 
     
 public:
-    static Point pointAligner(Point state, Point target, double finalAng, int distState);
     static void turnToPoint(DriveTrainState* state, Point target, double liftPos, int mogoState);
     static void driveToPoint(DriveTrainState* state, Point target, double inSpd, double liftPos, int mogoState, double finalAng, double tiltPercent, double liftPercent, int radState, bool isClamping);
     static void driveToPoint(DriveTrainState* state, Point target, double inSpd, double liftPos, int mogoState, double finalAng, bool isClamping);

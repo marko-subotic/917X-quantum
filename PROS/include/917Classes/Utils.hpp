@@ -1,7 +1,11 @@
 #pragma once
 #include "structDefs.hpp"
-
+#include <cstdio>
 class Utils{
+
+    private:
+        static constexpr double kDist[3] = { .35, 1.0, .5 };
+
     public:
         //This keeps  theta in  [0,2pi] range.
         static double thetaConverter(double thetaDeg);
@@ -23,4 +27,10 @@ class Utils{
         static double perToVol(double percentage);
 
         static double redMotConv(double angle);
+
+        static double inertToRad(double deg);
+
+        static Point pointAligner(Point state, Point target, double finalAng, int distState);
+
+
 };

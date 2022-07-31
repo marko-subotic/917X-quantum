@@ -4,27 +4,7 @@
 #include "Globals.hpp"
 #include <math.h>
 
-Point DriveTrainController::pointAligner(Point state, Point target, double finalAng, int distState) {
-    double xPerp, yPerp;
-    Point alignPoint(0, 0);
-    if (abs(finalAng) < .01 || abs(abs(finalAng) - M_PI) < .01) {
-        xPerp = target.x;
-        yPerp = state.y;
-    }else if (abs(abs(finalAng)-M_PI/2.0) < .01 || abs(abs(finalAng) - 3*M_PI/2) < .01) {
-        xPerp = state.x;
-        yPerp = target.y;
-    }
-    else {
-        xPerp = (state.y - target.y + 1/tan(finalAng) * target.x + state.x * tan(finalAng)) / (1/tan(finalAng) + tan(finalAng));
-        yPerp = (-tan(finalAng))*(xPerp - state.x) + state.y;
-        //printf("%f, %f\n", xPerp, yPerp);
 
-    }
-    printf("distState: %d\n", distState);
-    alignPoint.x = xPerp + (target.x - xPerp) * kDist[distState];
-    alignPoint.y = yPerp + (target.y - yPerp) * kDist[distState];
-    return alignPoint;
-    }
 
 	void DriveTrainController::turnToPoint(DriveTrainState * state, Point target, double liftPos, int mogoState) {
 		double pointAng = Utils::angleToPoint(Point(target.x-state->getPos().x, target.y-state->getPos().y));
@@ -121,7 +101,7 @@ Point DriveTrainController::pointAligner(Point state, Point target, double final
         double finalSpeed = finalSpeedForward[mogoState];
         double initialSpeed = initialSpeedForward[mogoState];
         finalAng *= (M_PI / 180.0);
-        Point alignPoint = DriveTrainController::pointAligner(state->getPos(), target, finalAng, radState);
+        Point alignPoint = Utils::pointAligner(state->getPos(), target, finalAng, radState);
         double pointAng = Utils::angleToPoint(Point(alignPoint.x - state->getPos().x, alignPoint.y - state->getPos().y)); 
         double targetAng = pointAng - state->getTheta();
         double currentLift = lift.get_position();
@@ -271,7 +251,7 @@ Point DriveTrainController::pointAligner(Point state, Point target, double final
             if (spd > 100) spd = 100;
             else if (spd < -100) spd = -100;
             
-            alignPoint = DriveTrainController::pointAligner(state->getPos(), target, finalAng, radState);
+            alignPoint = Utils::pointAligner(state->getPos(), target, finalAng, radState);
             pointAng = Utils::angleToPoint(Point(alignPoint.x - state->getPos().x, alignPoint.y - state->getPos().y)); 
             targetAng = pointAng - state->getTheta();
             if (targetAng > M_PI) targetAng -= 2*M_PI;
@@ -429,7 +409,7 @@ Point DriveTrainController::pointAligner(Point state, Point target, double final
         double finalSpeed = finalSpeedForward[mogoState];
         double initialSpeed = initialSpeedForward[mogoState];
         finalAng *= (M_PI / 180.0);
-        Point alignPoint = DriveTrainController::pointAligner(state->getPos(), target, finalAng, radState);
+        Point alignPoint = Utils::pointAligner(state->getPos(), target, finalAng, radState);
         double pointAng = Utils::angleToPoint(Point(alignPoint.x - state->getPos().x, alignPoint.y - state->getPos().y));
         double targetAng = pointAng - state->getTheta();
         double currentLift = lift.get_position();
@@ -570,7 +550,7 @@ Point DriveTrainController::pointAligner(Point state, Point target, double final
             if (spd > 100) spd = 100;
             else if (spd < -100) spd = -100;
             //printf("%f, %f", alignPoint.x, alignPoint.y);
-            alignPoint = DriveTrainController::pointAligner(state->getPos(), target, finalAng, radState);
+            alignPoint = Utils::pointAligner(state->getPos(), target, finalAng, radState);
             pointAng = Utils::angleToPoint(Point(alignPoint.x - state->getPos().x, alignPoint.y - state->getPos().y));
             targetAng = pointAng - state->getTheta();
             if (targetAng > M_PI) targetAng -= 2 * M_PI;

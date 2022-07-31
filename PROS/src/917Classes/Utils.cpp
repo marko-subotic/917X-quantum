@@ -18,14 +18,11 @@ double Utils::thetaConverter(double theta) {
 Point Utils::rotateAroundPoint(Point pointOfRotation, Point pointRotating, double theta) {
     double cosT = cos(theta);
     double sinT = sin(theta);
-    pointRotating.x -= pointOfRotation.x;
-    pointRotating.y -= pointOfRotation.y;
-    double xTemp = pointRotating.x;
-    double yTemp = pointRotating.y;
-    pointRotating.x = (xTemp * cosT) - (yTemp * sinT);
-    pointRotating.y = (xTemp * sinT) + (yTemp * cosT);
-    pointRotating.x += pointOfRotation.x;
-    pointRotating.y += pointOfRotation.y;
+    double xTemp = pointRotating.x - pointOfRotation.x;
+    double yTemp = pointRotating.y - pointOfRotation.y;
+    pointRotating.x += (xTemp * cosT) - (yTemp * sinT);
+    pointRotating.y += (xTemp * sinT) + (yTemp * cosT);
+    
     return pointRotating;
 };
 
@@ -74,3 +71,37 @@ double Utils::perToVol(double percentage) {
 double Utils::redMotConv(double angle) {
     return angle / 360 * LIFT_ENCODER;
 };
+
+double Utils::inertToRad(double deg) {
+    double converted = deg * M_PI / 180;
+    if (converted < 0) {
+        converted += 2 * M_PI;
+    }
+    else if (converted > M_PI * 2) {
+        converted -= 2 * M_PI;
+    }
+    return converted;
+};
+
+Point Utils::pointAligner(Point state, Point target, double finalAng, int distState) {
+    double xPerp, yPerp;
+    Point alignPoint(0, 0);
+    if (fabs(finalAng) < .01 || fabs(fabs(finalAng) - M_PI) < .01) {
+        xPerp = target.x;
+        yPerp = state.y;
+    }
+    else if (fabs(fabs(finalAng) - M_PI / 2.0) < .01 || fabs(fabs(finalAng) - 3 * M_PI / 2) < .01) {
+        xPerp = state.x;
+        yPerp = target.y;
+    }
+    else {
+        xPerp = (state.y - target.y + 1 / tan(finalAng) * target.x + state.x * tan(finalAng)) / (1 / tan(finalAng) + tan(finalAng));
+        yPerp = (-tan(finalAng)) * (xPerp - state.x) + state.y;
+        //printf("%f, %f\n", xPerp, yPerp);
+
+    }
+    printf("distState: %d\n", distState);
+    alignPoint.x = xPerp + (target.x - xPerp) * kDist[distState];
+    alignPoint.y = yPerp + (target.y - yPerp) * kDist[distState];
+    return alignPoint;
+}

@@ -3,6 +3,7 @@
 #include "CppUnitTest.h"
 #include "DriveTrainState.hpp"
 #include "DriveTrainController.hpp"
+#include "structDefs.hpp"
 #include "Utils.hpp"
 #include "math.h"
 #include <vector>
@@ -28,12 +29,12 @@ namespace QuantumTest
 		
 		static std::vector<double> thetaCalcHelper(Point centerR) {
 			std::vector<double> rtrn(6, 0);
-			rtrn[0] = cos(fabs(atan((centerR.y - user.leftEnc.y) / (centerR.x - user.leftEnc.x))));
-			rtrn[1] = cos(fabs(atan((centerR.y - user.rightEnc.y) / (centerR.x - user.rightEnc.x))));
-			rtrn[2] = sin(fabs(atan((centerR.y - user.bottomEnc.y) / (centerR.x - user.bottomEnc.x))));
-			rtrn[3] = Utils::distanceBetweenPoints(centerR, user.leftEnc);
-			rtrn[4] = Utils::distanceBetweenPoints(centerR, user.rightEnc);
-			rtrn[5] = Utils::distanceBetweenPoints(centerR, user.bottomEnc);
+			rtrn[0] = cos(fabs(atan((centerR.y - user.leftEncP.y) / (centerR.x - user.leftEncP.x))));
+			rtrn[1] = cos(fabs(atan((centerR.y - user.rightEncP.y) / (centerR.x - user.rightEncP.x))));
+			rtrn[2] = sin(fabs(atan((centerR.y - user.bottomEncP.y) / (centerR.x - user.bottomEncP.x))));
+			rtrn[3] = Utils::distanceBetweenPoints(centerR, user.leftEncP);
+			rtrn[4] = Utils::distanceBetweenPoints(centerR, user.rightEncP);
+			rtrn[5] = Utils::distanceBetweenPoints(centerR, user.bottomEncP);
 			return rtrn;
 		}
 		
@@ -229,52 +230,11 @@ namespace QuantumTest
 			TEST_METHOD(guidePoint1) {
 				Startup();
 				Point target(1, 1);
+				Point start(0, 0);
 				double theta = M_PI / 4;
-				double dif = .5 - DriveTrainController::pointAligner(target, theta).x;
+				double dif = .5 - Utils::pointAligner(start, target, theta,2).x;
 
-				wchar_t printer = (wchar_t)dif;
-				Assert::IsTrue(dif < minDif, &printer);
-			}
-			TEST_METHOD(guidePoint2) {
-				Startup();
-
-				wchar_t printer = (wchar_t)dif;
-				Assert::IsTrue(dif < minDif, &printer);
-			}
-			TEST_METHOD(guidePoint3) {
-				Startup();
-
-				wchar_t printer = (wchar_t)dif;
-				Assert::IsTrue(dif < minDif, &printer);
-			}
-			TEST_METHOD(guidePoint4) {
-				Startup();
-
-				wchar_t printer = (wchar_t)dif;
-				Assert::IsTrue(dif < minDif, &printer);
-			}
-			TEST_METHOD(guidePointS1) {
-				Startup();
-
-				wchar_t printer = (wchar_t)dif;
-				Assert::IsTrue(dif < minDif, &printer);
-			}
-			TEST_METHOD(guidePointS2) {
-				Startup();
-
-				wchar_t printer = (wchar_t)dif;
-				Assert::IsTrue(dif < minDif, &printer);
-			}
-			TEST_METHOD(guidePointS3) {
-				Startup();
-
-				wchar_t printer = (wchar_t)dif;
-				Assert::IsTrue(dif < minDif, &printer);
-			}
-			TEST_METHOD(guidePointS4) {
-				Startup();
-
-				wchar_t printer = (wchar_t)dif;
+				wchar_t printer = (wchar_t)(dif);
 				Assert::IsTrue(dif < minDif, &printer);
 			}
 	};
