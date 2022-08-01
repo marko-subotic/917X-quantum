@@ -48,8 +48,8 @@ namespace QuantumTest
 				double theta = M_PI / 4;
 				user.step(encWC*theta * helper[3] * helper[0], encWC*theta * helper[4] * helper[1], encWC*theta * helper[5] * helper[2]);
 				double dif = fabs(user.getTheta() - theta);
-				wchar_t printer = (wchar_t)dif;
-				Assert::IsTrue(dif<minDif, &printer);
+				std::wstring printer = std::to_wstring(dif);
+				Assert::IsTrue(dif < minDif, printer.c_str());
 			}
 
 			TEST_METHOD(thetaCalcRight)
@@ -60,8 +60,8 @@ namespace QuantumTest
 				double theta = M_PI / 4;
 				user.step(-encWC*theta * helper[3] * helper[0], -encWC*theta * helper[4] * helper[1], -encWC*theta * helper[5] * helper[2]);
 				double dif = fabs(user.getTheta() - theta);
-				wchar_t printer = (wchar_t)dif;
-				Assert::IsTrue(dif<minDif, &printer);
+				std::wstring printer = std::to_wstring(dif);
+				Assert::IsTrue(dif < minDif, printer.c_str());
 			}
 
 			TEST_METHOD(thetaCalcMid)
@@ -72,8 +72,8 @@ namespace QuantumTest
 				double theta = M_PI / 4;
 				user.step(-encWC * theta * helper[3] * helper[0], encWC * theta * helper[4] * helper[1], encWC * theta * helper[5] * helper[2]);
 				double dif = fabs(user.getTheta() - theta);
-				wchar_t printer = (wchar_t)dif;
-				Assert::IsTrue(dif < minDif, &printer);
+				std::wstring printer = std::to_wstring(dif);
+				Assert::IsTrue(dif < minDif, printer.c_str());
 			}
 
 		//this group of tests is similar to theta, but instead tests if the final location is correct,
@@ -81,16 +81,16 @@ namespace QuantumTest
 			TEST_METHOD(posCalcLeftUp)
 			{
 				Startup();
-				Point centerR(-1.5 * user.distanceYs, user.distanceX * 2);
+				Point centerR(-1.5 * user.distanceYs, 2*user.distanceX);
 				std::vector<double> helper = thetaCalcHelper(centerR);
 				double theta = M_PI / 4;
 				Point finalP = Utils::rotateAroundPoint(centerR, user.calcPoint, theta);
 				finalP.y -= user.calcPoint.y;
 				finalP.x -= user.calcPoint.x;
 				user.step(encWC * theta * helper[3] * helper[0], encWC * theta * helper[4] * helper[1], encWC * theta * helper[5] * helper[2]);
-				double dif = fabs(user.getPos() - finalP);
-				wchar_t printer = (wchar_t)dif;
-				Assert::IsTrue(dif < minDif, &printer);
+				double dif = fabs(Utils::distanceBetweenPoints(user.getPos(), finalP));
+				std::wstring printer = std::to_wstring(dif);
+				Assert::IsTrue(dif < minDif, printer.c_str());
 			}
 
 			TEST_METHOD(posCalcLeftDown)
@@ -104,8 +104,8 @@ namespace QuantumTest
 				finalP.x -= user.calcPoint.x;
 				user.step(encWC * theta * helper[3] * helper[0], encWC * theta * helper[4] * helper[1], -encWC * theta * helper[5] * helper[2]);
 				double dif = fabs(user.getPos() - finalP);
-				wchar_t printer = (wchar_t)dif;
-				Assert::IsTrue(dif < minDif, &printer);
+				std::wstring printer = std::to_wstring(dif);
+				Assert::IsTrue(dif < minDif, printer.c_str());
 			}
 
 
@@ -120,8 +120,8 @@ namespace QuantumTest
 				finalP.x -= user.calcPoint.x;
 				user.step(-encWC * theta * helper[3] * helper[0], -encWC * theta * helper[4] * helper[1], encWC * theta * helper[5] * helper[2]);
 				double dif = fabs(user.getPos() - finalP);
-				wchar_t printer = (wchar_t)dif;
-				Assert::IsTrue(dif < minDif, &printer);
+				std::wstring printer = std::to_wstring(dif);
+				Assert::IsTrue(dif < minDif, printer.c_str());
 			}
 
 			TEST_METHOD(posCalcRightDown)
@@ -135,8 +135,8 @@ namespace QuantumTest
 				finalP.x -= user.calcPoint.x;
 				user.step(-encWC * theta * helper[3] * helper[0], -encWC * theta * helper[4] * helper[1], -encWC * theta * helper[5] * helper[2]);
 				double dif = fabs(user.getPos() - finalP);
-				wchar_t printer = (wchar_t)dif;
-				Assert::IsTrue(dif < minDif, &printer);
+				std::wstring printer = std::to_wstring(dif);
+				Assert::IsTrue(dif < minDif, printer.c_str());
 			}
 
 			TEST_METHOD(posCalcMidUp)
@@ -150,8 +150,8 @@ namespace QuantumTest
 				finalP.x -= user.calcPoint.x;
 				user.step(-encWC * theta * helper[3] * helper[0], encWC * theta * helper[4] * helper[1], encWC * theta * helper[5] * helper[2]);
 				double dif = fabs(user.getPos() - finalP);
-				wchar_t printer = (wchar_t)dif;
-				Assert::IsTrue(dif < minDif, &printer);
+				std::wstring printer = std::to_wstring(dif);
+				Assert::IsTrue(dif < minDif, printer.c_str());
 			}
 		
 			TEST_METHOD(posCalcMidDown)
@@ -165,8 +165,8 @@ namespace QuantumTest
 				finalP.x -= user.calcPoint.x;
 				user.step(-encWC * theta * helper[3] * helper[0], encWC * theta * helper[4] * helper[1], -encWC * theta * helper[5] * helper[2]);
 				double dif = fabs(user.getPos() - finalP);
-				wchar_t printer = (wchar_t)dif;
-				Assert::IsTrue(dif < minDif, &printer);
+				std::wstring printer = std::to_wstring(dif);
+				Assert::IsTrue(dif < minDif, printer.c_str());
 			}
 		//this group of test is for the angleToPoint function, it tests the angle to a point
 		//in all 4 quadrants
@@ -175,13 +175,8 @@ namespace QuantumTest
 				bool result = false;
 				Point target(-0.5, sqrt(3) / 2);
 				double dif = fabs(Utils::angleToPoint(target) - M_PI / 6);
-				wchar_t printer = (wchar_t)dif;
-				if (dif < minDif) {
-					Assert::IsTrue(true, L"");
-				}
-				else {
-					Assert::IsTrue(false, &printer);
-				}
+				std::wstring printer = std::to_wstring(dif);
+				Assert::IsTrue(dif < minDif, printer.c_str());
 			}
 
 			TEST_METHOD(angleToPointQ3) {
@@ -189,13 +184,8 @@ namespace QuantumTest
 				bool result = false;
 				Point target(-0.5, sqrt(3) / -2);
 				double dif = fabs(Utils::angleToPoint(target) - (5* M_PI / 6));
-				wchar_t printer = (wchar_t)dif;
-				if (dif < minDif) {
-					Assert::IsTrue(true, L"");
-				}
-				else {
-					Assert::IsTrue(false, &printer);
-				}
+				std::wstring printer = std::to_wstring(dif);
+				Assert::IsTrue(dif < minDif, printer.c_str());
 			}
 
 
@@ -204,13 +194,8 @@ namespace QuantumTest
 				bool result = false;
 				Point target(0.5, sqrt(3) / -2);
 				double dif = fabs(Utils::angleToPoint(target) - (7 * M_PI / 6));
-				wchar_t printer = (wchar_t)dif;
-				if (dif < minDif) {
-					Assert::IsTrue(true, L"");
-				}
-				else {
-					Assert::IsTrue(false, &printer);
-				}
+				std::wstring printer = std::to_wstring(dif);
+				Assert::IsTrue(dif < minDif, printer.c_str());
 			}
 
 
@@ -219,13 +204,9 @@ namespace QuantumTest
 				bool result = false;
 				Point target(0.5, sqrt(3) / 2);
 				double dif = fabs(Utils::angleToPoint(target) - (11* M_PI / 6));
-				wchar_t printer = (wchar_t)dif;
-				if (dif < minDif) {
-					Assert::IsTrue(true, L"");
-				}
-				else {
-					Assert::IsTrue(false, &printer);
-				}
+				
+				std::wstring printer = std::to_wstring(dif);
+				Assert::IsTrue(dif < minDif, printer.c_str());
 			}
 			TEST_METHOD(guidePoint1) {
 				Startup();
@@ -234,8 +215,52 @@ namespace QuantumTest
 				double theta = M_PI / 4;
 				double dif = .5 - Utils::pointAligner(start, target, theta,2).x;
 
-				wchar_t printer = (wchar_t)(dif);
-				Assert::IsTrue(dif < minDif, &printer);
+				std::wstring printer = std::to_wstring(dif);
+				Assert::IsTrue(dif < minDif, printer.c_str());
+			}
+
+			TEST_METHOD(mogoReseterUp) {
+				Startup();
+				Point target(0, Utils::mogoRad);
+				Point start(0, 0);
+				double theta = 0;
+				double dif = Utils::distanceBetweenPoints(target, Utils::mogoReset(start, theta));
+
+				std::wstring printer = std::to_wstring(dif);
+				Assert::IsTrue(dif < minDif, printer.c_str());
+			}
+
+			TEST_METHOD(mogoReseterRight) {
+				Startup();
+				Point target(Utils::mogoRad, 0);
+				Point start(0, 0);
+				double theta = 3*M_PI/2;
+				double dif = Utils::distanceBetweenPoints(target, Utils::mogoReset(start, theta));
+
+				std::wstring printer = std::to_wstring(dif);
+				Assert::IsTrue(dif < minDif, printer.c_str());
+			}
+
+			TEST_METHOD(mogoReseterLeft) {
+				Startup();
+				Point target(-Utils::mogoRad,0);
+				Point start(0, 0);
+				double theta = M_PI/2;
+				double dif = Utils::distanceBetweenPoints(target, Utils::mogoReset(start, theta));
+
+				std::wstring printer = std::to_wstring(dif);
+				Assert::IsTrue(dif < minDif, printer.c_str());
+			}
+
+			TEST_METHOD(mogoReseterDown) {
+				Startup();
+				Point target(0, -Utils::mogoRad);
+				Point start(0, 0);
+				double theta = M_PI;
+				double dif = Utils::distanceBetweenPoints(target, Utils::mogoReset(start, theta));
+
+				std::wstring printer = std::to_wstring(dif);
+				Assert::IsTrue(dif < minDif, printer.c_str());
 			}
 	};
 	DriveTrainState QuantumTests::user;

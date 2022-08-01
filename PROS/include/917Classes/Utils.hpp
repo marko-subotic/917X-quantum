@@ -1,12 +1,24 @@
 #pragma once
 #include "structDefs.hpp"
 #include <cstdio>
+
+namespace QuantumTest
+{
+    class QuantumTests;
+};
+
+
 class Utils{
 
-    private:
+    protected:
         static constexpr double kDist[3] = { .35, 1.0, .5 };
-
+        static constexpr double mogoRad = 12.0;
     public:
+
+
+        //allows testing class to access protected 
+        friend class QuantumTest::QuantumTests;
+
         //This keeps  theta in  [0,2pi] range.
         static double thetaConverter(double thetaDeg);
 
@@ -32,5 +44,5 @@ class Utils{
 
         static Point pointAligner(Point state, Point target, double finalAng, int distState);
 
-
+        static Point mogoReset(Point mogoP, double theta);
 };

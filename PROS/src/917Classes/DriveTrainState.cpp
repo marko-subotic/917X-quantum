@@ -66,17 +66,20 @@ void DriveTrainState::step(double dLeftEnc, double dRightEnc, double dBottomEnc,
     } else{
         double centerRotateY;
         double centerRotateX;
-        centerRotateY = dBottomEnc / dTheta;
+        centerRotateY = dBottomEnc / -dTheta;
         //These 2 if statements are to set the calculation point to either the left or right encoder
         //because the encoder further from the center of rotation is more accurate
         if(fabs(dRightEnc)>=fabs(dLeftEnc)){
-            centerRotateX = dRightEnc / dTheta;
+            centerRotateX = dRightEnc / -dTheta;
+            shiftY = sin(-dTheta / 2) * (centerRotateX + distanceYs / 2) * 2;
+
         }else{
-            centerRotateX = dLeftEnc / dTheta;
+            centerRotateX = dLeftEnc / -dTheta;
+            shiftY = sin(-dTheta / 2) * (centerRotateX - distanceYs / 2) * 2;
+
         }
         //printf("dtheta: %f \n", dTheta);
-        shiftX = sin(dTheta / 2) * (centerRotateX + distanceYs / 2) * 2;
-        shiftY = sin(dTheta / 2) * (centerRotateY + distanceX) * 2;
+        shiftX = sin(-dTheta / 2) * (centerRotateY + distanceX) * 2;
     }
     //printf("%f, %f, %f, %f\n", dLeftEnc, dRightEnc, dBottomEnc, dTheta);
 

@@ -18,12 +18,13 @@ double Utils::thetaConverter(double theta) {
 Point Utils::rotateAroundPoint(Point pointOfRotation, Point pointRotating, double theta) {
     double cosT = cos(theta);
     double sinT = sin(theta);
+
     double xTemp = pointRotating.x - pointOfRotation.x;
     double yTemp = pointRotating.y - pointOfRotation.y;
-    pointRotating.x += (xTemp * cosT) - (yTemp * sinT);
-    pointRotating.y += (xTemp * sinT) + (yTemp * cosT);
-    
-    return pointRotating;
+    pointOfRotation.x += (xTemp * cosT) - (yTemp * sinT);
+    pointOfRotation.y += (xTemp * sinT) + (yTemp * cosT);
+
+    return pointOfRotation;
 };
 
 double Utils::angleToPoint(Point target) {
@@ -104,4 +105,8 @@ Point Utils::pointAligner(Point state, Point target, double finalAng, int distSt
     alignPoint.x = xPerp + (target.x - xPerp) * kDist[distState];
     alignPoint.y = yPerp + (target.y - yPerp) * kDist[distState];
     return alignPoint;
+}
+
+Point Utils::mogoReset(Point mogoP, double theta) {
+    return Point(mogoP.x - sin(theta) * mogoRad, mogoP.y + cos(theta) * mogoRad);
 }
