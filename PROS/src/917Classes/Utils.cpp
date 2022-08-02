@@ -94,7 +94,7 @@ Point Utils::pointAligner(Point state, Point target, double finalAng, int distSt
         //printf("%f, %f\n", xPerp, yPerp);
 
     }
-    printf("distState: %d\n", distState);
+    //printf("distState: %d\n", distState);
     alignPoint.x = xPerp + (target.x - xPerp) * kDist[distState];
     alignPoint.y = yPerp + (target.y - yPerp) * kDist[distState];
     return alignPoint;

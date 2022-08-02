@@ -105,7 +105,7 @@
         double pointAng = Utils::angleToPoint(Point(alignPoint.x - state->getPos().x, alignPoint.y - state->getPos().y)); 
         double targetAng = pointAng - state->getTheta();
         double currentLift = lift.get_position();
-        printf("%f\n", alignPoint.x);
+        //printf("%f\n", alignPoint.x);
         while (fabs(targetAng) > minErrorDegrees) {
             if (!inAuton) {
                 return;
@@ -177,8 +177,8 @@
         double distanceDecelerating = DistanceUntilDecelerateInches[mogoState] ;
         int crashCounter = 0;
         while (error >= 0) {
-            printf("%f\n", alignPoint.x);
-            printf("radState: %d\n", radState);
+            //printf("%f\n", alignPoint.x);
+            //printf("radState: %d\n", radState);
 
             if (!inAuton) {
                 return;
