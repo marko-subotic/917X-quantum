@@ -231,7 +231,7 @@ void OdomDisplay::update() {
 
 void OdomDisplay::setVision(pros::vision_object_s_t inp) {
     rtn = inp;
-    printf("%d\n", rtn.signature);
+    //printf("%d\n", rtn.signature);
     ///*
     std::string labelText = "(x,y): (" + std::to_string(inp.left_coord) + "," + std::to_string(inp.top_coord) + ")\n" +
         "(w,h): (" + std::to_string(inp.width) + "," + std::to_string(inp.height) + ")\n";

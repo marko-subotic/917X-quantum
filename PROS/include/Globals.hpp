@@ -17,6 +17,8 @@ extern pros::ADIDigitalOut highReleaseL;
 extern pros::ADIDigitalOut highReleaseR;
 extern pros::Vision vision;
 
+extern pros::ADIDigitalIn limitSwitch;
+
 extern pros::Controller cont;
 extern pros::ADIDigitalOut cover;
 extern pros::Imu inert;

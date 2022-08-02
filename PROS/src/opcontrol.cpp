@@ -251,7 +251,7 @@ void angleCalibrate(void* p) {
     double hi = 13.5;
     double lo = 14.5;
     int status = 0;
-    stateO.distanceYs = lo + (hi - lo) / 2;
+   // stateO.distanceYs = lo + (hi - lo) / 2;
     while (true) {
         pros::delay(20);
 
@@ -273,48 +273,13 @@ void angleCalibrate(void* p) {
             else{
                 lo = lo + (hi - lo) / 2;
             }
-            stateO.distanceYs = lo + (hi - lo) / 2;
-            printf("%f\n", stateO.distanceYs);
+            //stateO.distanceYs = lo + (hi - lo) / 2;
+            //printf("%f\n", stateO.distanceYs);
         }
         double bruh = 30;
         double straight = 30;
-        /*
-        if (status%4 == 0) {
-            leftFront.move(0);
-            leftMid.move(0);
-            leftBack.move(0);
-            rightFront.move(0);
-            rightMid.move(0);
-            rightBack.move(0);
+        
             
-        }
-        else if (status % 4 == 1) {
-            leftFront.move(-1 * straight);
-            leftMid.move(-1 * straight);
-            leftBack.move(-1 * straight);
-            rightFront.move(-1 * straight);
-            rightMid.move(-1 * straight);
-            rightBack.move(-1 * straight);
-        }
-        else if (status % 4 == 2) {
-            leftFront.move(-1 * bruh);
-            leftMid.move(-1 * bruh);
-            leftBack.move(-1 * bruh);
-            rightFront.move(1 * bruh);
-            rightMid.move(1 * bruh);
-            rightBack.move(1 * bruh);
-        }
-        else if (status % 4 == 3) {
-            if (1) {
-                leftFront.move(1 * straight);
-                leftMid.move(1 * straight);
-                leftBack.move(1 * straight);
-                rightFront.move(1 * straight);
-                rightMid.move(1 * straight);
-                rightBack.move(1 * straight);
-            }
-            
-        }*/
     }
     //DriveTrainController::intakeTask(&takein);       
 }

@@ -1,5 +1,6 @@
 #include "main.h"
 #include "917Classes/DriveTrainState.hpp"
+#include "917Classes/structDefs.hpp"
 #include <algorithm>    // std::max
 #include <time.h>       /* time_t, struct tm, difftime, time, mktime */
 
@@ -14,6 +15,11 @@ DriveTrainState state(27, 13.5, M_PI/2-.1463);
 // for testing
 //DriveTrainState state(0, 0, 0);
 int intakeState = 2;
+int progState = 0;
+double inertHeading = state.getTheta();
+
+double kInert = 1080.0 / (1080 + 12);
+
 
 void odomFunctions(void* p) {
     rightEnc.reset_position();
@@ -26,7 +32,6 @@ void odomFunctions(void* p) {
     }
     horEnc.reset_position();
    
-
     double prevRight = 0;
     double prevLeft = 0;
     double prevMid = 0;
@@ -37,6 +42,10 @@ void odomFunctions(void* p) {
     double deltaLeft = covLeft - prevLeft;
     double deltaMid = covMid - prevMid;
     double theta = state.getTheta();
+    double prevTheta = theta;
+    inert.set_yaw(180.0/M_PI*(state.getTheta()));
+    //inertHeading = state.getTheta();
+
     Point pointTwo(0, 0);
     while (1) {
         bool aPress = cont.get_digital_new_press(DIGITAL_LEFT);
@@ -56,8 +65,19 @@ void odomFunctions(void* p) {
         }
         //printf("not charging\n");
         
-        state.step(deltaLeft, deltaRight, deltaMid,0);
-        theta = state.getTheta();
+        prevTheta = theta;
+        theta = -Utils::inertToRad(inert.get_yaw());
+        double dTheta = (theta - prevTheta) * kInert;
+
+        if (dTheta >= M_PI) {
+            dTheta -= 2 * M_PI;
+        }
+        else if (dTheta <= -M_PI) {
+            dTheta += 2 * M_PI;
+        }
+        //printf("theta: %f, dTheta: %f, inertialheading: %f \n", theta,  dTheta, inertHeading);
+        inertHeading = Utils::thetaConverter(inertHeading + dTheta);
+        state.step(deltaLeft, deltaRight, deltaMid);
         
         prevRight = covRight, prevLeft = covLeft, prevMid = covMid;
         covRight = rightEnc.get_position() / 100.0, covLeft = leftEnc.get_position() / 100.0, covMid = horEnc.get_position()/100.0;
@@ -84,117 +104,6 @@ void visualDebug(void* p) {
     }
 }
 
-void centerOfRotation(void* p) {
-    lv_obj_clean(lv_scr_act());
-    lv_obj_t* container = (lv_obj_create(lv_scr_act(), NULL));
-    lv_obj_set_size(container, lv_obj_get_width(lv_scr_act()), lv_obj_get_height(lv_scr_act()));
-    lv_obj_align(container, NULL, LV_ALIGN_CENTER, 0, 0);
-    lv_style_t* cStyle = lv_obj_get_style(container);
-    cStyle->body.main_color = LV_COLOR_BLACK;
-    cStyle->body.grad_color = LV_COLOR_BLACK;
-    cStyle->body.border.color = LV_COLOR_RED;
-    cStyle->body.border.width = 2;
-    cStyle->body.radius = 0;
-
-    lv_obj_t* screen = lv_obj_create(container, container);
-    double scalar = 1;
-    lv_obj_set_size(screen, (int16_t)(VISION_FOV_WIDTH * scalar), (int16_t)(VISION_FOV_HEIGHT * scalar));
-    lv_obj_align(screen, container, LV_ALIGN_IN_TOP_LEFT, 0, 0);
-
-    lv_obj_t* label = lv_label_create(container, NULL);
-    lv_obj_align(label, container, LV_ALIGN_CENTER, 90, 0);// (int16_t)(lv_obj_get_width(screen) + (lv_obj_get_width(container) - lv_obj_get_width(screen)) / 2), 0);
-
-    lv_style_t* textStyle = lv_obj_get_style(label);
-    textStyle->text.color = LV_COLOR_WHITE;
-    textStyle->text.opa = LV_OPA_100;
-    lv_label_set_text(label, "No Vision\nData Provided");
-
-
-
-    pros::vision_object_s_t rtn = vision.get_by_sig(0, RED_ID);
-
-    lv_obj_t* mogo = lv_obj_create(screen, NULL);
-    lv_obj_set_size(mogo, (int16_t)(rtn.width * scalar), (int16_t)(rtn.height * scalar));
-    lv_obj_set_pos(mogo, (int16_t)(rtn.left_coord * scalar), (int16_t)(rtn.top_coord * scalar));
-    lv_style_t mStyle;
-    lv_style_copy(&mStyle, cStyle);
-    mStyle.body.main_color = LV_COLOR_RED;
-    mStyle.body.grad_color = LV_COLOR_RED;
-    lv_obj_set_style(mogo, &mStyle);
-
-
-
-    lv_style_t lineStyle;
-    lv_style_copy(&lineStyle, &lv_style_plain);
-    lineStyle.line.width = 1;
-    lineStyle.line.color = LV_COLOR_WHITE;
-    lv_style_t axisStyle;
-    lv_style_copy(&axisStyle, &lineStyle);
-    axisStyle.line.width = 3;
-
-    int dashCount = 13;
-    int dashWidth = 10;
-    lv_point_t startPoint = { 0,0 };
-    std::vector<lv_point_t> pointVector(2, startPoint);
-    static std::vector<std::vector<lv_point_t>> vertLinePoints(dashCount - 1, pointVector);
-    static std::vector<std::vector<lv_point_t>> horLinePoints(dashCount - 1, pointVector);
-    int sWidth = lv_obj_get_width(screen);
-    int sHeight = lv_obj_get_height(screen);
-
-    lv_obj_t* xAxis = lv_line_create(screen, NULL);
-    lv_point_t xAxisPoints[2];
-    xAxisPoints[0].x = 0, xAxisPoints[0].y = sHeight / 2-1;
-    xAxisPoints[1].x = sWidth, xAxisPoints[1].y = sHeight / 2-1;
-    lv_line_set_points(xAxis, xAxisPoints, 2);
-    lv_obj_set_style(xAxis, &axisStyle);
-
-    lv_obj_t* yAxis = lv_line_create(screen, NULL);
-    lv_point_t yAxisPoints[2];
-    yAxisPoints[0].y = 0, yAxisPoints[0].x = sWidth / 2-1;
-    yAxisPoints[1].y = sHeight, yAxisPoints[1].x = sWidth / 2-1;
-    lv_line_set_points(yAxis, yAxisPoints, 2);
-    lv_obj_set_style(yAxis, &axisStyle);
-
-    for (int i = 1; i < dashCount; i++) {
-        vertLinePoints[i - 1][0].x = (int16_t)(sWidth / dashCount * i);
-        vertLinePoints[i - 1][0].y = (int16_t)(sHeight / 2 + dashWidth / 2);
-        vertLinePoints[i - 1][1].x = (int16_t)(sWidth / dashCount * i);
-        vertLinePoints[i - 1][1].y = (int16_t)(sHeight / 2 - dashWidth / 2);
-        lv_obj_t* line = lv_line_create(screen, NULL);
-        lv_line_set_points(line, vertLinePoints[i - 1].data(), vertLinePoints[i - 1].size());
-        lv_obj_set_free_num(line, i);
-
-        lv_obj_set_style(line, &lineStyle);
-    }
-    for (int i = 1; i < dashCount; i++) {
-        horLinePoints[i - 1][0].x = (int16_t)(sWidth / 2 + dashWidth / 2);
-        horLinePoints[i - 1][0].y = (int16_t)(sHeight / dashCount * i);
-        horLinePoints[i - 1][1].x = (int16_t)(sWidth / 2 - dashWidth / 2);
-        horLinePoints[i - 1][1].y = (int16_t)(sHeight / dashCount * i);
-        lv_obj_t* line = lv_line_create(screen, NULL);
-        lv_line_set_points(line, horLinePoints[i - 1].data(), horLinePoints[i - 1].size());
-        lv_obj_set_free_num(line, i);
-
-        lv_obj_set_style(line, &lineStyle);
-    }
-
-    lv_obj_set_style(mogo, &mStyle);
-    lv_obj_set_size(mogo, (int16_t)(10), (int16_t)(10));
-
-    int widthScale = 20;
-    int heightScale = sHeight / sWidth * widthScale;
-    while (true) {
-        pros::delay(20);
-        //lv_label_set_text(label, rtn.signature);
-        //rtn = vision.get_by_size(0);
-        Point COR = state.getCOR();
-        
-        std::string labelText = std::to_string(COR.x) + "," + std::to_string(COR.y);
-        lv_label_set_text(label, labelText.c_str());
-        lv_obj_set_pos(mogo, (int16_t)((widthScale/2+COR.x) * sWidth/widthScale), (int16_t)((heightScale/2 - COR.y) * sHeight / heightScale ));
-        lv_obj_invalidate(mogo);
-    }
-}
 
 void rightSide(void* p) {
     lift.tare_position();
@@ -380,7 +289,8 @@ void prog(void* p) {
     //state.switchDir();
 
     //pros::delay(1000);
-    DriveTrainController::driveToMogo(&state, pointOne, -speed, 6, 0, ANGLE_IRRELEVANT, true, YELLOW_ID);
+    progState = 1;
+    DriveTrainController::driveToPoint(&state, pointOne, -speed, 6, 0, ANGLE_IRRELEVANT, true);
     clamp.set_value(true);
     intakeState = 0;
     intake.move(-127);
@@ -405,8 +315,8 @@ void prog(void* p) {
     intakeState = 0;
     intake.move(-127);
     state.switchDir();
-    
-    DriveTrainController::driveToMogo(&state, pointSix, -speed, 3, 0, ANGLE_IRRELEVANT, 110, 70, 1, true, YELLOW_ID);
+    progState = 2;
+    DriveTrainController::driveToPoint(&state, pointSix, -speed, 3, 0, ANGLE_IRRELEVANT, 110, 70, 1, true);
     clamp.set_value(true);
     
     DriveTrainController::driveToPoint(&state, pointSeven, -60, -68, 0, ANGLE_IRRELEVANT, false);
@@ -417,7 +327,8 @@ void prog(void* p) {
     state.switchDir();
     
     DriveTrainController::turnToPoint(&state, pointNine, 0, 0);
-    DriveTrainController::driveToMogo(&state, pointNine, -speed, 2, 0, ANGLE_IRRELEVANT, 110, 80, 1, true, YELLOW_ID);
+    progState = 3;
+    DriveTrainController::driveToPoint(&state, pointNine, -speed, 2, 0, ANGLE_IRRELEVANT, 110, 80, 1, true);
     clamp.set_value(true);
     
     DriveTrainController::turnToPoint(&state, pointTen, -60, 0);
@@ -429,7 +340,8 @@ void prog(void* p) {
     DriveTrainController::driveToPoint(&state, pointEleven, speed, -70, 0, ANGLE_IRRELEVANT, 110, 10, 0, false);
     state.switchDir();
     DriveTrainController::turnToPoint(&state, pointTwelve, -15, 0);
-    DriveTrainController::driveToMogo(&state, pointTwelve, -speed, 0, 0, -72, 110, 57, 1, true, BLUE_ID);
+    progState = 4;
+    DriveTrainController::driveToPoint(&state, pointTwelve, -speed, 0, 0, -72, 110, 57, 1, true);
 clamp.set_value(true);
 state.switchDir();
 DriveTrainController::driveToPoint(&state, pointTwelveOh, speed, -10, 0, ANGLE_IRRELEVANT, false);
@@ -439,17 +351,17 @@ clamp.set_value(false);
 state.switchDir();
 DriveTrainController::driveToPoint(&state, pointFourteen, speed, -80, 0, ANGLE_IRRELEVANT, false);
 state.switchDir();
-DriveTrainController::driveToMogo(&state, pointFifteen, -speed, 0, 0, ANGLE_IRRELEVANT, false, BLUE_ID);
+DriveTrainController::driveToPoint(&state, pointFifteen, -speed, 0, 0, ANGLE_IRRELEVANT, false);
 clamp.set_value(true);
 DriveTrainController::driveToPoint(&state, pointSixteen, -speed, -88, 0, ANGLE_IRRELEVANT, false);
 clamp.set_value(false);
 state.switchDir();
 DriveTrainController::driveToPoint(&state, pointSeventeen, speed, -65, 0, ANGLE_IRRELEVANT, false);
 state.switchDir();
-DriveTrainController::driveToMogo(&state, pointEighteen, -speed, 0, 0, ANGLE_IRRELEVANT, true, RED_ID);
+DriveTrainController::driveToPoint(&state, pointEighteen, -speed, 0, 0, ANGLE_IRRELEVANT, true);
 clamp.set_value(true);
 state.switchDir();
-DriveTrainController::driveToMogo(&state, pointEighteenOh, speed, 0, 0, ANGLE_IRRELEVANT, true, RED_ID);
+DriveTrainController::driveToPoint(&state, pointEighteenOh, speed, 0, 0, ANGLE_IRRELEVANT, true);
 state.switchDir();
 DriveTrainController::driveToPoint(&state, pointNineteen, -100, -90, 0, ANGLE_IRRELEVANT, true);
 //DriveTrainController::driveToPoint(&state, balance, -100, 0, 2, ANGLE_IRRELEVANT, 110, 2, 0, false);
@@ -495,8 +407,8 @@ void test(void* p) {
 
     //DriveTrainController::driveToPoint(&state, forward, -100, 0, 0, 0, false);
     //DriveTrainController::driveToPoint(&state, climb, -100, 0, 1, 0);
-    
-    DriveTrainController::driveToMogo(&state, forward, -70, 0, 0, ANGLE_IRRELEVANT, false, RED_ID);
+    progState = 5;
+    //DriveTrainController::driveToMogo(&state, forward, -70, 0, 0, ANGLE_IRRELEVANT, false, RED_ID);
     //DriveTrainController::driveToPoint(&state, forward, -70, 0, 0, ANGLE_IRRELEVANT, true);
     Point print;
     //intake.move(0);
@@ -510,6 +422,42 @@ void test(void* p) {
 void autonIntake(void* p) {
     DriveTrainController::intakeTask(&intakeState);
 }
+
+void mogoReseter(void* p) {
+
+    Point yelLeft(36, 72);
+    Point yelMid(72, 72);
+    Point yelRight(108, 72);
+    Point blue(132, 36);
+    Point tester(10, 10);
+
+    while (1) {
+        pros::delay(20);
+        printf("%f, %f, %f\n", state.getPos().x, state.getPos().y, state.getTheta());
+
+        if (limitSwitch.get_new_press()) {
+            printf("woah\n");
+            switch(progState){
+            case 1:
+                state.setState(Utils::mogoReset(yelLeft, inertHeading), inertHeading);
+                break;
+            case 2:
+                state.setState(Utils::mogoReset(yelRight, inertHeading), inertHeading);
+                break;
+            case 3:
+                state.setState(Utils::mogoReset(yelMid, inertHeading), inertHeading);
+                break;
+            case 4:
+                state.setState(Utils::mogoReset(blue, inertHeading), inertHeading);
+                break;
+            case 5:
+                state.setState(Utils::mogoReset(tester, inertHeading), inertHeading);
+                break;
+            }
+        }
+        
+    }
+}
 void autonomous() {
     //state.switchDir();
     std::string debugTaskName("visualDebug Task");
@@ -517,8 +465,8 @@ void autonomous() {
     lift.set_encoder_units(pros::E_MOTOR_ENCODER_COUNTS);
     pros::Task odomTasks(odomFunctions);
     pros::Task displayTask(visualDebug, &debugTaskName);
-    //pros::Task bruh(centerOfRotation);
-    //pros::Task driveTask(prog);
+    pros::Task bruh(mogoReseter);
+    pros::Task driveTask(prog);
     //pros::Task autonIntakeTask(autonIntake);
 
 }
@@ -644,4 +592,116 @@ void autonomous(){
         lv_obj_invalidate(mogo);
     }
    
-}*/
+}
+void centerOfRotation(void* p) {
+    lv_obj_clean(lv_scr_act());
+    lv_obj_t* container = (lv_obj_create(lv_scr_act(), NULL));
+    lv_obj_set_size(container, lv_obj_get_width(lv_scr_act()), lv_obj_get_height(lv_scr_act()));
+    lv_obj_align(container, NULL, LV_ALIGN_CENTER, 0, 0);
+    lv_style_t* cStyle = lv_obj_get_style(container);
+    cStyle->body.main_color = LV_COLOR_BLACK;
+    cStyle->body.grad_color = LV_COLOR_BLACK;
+    cStyle->body.border.color = LV_COLOR_RED;
+    cStyle->body.border.width = 2;
+    cStyle->body.radius = 0;
+
+    lv_obj_t* screen = lv_obj_create(container, container);
+    double scalar = 1;
+    lv_obj_set_size(screen, (int16_t)(VISION_FOV_WIDTH * scalar), (int16_t)(VISION_FOV_HEIGHT * scalar));
+    lv_obj_align(screen, container, LV_ALIGN_IN_TOP_LEFT, 0, 0);
+
+    lv_obj_t* label = lv_label_create(container, NULL);
+    lv_obj_align(label, container, LV_ALIGN_CENTER, 90, 0);// (int16_t)(lv_obj_get_width(screen) + (lv_obj_get_width(container) - lv_obj_get_width(screen)) / 2), 0);
+
+    lv_style_t* textStyle = lv_obj_get_style(label);
+    textStyle->text.color = LV_COLOR_WHITE;
+    textStyle->text.opa = LV_OPA_100;
+    lv_label_set_text(label, "No Vision\nData Provided");
+
+
+
+    pros::vision_object_s_t rtn = vision.get_by_sig(0, RED_ID);
+
+    lv_obj_t* mogo = lv_obj_create(screen, NULL);
+    lv_obj_set_size(mogo, (int16_t)(rtn.width * scalar), (int16_t)(rtn.height * scalar));
+    lv_obj_set_pos(mogo, (int16_t)(rtn.left_coord * scalar), (int16_t)(rtn.top_coord * scalar));
+    lv_style_t mStyle;
+    lv_style_copy(&mStyle, cStyle);
+    mStyle.body.main_color = LV_COLOR_RED;
+    mStyle.body.grad_color = LV_COLOR_RED;
+    lv_obj_set_style(mogo, &mStyle);
+
+
+
+    lv_style_t lineStyle;
+    lv_style_copy(&lineStyle, &lv_style_plain);
+    lineStyle.line.width = 1;
+    lineStyle.line.color = LV_COLOR_WHITE;
+    lv_style_t axisStyle;
+    lv_style_copy(&axisStyle, &lineStyle);
+    axisStyle.line.width = 3;
+
+    int dashCount = 13;
+    int dashWidth = 10;
+    lv_point_t startPoint = { 0,0 };
+    std::vector<lv_point_t> pointVector(2, startPoint);
+    static std::vector<std::vector<lv_point_t>> vertLinePoints(dashCount - 1, pointVector);
+    static std::vector<std::vector<lv_point_t>> horLinePoints(dashCount - 1, pointVector);
+    int sWidth = lv_obj_get_width(screen);
+    int sHeight = lv_obj_get_height(screen);
+
+    lv_obj_t* xAxis = lv_line_create(screen, NULL);
+    lv_point_t xAxisPoints[2];
+    xAxisPoints[0].x = 0, xAxisPoints[0].y = sHeight / 2-1;
+    xAxisPoints[1].x = sWidth, xAxisPoints[1].y = sHeight / 2-1;
+    lv_line_set_points(xAxis, xAxisPoints, 2);
+    lv_obj_set_style(xAxis, &axisStyle);
+
+    lv_obj_t* yAxis = lv_line_create(screen, NULL);
+    lv_point_t yAxisPoints[2];
+    yAxisPoints[0].y = 0, yAxisPoints[0].x = sWidth / 2-1;
+    yAxisPoints[1].y = sHeight, yAxisPoints[1].x = sWidth / 2-1;
+    lv_line_set_points(yAxis, yAxisPoints, 2);
+    lv_obj_set_style(yAxis, &axisStyle);
+
+    for (int i = 1; i < dashCount; i++) {
+        vertLinePoints[i - 1][0].x = (int16_t)(sWidth / dashCount * i);
+        vertLinePoints[i - 1][0].y = (int16_t)(sHeight / 2 + dashWidth / 2);
+        vertLinePoints[i - 1][1].x = (int16_t)(sWidth / dashCount * i);
+        vertLinePoints[i - 1][1].y = (int16_t)(sHeight / 2 - dashWidth / 2);
+        lv_obj_t* line = lv_line_create(screen, NULL);
+        lv_line_set_points(line, vertLinePoints[i - 1].data(), vertLinePoints[i - 1].size());
+        lv_obj_set_free_num(line, i);
+
+        lv_obj_set_style(line, &lineStyle);
+    }
+    for (int i = 1; i < dashCount; i++) {
+        horLinePoints[i - 1][0].x = (int16_t)(sWidth / 2 + dashWidth / 2);
+        horLinePoints[i - 1][0].y = (int16_t)(sHeight / dashCount * i);
+        horLinePoints[i - 1][1].x = (int16_t)(sWidth / 2 - dashWidth / 2);
+        horLinePoints[i - 1][1].y = (int16_t)(sHeight / dashCount * i);
+        lv_obj_t* line = lv_line_create(screen, NULL);
+        lv_line_set_points(line, horLinePoints[i - 1].data(), horLinePoints[i - 1].size());
+        lv_obj_set_free_num(line, i);
+
+        lv_obj_set_style(line, &lineStyle);
+    }
+
+    lv_obj_set_style(mogo, &mStyle);
+    lv_obj_set_size(mogo, (int16_t)(10), (int16_t)(10));
+
+    int widthScale = 20;
+    int heightScale = sHeight / sWidth * widthScale;
+    while (true) {
+        pros::delay(20);
+        //lv_label_set_text(label, rtn.signature);
+        //rtn = vision.get_by_size(0);
+        Point COR = state.getCOR();
+
+        std::string labelText = std::to_string(COR.x) + "," + std::to_string(COR.y);
+        lv_label_set_text(label, labelText.c_str());
+        lv_obj_set_pos(mogo, (int16_t)((widthScale/2+COR.x) * sWidth/widthScale), (int16_t)((heightScale/2 - COR.y) * sHeight / heightScale ));
+        lv_obj_invalidate(mogo);
+    }
+}
+*/

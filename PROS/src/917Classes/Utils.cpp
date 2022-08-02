@@ -74,14 +74,7 @@ double Utils::redMotConv(double angle) {
 };
 
 double Utils::inertToRad(double deg) {
-    double converted = deg * M_PI / 180;
-    if (converted < 0) {
-        converted += 2 * M_PI;
-    }
-    else if (converted > M_PI * 2) {
-        converted -= 2 * M_PI;
-    }
-    return converted;
+    return deg * M_PI / 180;
 };
 
 Point Utils::pointAligner(Point state, Point target, double finalAng, int distState) {
@@ -108,5 +101,5 @@ Point Utils::pointAligner(Point state, Point target, double finalAng, int distSt
 }
 
 Point Utils::mogoReset(Point mogoP, double theta) {
-    return Point(mogoP.x - sin(theta) * mogoRad, mogoP.y + cos(theta) * mogoRad);
+    return Point(mogoP.x + sin(theta) * mogoRad, mogoP.y - cos(theta) * mogoRad);
 }
