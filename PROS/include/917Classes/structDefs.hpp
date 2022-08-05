@@ -7,3 +7,10 @@ struct Point {
     Point() = default;
 	double operator-(const Point& rhs);
 };
+
+struct resetStruct {
+	bool switchPressed;
+	Point pointReset;
+	bool posReset;
+	resetStruct(Point resetPoint);
+};

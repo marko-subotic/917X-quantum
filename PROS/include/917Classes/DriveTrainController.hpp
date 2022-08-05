@@ -10,7 +10,7 @@
 class DriveTrainController {
 private:
     //index of arrays is state of the bot, index 0 is 1 mogo in back, index 1 is no mogo
-    static constexpr double minErrorDegrees = .7*M_PI/180;
+    static constexpr double minErrorDegrees = 1.4*M_PI/180;
     static constexpr double kProp [2] = { 80, 80 };
     static constexpr double kInteg[2] = { 11, 11 };
     static constexpr double kDer[2] = { 600, 600};

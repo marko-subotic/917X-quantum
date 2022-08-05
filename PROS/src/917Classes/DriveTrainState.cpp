@@ -6,7 +6,7 @@
 #include <cstdio>
 #include <math.h>
 
-//pros::Mutex mtx;
+pros::Mutex mtx;
 
 DriveTrainState::DriveTrainState() {
     m_x = 0;
@@ -23,6 +23,7 @@ DriveTrainState::DriveTrainState(double x, double y, double theta){
 
 
 void DriveTrainState::setState(Point resetPoint, double theta) {
+    LockGuard lockGuard(&mtx);
     m_x = resetPoint.x;
     m_y = resetPoint.y;
     m_theta = theta;
@@ -35,13 +36,13 @@ double DriveTrainState::deltaTheta(double leftEnc, double rightEnc) {
 
 
 Point DriveTrainState::getPos(){
-    //LockGuard lockGuard(&mtx);
+    LockGuard lockGuard(&mtx);
     return Point(m_x,m_y);
 };
 
 
 double DriveTrainState::getTheta(){
-    //LockGuard lockGuard(&mtx);
+    LockGuard lockGuard(&mtx);
     return m_theta;
 }
 
@@ -67,7 +68,7 @@ void DriveTrainState::step(double dLeftEnc, double dRightEnc, double dBottomEnc,
 
     double deltaTheta = (fabs(rawLeft) + fabs(rawRight)) / 2;
     velocity = deltaTheta / loopDelay * 1000 / 360 * encWheelSize / bigDiam * 60 / rpms * 100;
-   // LockGuard lockGuard(&mtx);
+    LockGuard lockGuard(&mtx);
     m_x += shiftX * cos(-m_theta) + shiftY * sin(-m_theta);
     m_y += shiftY * cos(-m_theta) - shiftX * sin(-m_theta);
     m_theta = Utils::thetaConverter(m_theta + dTheta);

@@ -274,6 +274,7 @@
             // printf("%f\n", state->getPos().y);
             //printf("%f\n", error);
             */
+            printf("(x,y,theta): (%f,%f,%f)\n", state->getPos().x, state->getPos().y, targetAng);
             //printf("%f, %f, %f\n", error, (spd), aveRealVelo);
             //printf("(targetAng, correction): (%f,%f)\n", targetAng, speedCorrection);
             double tolerance = 180*M_PI / 180;

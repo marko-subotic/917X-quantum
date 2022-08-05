@@ -7,3 +7,9 @@ Point::Point(double inX, double inY){
 double Point::operator-(const Point& rhs) {
 	return this->x - rhs.x + this->y - rhs.y;
 }
+
+resetStruct::resetStruct(Point resetPoint) {
+    switchPressed = false;
+    pointReset = resetPoint;
+    posReset = false;
+}
