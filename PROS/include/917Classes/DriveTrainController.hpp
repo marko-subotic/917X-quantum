@@ -36,15 +36,16 @@ private:
     static constexpr double kMogo = .2;
     
     
-
-    
+    DriveTrainState* state;
+    resetStruct* resetInterface;
 public:
-    static void turnToPoint(DriveTrainState* state, Point target, double liftPos, int mogoState);
-    static void driveToPoint(DriveTrainState* state, Point target, double inSpd, double liftPos, int mogoState, double finalAng, double tiltPercent, double liftPercent, int radState, bool isClamping);
-    static void driveToPoint(DriveTrainState* state, Point target, double inSpd, double liftPos, int mogoState, double finalAng, bool isClamping);
-    static void driveToPoint(DriveTrainState* state, Point target, double inSpd, double liftPos, int mogoState, double finalAng, double tiltPercent, bool isClamping);
+    DriveTrainController(DriveTrainState* state, resetStruct* resetInterface);
+    void turnToPoint(Point target, double liftPos, int mogoState);
+    void driveToPoint(Point target, double inSpd, double liftPos, int mogoState, double finalAng, double tiltPercent, double liftPercent, int radState, bool isClamping);
+    void driveToPoint(Point target, double inSpd, double liftPos, int mogoState, double finalAng, bool isClamping);
+    void driveToPoint(Point target, double inSpd, double liftPos, int mogoState, double finalAng, double tiltPercent, bool isClamping);
     static void intakeTask(int* state);
-    static void driveToMogo(DriveTrainState* state, Point target, double inSpd, double liftPos, int mogoState, double finalAng, double tiltPercent, double liftPercent, int radState, bool isClamping, int colorID);
-    static void driveToMogo(DriveTrainState* state, Point target, double inSpd, double liftPos, int mogoState, double finalAng, bool isClamping, int colorID);
-    static void driveToMogo(DriveTrainState* state, Point target, double inSpd, double liftPos, int mogoState, double finalAng, double tiltPercent, bool isClamping, int colorID);
+    void driveToMogo(Point target, double inSpd, double liftPos, int mogoState, double finalAng, double tiltPercent, double liftPercent, int radState, bool isClamping, int colorID);
+    void driveToMogo(Point target, double inSpd, double liftPos, int mogoState, double finalAng, bool isClamping, int colorID);
+    void driveToMogo(Point target, double inSpd, double liftPos, int mogoState, double finalAng, double tiltPercent, bool isClamping, int colorID);
 };

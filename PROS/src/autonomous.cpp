@@ -18,6 +18,8 @@ int intakeState = 2;
 int progState = 0;
 double inertHeading = state.getTheta();
 
+
+
 double kInert = 1080.0 / (1080 + 12);
 
 
@@ -105,8 +107,31 @@ void visualDebug(void* p) {
 }
 
 
+void mogoReseter(void* reseter) {
+
+    resetStruct* bruh = static_cast<resetStruct*>(reseter);
+
+
+
+    while (!bruh->posReset) {
+        pros::delay(20);
+        //printf("%f, %f, %f\n", state.getPos().x, state.getPos().y, state.getTheta());
+
+        if (limitSwitch.get_value() && !bruh->switchPressed) {
+            printf("woah\n");
+            bruh->switchPressed = true;
+            state.setState(Utils::mogoReset(bruh->pointReset, inertHeading), inertHeading);
+            bruh->posReset = true;
+
+        }
+
+    }
+    bruh->posReset = false;
+}
 void rightSide(void* p) {
     lift.tare_position();
+    resetStruct nothing(Point(0,0));
+    DriveTrainController controller(&state, &nothing);
     Point pointOne(110.5, 66.01);
     Point pointTwo(110, 35);
     Point pointThree(140, 41);
@@ -116,54 +141,57 @@ void rightSide(void* p) {
     Point pointSeven(124, 5);
     Point pointEight(110, 25);
     Point pointNine(110, 0);
-    //DriveTrainController::turnToPoint(&state, pointOne, 0, 0);
+    //controller.turnToPoint( , pointOne, 0, 0);
     cover.set_value(true);
-    DriveTrainController::driveToPoint(&state, pointOne, -100, 0,2, ANGLE_IRRELEVANT, true);
+    controller.driveToPoint(pointOne, -100, 0,2, ANGLE_IRRELEVANT, true);
     clamp.set_value(true);
     //pros::delay(200);
     printf("looping through motor");
 
     state.switchDir();
-    DriveTrainController::driveToPoint(&state, pointTwo, 100, 0,2, ANGLE_IRRELEVANT, true);
+    controller.driveToPoint(pointTwo, 100, 0,2, ANGLE_IRRELEVANT, true);
 
-    DriveTrainController::turnToPoint(&state, pointThree, -10, 1);
+    controller.turnToPoint(pointThree, -10, 1);
     cover.set_value(false);
     clamp.set_value(false);
-    DriveTrainController::driveToPoint(&state, pointThree,100, 0, 0, ANGLE_IRRELEVANT, true);
+    controller.driveToPoint(pointThree,100, 0, 0, ANGLE_IRRELEVANT, true);
     tilter.set_value(true);
     state.switchDir();
-    //DriveTrainController::turnToPoint(&state, pointFour, -20, 0);
-    //DriveTrainController::driveToPoint(&state, pointFour, -100, -20, 0);
+    //controller.turnToPoint(pointFour, -20, 0);
+    //controller.driveToPoint(pointFour, -100, -20, 0);
     intakeState = 0;
     //intake.move(-127);
-    DriveTrainController::driveToPoint(&state, pointFive, -70, -0, 0, -6, false);
+    controller.driveToPoint(pointFive, -70, -0, 0, -6, false);
     state.switchDir();
-    DriveTrainController::driveToPoint(&state, pointSix, 100, -0, 0, ANGLE_IRRELEVANT, false);
+    controller.driveToPoint(pointSix, 100, -0, 0, ANGLE_IRRELEVANT, false);
     state.switchDir();
-    DriveTrainController::driveToPoint(&state, pointSeven, -80, 0, 0, ANGLE_IRRELEVANT, false);
+    controller.driveToPoint(pointSeven, -80, 0, 0, ANGLE_IRRELEVANT, false);
     state.setState(Point(110,10),M_PI);
     state.switchDir();
-    DriveTrainController::driveToPoint(&state, pointEight, 100, -0, 0, ANGLE_IRRELEVANT, false);
+    controller.driveToPoint(pointEight, 100, -0, 0, ANGLE_IRRELEVANT, false);
     pros::delay(1000);
     state.switchDir();
-    DriveTrainController::driveToPoint(&state, pointNine, -30, -0, 0, ANGLE_IRRELEVANT, false);
+    controller.driveToPoint(pointNine, -30, -0, 0, ANGLE_IRRELEVANT, false);
     tilter.set_value(false);
     highReleaseR.set_value(true);
     highReleaseL.set_value(true);
 
     //pros::delay(700);
     intakeState = 3;
-    //DriveTrainController::turnToPoint(&state, pointTwo, .25, -10);
-    //DriveTrainController::driveToPoint(&state, pointTwo, 100, .2, -10);
-    //DriveTrainController::driveToPoint(&state, Point(state.getPos().x - 10, fabs(atan(state.getTheta())) * 10 + state.getPos().y), -100, Utils::redMotConv(-10),0);
-    /*DriveTrainController::turnToPoint(&state, pointFive, Utils::redMotConv(-10), 0);
-    DriveTrainController::driveToPoint(&state, pointFive, 100, Utils::redMotConv(-10),0);
+    //controller.turnToPoint(pointTwo, .25, -10);
+    //controller.driveToPoint(pointTwo, 100, .2, -10);
+    //controller.driveToPoint(Point(state.getPos().x - 10, fabs(atan(state.getTheta())) * 10 + state.getPos().y), -100, Utils::redMotConv(-10),0);
+    /*controller.turnToPoint(pointFive, Utils::redMotConv(-10), 0);
+    controller.driveToPoint(pointFive, 100, Utils::redMotConv(-10),0);
     pros::delay(2000);
-    DriveTrainController::turnToPoint(&state, pointSix, Utils::redMotConv(-10),0);
+    controller.turnToPoint(pointSix, Utils::redMotConv(-10),0);
     */
 }
 
 void midTow(void* p) {
+
+    resetStruct nothing(Point(0,0));
+    DriveTrainController controller(&state, &nothing);
     Point pointOne(61, 60);
     Point pointTwo(82, 55.25);
     Point pointThree(130, 42);
@@ -176,33 +204,33 @@ void midTow(void* p) {
     Point statePos = state.getPos();
     printf("looping through motor");
     state.setState(statePos, Utils::angleToPoint(Point(pointOne.x - statePos.x, pointOne.y - statePos.y)));
-    //DriveTrainController::turnToPoint(&state, pointOne, 0, 0);
+    //controller.turnToPoint(pointOne, 0, 0);
     cover.set_value(true);
-    DriveTrainController::driveToPoint(&state, pointOne, -100, 0, 2, ANGLE_IRRELEVANT, true);
+    controller.driveToPoint(pointOne, -100, 0, 2, ANGLE_IRRELEVANT, true);
     clamp.set_value(true);
     state.switchDir();
-    DriveTrainController::driveToPoint(&state, Point(state.getPos().x + 15, state.getPos().y- 15/fabs(tan(state.getTheta())) ), 100, -10, 0, ANGLE_IRRELEVANT, false);
-    DriveTrainController::turnToPoint(&state, pointThree, 0, 0);
+    controller.driveToPoint(Point(state.getPos().x + 15, state.getPos().y- 15/fabs(tan(state.getTheta())) ), 100, -10, 0, ANGLE_IRRELEVANT, false);
+    controller.turnToPoint(pointThree, 0, 0);
     clamp.set_value(false);
     cover.set_value(false);
-    DriveTrainController::driveToPoint(&state, pointThree, 100, 0, 0, ANGLE_IRRELEVANT, true);
+    controller.driveToPoint(pointThree, 100, 0, 0, ANGLE_IRRELEVANT, true);
     tilter.set_value(true);
     state.switchDir();
-    //DriveTrainController::turnToPoint(&state, pointFour, -20, 0);
-    //DriveTrainController::driveToPoint(&state, pointFour, -100, -20, 0);
-    //DriveTrainController::turnToPoint(&state, pointFive, 0, 0);
+    //controller.turnToPoint(pointFour, -20, 0);
+    //controller.driveToPoint(pointFour, -100, -20, 0);
+    //controller.turnToPoint(pointFive, 0, 0);
     intake.move(-127);
-    //DriveTrainController::driveToPoint(&state, pointFive, -70, -0, 0, -6, false);
+    //controller.driveToPoint(pointFive, -70, -0, 0, -6, false);
     //state.switchDir();
-    DriveTrainController::driveToPoint(&state, pointSeven, -40, -0, 0, -16, false);
+    controller.driveToPoint(pointSeven, -40, -0, 0, -16, false);
     //state.switchDir();
-    //DriveTrainController::driveToPoint(&state, pointSeven, -60, 0, -4, 0, false);
+    //controller.driveToPoint(pointSeven, -60, 0, -4, 0, false);
     state.setState(Point(110, 10), M_PI);
     state.switchDir();
-    DriveTrainController::driveToPoint(&state, pointEight, 100, -0, 0, ANGLE_IRRELEVANT, false);
+    controller.driveToPoint(pointEight, 100, -0, 0, ANGLE_IRRELEVANT, false);
     pros::delay(1000);
     state.switchDir();
-    DriveTrainController::driveToPoint(&state, pointNine, -30, -0, 0, ANGLE_IRRELEVANT, false);
+    controller.driveToPoint(pointNine, -30, -0, 0, ANGLE_IRRELEVANT, false);
     highReleaseR.set_value(true);
     highReleaseL.set_value(true);
 
@@ -210,6 +238,10 @@ void midTow(void* p) {
     intakeState = 3;
 }
 void leftSide(void* p) {
+
+    resetStruct nothing(Point(0,0));
+    DriveTrainController controller(&state, &nothing);
+
     Point pointOne(35, 69);
     Point pointTwo(26, 30);
     Point pointThree(47.5, 14);
@@ -220,33 +252,33 @@ void leftSide(void* p) {
     Point statePos = state.getPos();
     clamp.set_value(true);
     state.setState(statePos, Utils::angleToPoint(Point(pointOne.x - statePos.x, pointOne.y - statePos.y)));
-    DriveTrainController::driveToPoint(&state, pointOne, -100, 0, 2, ANGLE_IRRELEVANT, true);
+    controller.driveToPoint(pointOne, -100, 0, 2, ANGLE_IRRELEVANT, true);
     clamp.set_value(false);
     state.switchDir();
-    DriveTrainController::driveToPoint(&state, pointTwo, 100, 0, 2, ANGLE_IRRELEVANT, false);
-    DriveTrainController::turnToPoint(&state, pointThree, -15, 0);
+    controller.driveToPoint(pointTwo, 100, 0, 2, ANGLE_IRRELEVANT, false);
+    controller.turnToPoint(pointThree, -15, 0);
     cover.set_value(false);
     clamp.set_value(false);
-    DriveTrainController::driveToPoint(&state, pointThree, 70, 0, 0, ANGLE_IRRELEVANT, true);
+    controller.driveToPoint(pointThree, 70, 0, 0, ANGLE_IRRELEVANT, true);
     intake.move(-127);
 
     tilter.set_value(true);
     state.switchDir();
-    DriveTrainController::driveToPoint(&state, pointFour, -70, 0, 0, ANGLE_IRRELEVANT, false);
+    controller.driveToPoint(pointFour, -70, 0, 0, ANGLE_IRRELEVANT, false);
     intake.move(-127);
-    /*DriveTrainController::driveToPoint(&state, pointFive, -70, -0, 0, ANGLE_IRRELEVANT, false);
+    /*controller.driveToPoint(pointFive, -70, -0, 0, ANGLE_IRRELEVANT, false);
     state.switchDir();
     state.setState(Point(24, 5), M_PI);
 
     //tilter.set_value(false);
-    DriveTrainController::driveToPoint(&state, pointSix, 100, -0, 0, ANGLE_IRRELEVANT, false);
+    controller.driveToPoint(pointSix, 100, -0, 0, ANGLE_IRRELEVANT, false);
     state.switchDir();
-    DriveTrainController::driveToPoint(&state, pointFive, -80, 0, 0, ANGLE_IRRELEVANT, false);
+    controller.driveToPoint(pointFive, -80, 0, 0, ANGLE_IRRELEVANT, false);
     state.switchDir();
-    DriveTrainController::driveToPoint(&state, pointSix, 100, -0, 0, ANGLE_IRRELEVANT, false);
+    controller.driveToPoint(pointSix, 100, -0, 0, ANGLE_IRRELEVANT, false);
     pros::delay(2000);
     state.switchDir();
-    DriveTrainController::driveToPoint(&state, pointFive, -30, -0, 0, ANGLE_IRRELEVANT, false);
+    controller.driveToPoint(pointFive, -30, -0, 0, ANGLE_IRRELEVANT, false);
     highReleaseL.set_value(true);
     highReleaseR.set_value(true);
     //pros::delay(700);
@@ -282,98 +314,113 @@ void prog(void* p) {
     Point balance(72, 12);
 
 
-
+    Point yelLeft(36, 72);
+    Point yelMid(72, 72);
+    Point yelRight(108, 72);
+    Point blue(132, 36);
+    Point tester(50, 98);
 
 
 
     tilter.set_value(true);
     pros::delay(100);
-
+    resetStruct resetInterface(yelLeft);
+    DriveTrainController controller(&state, &resetInterface);
     //pros::delay(1000);
-    progState = 1;
-    DriveTrainController::driveToPoint(&state, pointOne, -speed, 6, 0, ANGLE_IRRELEVANT, true);
+
+    pros::Task resetThread(mogoReseter, (void*)&resetInterface);
+    controller.driveToPoint(pointOne, -speed, 6, 0, ANGLE_IRRELEVANT, true);
     clamp.set_value(true);
     intakeState = 0;
     //intake.move(-127);
     //pros::delay(500);
 
-    DriveTrainController::driveToPoint(&state, pointTwoOh, -50, -90, 0, 10, false);
+    controller.driveToPoint(pointTwoOh, -50, -90, 0, 10, false);
     lift.move_absolute(Utils::redMotConv(-50)*LIFT_RATIO, 100);
     pros::delay(1000);
     clamp.set_value(false);
     
     state.switchDir();
-    DriveTrainController::driveToPoint(&state, pointThree, speed, -65, 0, ANGLE_IRRELEVANT, false);
+    controller.driveToPoint(pointThree, speed, -65, 0, ANGLE_IRRELEVANT, false);
     state.switchDir();
     intakeState = 2;
     intake.move(0);
-    DriveTrainController::turnToPoint(&state, pointFour, -65, 0);
+    controller.turnToPoint(pointFour, -65, 0);
     tilter.set_value(false);
-    pros::delay(500);
-    DriveTrainController::driveToPoint(&state, pointFour, -speed, -65, 1, ANGLE_IRRELEVANT,false);
+    pros::delay(200);
+    controller.driveToPoint(pointFour, -speed, -65, 1, ANGLE_IRRELEVANT,false);
     state.switchDir();
-    DriveTrainController::driveToPoint(&state, pointFive, 70, -10, 1, ANGLE_IRRELEVANT, true);
+    controller.driveToPoint(pointFive, 70, -10, 1, ANGLE_IRRELEVANT, true);
     tilter.set_value(true);
     state.switchDir();
 
-    DriveTrainController::driveToPoint(&state, pointFiveOh, -70, -10, 0, ANGLE_IRRELEVANT, false);
+    controller.driveToPoint(pointFiveOh, -70, -10, 0, ANGLE_IRRELEVANT, false);
 
     intakeState = 0;
     //intake.move(-127);
+    resetInterface.pointReset = yelRight;
+    pros::Task resetThread2(mogoReseter, (void*)&resetInterface);
     progState = 2;
-    DriveTrainController::driveToPoint(&state, pointSix, -speed, 3, 0, ANGLE_IRRELEVANT, 110, 30, 1, true);
+    controller.driveToPoint(pointSix, -speed, 3, 0, ANGLE_IRRELEVANT, 110, 30, 1, true);
     clamp.set_value(true);
     
-    DriveTrainController::driveToPoint(&state, pointSeven, -60, -68, 0, ANGLE_IRRELEVANT, false);
+    controller.driveToPoint(pointSeven, -60, -68, 0, ANGLE_IRRELEVANT, false);
     clamp.set_value(false);
     state.switchDir();
     
-    DriveTrainController::driveToPoint(&state, pointEight, speed, -65, 0, ANGLE_IRRELEVANT, false);
+    controller.driveToPoint(pointEight, speed, -65, 0, ANGLE_IRRELEVANT, false);
     state.switchDir();
     
-    DriveTrainController::turnToPoint(&state, pointNine, 0, 0);
-    progState = 3;
-    DriveTrainController::driveToPoint(&state, pointNine, -50, 2, 0, ANGLE_IRRELEVANT, 110, 30, 1, true);
+    controller.turnToPoint(pointNine, 0, 0);
+    resetInterface.pointReset = yelMid;
+    pros::Task resetThread3(mogoReseter, (void*)&resetInterface);
+    controller.driveToPoint(pointNine, -50, 2, 0, ANGLE_IRRELEVANT, 110, 30, 1, true);
     clamp.set_value(true);
     
-    DriveTrainController::turnToPoint(&state, pointTen, -60, 0);
-    DriveTrainController::driveToPoint(&state, pointTen, -speed, -64, 0, -14, false);
+    controller.turnToPoint(pointTen, -60, 0);
+    controller.driveToPoint(pointTen, -speed, -64, 0, -14, false);
     lift.move_absolute(Utils::redMotConv(-60) * LIFT_RATIO, 100);
     pros::delay(750);
     clamp.set_value(false);
     state.switchDir();
-    DriveTrainController::driveToPoint(&state, pointEleven, speed, -70, 0, ANGLE_IRRELEVANT, 110, 10, 1, false);
+    controller.driveToPoint(pointEleven, speed, -70, 0, ANGLE_IRRELEVANT, 110, 10, 1, false);
     state.switchDir();
-    DriveTrainController::turnToPoint(&state, pointTwelve, -15, 0);
-    progState = 4;
-    DriveTrainController::driveToPoint(&state, pointTwelve, -speed, 0, 0, -72, 110, 57, 1, true);
+    controller.turnToPoint(pointTwelve, -15, 0);
+    resetInterface.pointReset = blue;
+    pros::Task resetThread4(mogoReseter, (void*)&resetInterface);
+    controller.driveToPoint(pointTwelve, -speed, 0, 0, -72, 110, 57, 1, true);
     clamp.set_value(true);
     state.switchDir();
-    DriveTrainController::driveToPoint(&state, pointTwelveOh, speed, -10, 0, ANGLE_IRRELEVANT, false);
+    controller.driveToPoint(pointTwelveOh, speed, -10, 0, ANGLE_IRRELEVANT, false);
     state.switchDir();
-    DriveTrainController::driveToPoint(&state, pointThirteen, -speed, -86, 0, ANGLE_IRRELEVANT, 110, -1, 1, false);
+    controller.driveToPoint(pointThirteen, -speed, -86, 0, ANGLE_IRRELEVANT, 110, -1, 1, false);
     clamp.set_value(false);
     state.switchDir();
-    DriveTrainController::driveToPoint(&state, pointFourteen, speed, -80, 0, ANGLE_IRRELEVANT, false);
+    controller.driveToPoint(pointFourteen, speed, -80, 0, ANGLE_IRRELEVANT, false);
     state.switchDir();
-    progState = 5;
-    DriveTrainController::driveToPoint(&state, pointFifteen, -speed, 0, 0, ANGLE_IRRELEVANT, false);
+    resetInterface.pointReset = tester;
+    pros::Task resetThread5(mogoReseter, (void*)&resetInterface);
+    controller.driveToPoint(pointFifteen, -speed, 0, 0, ANGLE_IRRELEVANT, false);
     clamp.set_value(true);
-    DriveTrainController::driveToPoint(&state, pointSixteen, -speed, -88, 0, ANGLE_IRRELEVANT, false);
+    controller.driveToPoint(pointSixteen, -speed, -88, 0, ANGLE_IRRELEVANT, false);
     clamp.set_value(false);
     state.switchDir();
-    DriveTrainController::driveToPoint(&state, pointSeventeen, speed, -65, 0, ANGLE_IRRELEVANT, false);
+    controller.driveToPoint(pointSeventeen, speed, -65, 0, ANGLE_IRRELEVANT, false);
     state.switchDir();
-    DriveTrainController::driveToPoint(&state, pointEighteen, -speed, 0, 0, ANGLE_IRRELEVANT, true);
+    controller.driveToPoint(pointEighteen, -speed, 0, 0, ANGLE_IRRELEVANT, true);
     clamp.set_value(true);
     state.switchDir();
-    DriveTrainController::driveToPoint(&state, pointEighteenOh, speed, 0, 0, ANGLE_IRRELEVANT, true);
+    controller.driveToPoint(pointEighteenOh, speed, 0, 0, ANGLE_IRRELEVANT, true);
     state.switchDir();
-    DriveTrainController::driveToPoint(&state, pointNineteen, -100, -90, 0, ANGLE_IRRELEVANT, true);
-    //DriveTrainController::driveToPoint(&state, balance, -100, 0, 2, ANGLE_IRRELEVANT, 110, 2, 0, false);
+    controller.driveToPoint(pointNineteen, -100, -90, 0, ANGLE_IRRELEVANT, true);
+    //controller.driveToPoint(balance, -100, 0, 2, ANGLE_IRRELEVANT, 110, 2, 0, false);
 }
 
 void leftWPFirst(void* p) {
+
+    resetStruct nothing(Point(0,0));
+    DriveTrainController controller(&state, &nothing);
+
     int speed = 70;
     lift.tare_position();
     Point pointZero(28, 13);
@@ -382,22 +429,22 @@ void leftWPFirst(void* p) {
 
     //printf("%f\n", Utils::perToVol(100));
     //state.switchDir();
-    //DriveTrainController::driveToPoint(&state, pointZero, speed, 6, 1, ANGLE_IRRELEVANT, true);
+    //controller.driveToPoint(pointZero, speed, 6, 1, ANGLE_IRRELEVANT, true);
 
     tilter.set_value(true);
-    //DriveTrainController::turnToPoint(&state, pointOne, 0, 0);
+    //controller.turnToPoint(pointOne, 0, 0);
     pros::delay(100);
     //state.switchDir();
 
     //pros::delay(1000);
-    DriveTrainController::driveToPoint(&state, pointOne, -speed, 6, 0, ANGLE_IRRELEVANT, true);
+    controller.driveToPoint(pointOne, -speed, 6, 0, ANGLE_IRRELEVANT, true);
     clamp.set_value(true);
     intakeState = 0;
     intake.move(-127);
     //pros::delay(500);
     state.switchDir();
 
-    DriveTrainController::driveToPoint(&state, pointTwoOh, speed, -10, 0, ANGLE_IRRELEVANT, true);
+    controller.driveToPoint(pointTwoOh, speed, -10, 0, ANGLE_IRRELEVANT, true);
 
 
 }
@@ -411,11 +458,11 @@ void test(void* p) {
     //state.switchDir();
     tilter.set_value(true);
 
-    //DriveTrainController::driveToPoint(&state, forward, -100, 0, 0, 0, false);
-    //DriveTrainController::driveToPoint(&state, climb, -100, 0, 1, 0);
+    //controller.driveToPoint(forward, -100, 0, 0, 0, false);
+    //controller.driveToPoint(climb, -100, 0, 1, 0);
     progState = 5;
-    //DriveTrainController::driveToMogo(&state, forward, -70, 0, 0, ANGLE_IRRELEVANT, false, RED_ID);
-    //DriveTrainController::driveToPoint(&state, forward, -70, 0, 0, ANGLE_IRRELEVANT, true);
+    //controller.driveToMogo(forward, -70, 0, 0, ANGLE_IRRELEVANT, false, RED_ID);
+    //controller.driveToPoint(forward, -70, 0, 0, ANGLE_IRRELEVANT, true);
     Point print;
     //intake.move(0);
     pros::delay(500);
@@ -429,58 +476,14 @@ void autonIntake(void* p) {
     DriveTrainController::intakeTask(&intakeState);
 }
 
-void mogoReseter(void* resetStruct) {
-
-    Point yelLeft(36, 72);
-    Point yelMid(72, 72);
-    Point yelRight(108, 72);
-    Point blue(132, 36);
-    Point tester(50, 98);
-
-    int prevProgState = progState;
-    while (1) {
-        pros::delay(20);
-        //printf("%f, %f, %f\n", state.getPos().x, state.getPos().y, state.getTheta());
-
-        if (limitSwitch.get_new_press()) {
-            printf("woah\n");
-            if (progState== prevProgState) {
-                continue;
-            }
-            prevProgState = progState;
-            switch(progState){
-            case 1:
-                state.setState(Utils::mogoReset(yelLeft, inertHeading), inertHeading);
-                break;
-            case 2:
-                state.setState(Utils::mogoReset(yelRight, inertHeading), inertHeading);
-                break;
-            case 3:
-                state.setState(Utils::mogoReset(yelMid, inertHeading), inertHeading);
-                break;
-            case 4:
-                state.setState(Utils::mogoReset(blue, inertHeading), inertHeading);
-                break;
-            case 5:
-                state.setState(Point(138, 62), inertHeading);
-                printf("bruh\n");
-                pros::delay(65);
-                state.setState(Utils::mogoReset(tester, inertHeading), inertHeading);
-                printf("bruh2\n");
-                break;
-            }
-        }
-        
-    }
-}
 void autonomous() {
     //state.switchDir();
     std::string debugTaskName("visualDebug Task");
-
+    void* shoot = nullptr;
     lift.set_encoder_units(pros::E_MOTOR_ENCODER_COUNTS);
     pros::Task odomTasks(odomFunctions);
     pros::Task displayTask(visualDebug, &debugTaskName);
-    pros::Task bruh(mogoReseter);
+    pros::Task bruh(mogoReseter, shoot);
     pros::Task driveTask(prog);
     //pros::Task autonIntakeTask(autonIntake);
 
