@@ -280,7 +280,7 @@
             // printf("%f\n", state->getPos().y);
             //printf("%f\n", error);
             */
-            printf("(x,y,theta): (%f,%f,%f)\n", state->getPos().x, state->getPos().y, targetAng);
+            //printf("(x,y,theta): (%f,%f,%f)\n", state->getPos().x, state->getPos().y, targetAng);
             //printf("%f, %f, %f\n", error, (spd), aveRealVelo);
             //printf("(targetAng, correction): (%f,%f)\n", targetAng, speedCorrection);
             double tolerance = 180*M_PI / 180;
@@ -335,8 +335,11 @@
 
         if (resetInterface->switchPressed) {
             resetInterface->switchPressed = false;
+            resetInterface->posReset = true;
+
         }
-        resetInterface->posReset = true;
+
+        printf("bruh %d, %d\n", resetInterface->switchPressed, resetInterface->posReset);
 
         rightBack.set_brake_mode(pros::E_MOTOR_BRAKE_HOLD);
         rightMid.set_brake_mode(pros::E_MOTOR_BRAKE_HOLD);
@@ -643,8 +646,9 @@
         }
         if (resetInterface->switchPressed) {
             resetInterface->switchPressed = false;
+            resetInterface->posReset = true;
+
         }
-        resetInterface->posReset = true;
         rightBack.set_brake_mode(pros::E_MOTOR_BRAKE_HOLD);
         rightMid.set_brake_mode(pros::E_MOTOR_BRAKE_HOLD);
         rightFront.set_brake_mode(pros::E_MOTOR_BRAKE_HOLD);
