@@ -110,22 +110,26 @@ void visualDebug(void* p) {
 void mogoReseter(void* reseter) {
 
     resetStruct* bruh = static_cast<resetStruct*>(reseter);
-
-
-
+    bruh->posReset = false;
+    bruh->switchPressed = false;
+    printf("%d, %d\n", bruh->switchPressed, bruh->posReset);
     while (!bruh->posReset) {
         pros::delay(20);
         //printf("%f, %f, %f\n", state.getPos().x, state.getPos().y, state.getTheta());
+        printf("%d, %d\n", bruh->switchPressed, bruh->posReset);
 
-        if (limitSwitch.get_value() && !bruh->switchPressed) {
+        if (limitSwitch.get_value() && !bruh->switchPressed&&!bruh->posReset) {
             printf("woah\n");
             bruh->switchPressed = true;
+            printf("%f, %f\n", bruh->pointReset.x, bruh->pointReset.y);
             state.setState(Utils::mogoReset(bruh->pointReset, inertHeading), inertHeading);
-            bruh->posReset = true;
 
         }
 
     }
+    printf("quitting\n");
+    printf("%d, %d\n", bruh->switchPressed, bruh->posReset);
+
     bruh->posReset = false;
 }
 void rightSide(void* p) {
@@ -288,25 +292,25 @@ void prog(void* p) {
     int speed = 70;
     lift.tare_position();
     Point pointZero(28, 13);
-    Point pointOne(27.6, 69.5);
+    Point pointOne(26.6, 69.5);
     Point pointTwoOh(65.5, 120);
     Point pointThree(64.5, 111);
     Point pointFour(120, 114);
     Point pointFive(91, 145);
     Point pointFiveOh(107, 131);
-    Point pointSix(107.5, 84.5);
-    Point pointSeven(79.5, 124);
+    Point pointSix(107, 80.5);
+    Point pointSeven(76.5, 124);
     Point pointEight(84, 113);
-    Point pointNine(74, 80);
-    Point pointTen(71.5, 127);
+    Point pointNine(70.5, 78);
+    Point pointTen(69.5, 124);
     Point pointEleven(74, 100);
     Point pointTwelve(144, 58);
-    Point pointTwelveOh(110, 70);
-    Point pointThirteen(77, 109);
-    Point pointFourteen(77, 99);
-    Point pointFifteen(48, 104);
-    Point pointSixteen(65, 124);
-    Point pointSeventeen(41, 98);
+    Point pointTwelveOh(100, 60);
+    Point pointThirteen(70, 109);
+    Point pointFourteen(70, 99);
+    Point pointFifteen(45, 94);
+    Point pointSixteen(60, 124);
+    Point pointSeventeen(41, 110);
     Point pointEighteen(0, 87);
     Point pointEighteenOh(19, 87);
 
@@ -319,6 +323,7 @@ void prog(void* p) {
     Point yelRight(108, 72);
     Point blue(132, 36);
     Point tester(50, 98);
+    Point redLeft(12, 108);
 
 
 
@@ -358,13 +363,13 @@ void prog(void* p) {
 
     intakeState = 0;
     //intake.move(-127);
-    resetInterface.pointReset = yelRight;
+    resetInterface = resetStruct(yelRight);
     pros::Task resetThread2(mogoReseter, (void*)&resetInterface);
     progState = 2;
     controller.driveToPoint(pointSix, -speed, 3, 0, ANGLE_IRRELEVANT, 110, 30, 1, true);
     clamp.set_value(true);
     
-    controller.driveToPoint(pointSeven, -60, -68, 0, ANGLE_IRRELEVANT, false);
+    controller.driveToPoint(pointSeven, -60, -65, 0, ANGLE_IRRELEVANT, false);
     clamp.set_value(false);
     state.switchDir();
     
@@ -372,13 +377,13 @@ void prog(void* p) {
     state.switchDir();
     
     controller.turnToPoint(pointNine, 0, 0);
-    resetInterface.pointReset = yelMid;
+    resetInterface = resetStruct(yelMid);
     pros::Task resetThread3(mogoReseter, (void*)&resetInterface);
     controller.driveToPoint(pointNine, -50, 2, 0, ANGLE_IRRELEVANT, 110, 30, 1, true);
     clamp.set_value(true);
     
     controller.turnToPoint(pointTen, -60, 0);
-    controller.driveToPoint(pointTen, -speed, -64, 0, -14, false);
+    controller.driveToPoint(pointTen, -speed, -67, 0, -14, false);
     lift.move_absolute(Utils::redMotConv(-60) * LIFT_RATIO, 100);
     pros::delay(750);
     clamp.set_value(false);
@@ -386,7 +391,7 @@ void prog(void* p) {
     controller.driveToPoint(pointEleven, speed, -70, 0, ANGLE_IRRELEVANT, 110, 10, 1, false);
     state.switchDir();
     controller.turnToPoint(pointTwelve, -15, 0);
-    resetInterface.pointReset = blue;
+    resetInterface = resetStruct(blue);
     pros::Task resetThread4(mogoReseter, (void*)&resetInterface);
     controller.driveToPoint(pointTwelve, -speed, 0, 0, -72, 110, 57, 1, true);
     clamp.set_value(true);
@@ -398,15 +403,17 @@ void prog(void* p) {
     state.switchDir();
     controller.driveToPoint(pointFourteen, speed, -80, 0, ANGLE_IRRELEVANT, false);
     state.switchDir();
-    resetInterface.pointReset = tester;
+    resetInterface = resetStruct(tester);
     pros::Task resetThread5(mogoReseter, (void*)&resetInterface);
     controller.driveToPoint(pointFifteen, -speed, 0, 0, ANGLE_IRRELEVANT, false);
     clamp.set_value(true);
     controller.driveToPoint(pointSixteen, -speed, -88, 0, ANGLE_IRRELEVANT, false);
     clamp.set_value(false);
     state.switchDir();
-    controller.driveToPoint(pointSeventeen, speed, -65, 0, ANGLE_IRRELEVANT, false);
+    controller.driveToPoint(pointSeventeen, speed, -75, 0, ANGLE_IRRELEVANT, false);
     state.switchDir();
+    resetInterface = resetStruct(redLeft);
+    pros::Task resetThread6(mogoReseter, (void*)&resetInterface);
     controller.driveToPoint(pointEighteen, -speed, 0, 0, ANGLE_IRRELEVANT, true);
     clamp.set_value(true);
     state.switchDir();
@@ -456,13 +463,12 @@ void test(void* p) {
     Point climb(25, 75);
     //intake.move(127);
     //state.switchDir();
+    resetStruct resetInterface(climb);
+    DriveTrainController controller(&state, &resetInterface);
     tilter.set_value(true);
 
-    //controller.driveToPoint(forward, -100, 0, 0, 0, false);
-    //controller.driveToPoint(climb, -100, 0, 1, 0);
-    progState = 5;
-    //controller.driveToMogo(forward, -70, 0, 0, ANGLE_IRRELEVANT, false, RED_ID);
-    //controller.driveToPoint(forward, -70, 0, 0, ANGLE_IRRELEVANT, true);
+    pros::Task resetThread(mogoReseter, (void*)&resetInterface);
+    controller.driveToPoint(forward, -20, 6, 0, ANGLE_IRRELEVANT, true);
     Point print;
     //intake.move(0);
     pros::delay(500);
@@ -483,7 +489,7 @@ void autonomous() {
     lift.set_encoder_units(pros::E_MOTOR_ENCODER_COUNTS);
     pros::Task odomTasks(odomFunctions);
     pros::Task displayTask(visualDebug, &debugTaskName);
-    pros::Task bruh(mogoReseter, shoot);
+    //pros::Task bruh(mogoReseter, shoot);
     pros::Task driveTask(prog);
     //pros::Task autonIntakeTask(autonIntake);
 
