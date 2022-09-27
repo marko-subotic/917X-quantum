@@ -71,10 +71,14 @@ class DriveTrainState{
        //for testing
         void setState(Point resetPoint, double theta);
 
+        //returns velocity in terms of percentage of maximum rpms
         double getVelo();
 
+        //returns current center of rotation, used for debugging
         Point getCOR();
+        
 
+        //used to calculate accuracy of theta for long term
         std::vector<double> calcAbsTheta(double leftEncAbs, double rightEncAbs);
 
 };

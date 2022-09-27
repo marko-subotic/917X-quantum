@@ -39,13 +39,28 @@ private:
     DriveTrainState* state;
     resetStruct* resetInterface;
 public:
+
+    //Constructor, pass in state and resetStruct pointers to be used as reference points for other functions
     DriveTrainController(DriveTrainState* state, resetStruct* resetInterface);
+
+
+    /**
+    * 
+    *   Turns to point from current position, going to the specified lift angle,
+    *        \param liftPos 
+    *            Desired angle of lift
+    *        \param mogoState  
+    *           state of mogos on robot
+    * 
+    * 
+    */
+       
     void turnToPoint(Point target, double liftPos, int mogoState);
-    void driveToPoint(Point target, double inSpd, double liftPos, int mogoState, double finalAng, double tiltPercent, double liftPercent, int radState, bool isClamping);
-    void driveToPoint(Point target, double inSpd, double liftPos, int mogoState, double finalAng, bool isClamping);
-    void driveToPoint(Point target, double inSpd, double liftPos, int mogoState, double finalAng, double tiltPercent, bool isClamping);
+    void driveToPoint(Point target, double inSpd, double liftPos, int mogoState, bool isClamping = false, double finalAng = ANGLE_IRRELEVANT, double tiltPercent = 110, double liftPercent = -1, int radState = 0);
+
+    
+    
     static void intakeTask(int* state);
-    void driveToMogo(Point target, double inSpd, double liftPos, int mogoState, double finalAng, double tiltPercent, double liftPercent, int radState, bool isClamping, int colorID);
-    void driveToMogo(Point target, double inSpd, double liftPos, int mogoState, double finalAng, bool isClamping, int colorID);
-    void driveToMogo(Point target, double inSpd, double liftPos, int mogoState, double finalAng, double tiltPercent, bool isClamping, int colorID);
+    void driveToMogo(Point target, double inSpd, double liftPos,int mogoState, bool isClamping = false, double finalAng = ANGLE_IRRELEVANT, double tiltPercent = 110, double liftPercent = -1, int radState = 0, int colorID = BLUE_ID);
+   
 };
