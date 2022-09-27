@@ -102,8 +102,8 @@
         leftFront.move_absolute(0, 100);
 	};
 
-	void DriveTrainController::driveToPoint( Point target, double inSpd, double liftPos, int mogoState, bool isClamping, double finalAng, double tiltPercent, double liftPercent, int radState) {
-        
+	void DriveTrainController::driveToPoint( Point target, double inSpd, double liftPos, int mogoState, bool isClamping, double finalAng, double tiltPercent, double liftPercent) {
+        int radState = 0;
         if (finalAng == ANGLE_IRRELEVANT) {
             radState = 1;
         }
@@ -404,7 +404,12 @@
             pros::delay(20);
         }
     };
-    void DriveTrainController::driveToMogo(Point target, double inSpd, double liftPos, int mogoState, bool isClamping , double finalAng , double tiltPercent, double liftPercent, int radState ,  int colorID) {
+    void DriveTrainController::driveToMogo(Point target, double inSpd, double liftPos, int mogoState, bool isClamping , double finalAng , double tiltPercent, double liftPercent,  int colorID) {
+        
+        int radState = 0;
+        if (finalAng == ANGLE_IRRELEVANT) {
+            radState = 1;
+        }
         double finalSpeed = finalSpeedForward[mogoState]; 
         double initialSpeed = initialSpeedForward[mogoState];
         finalAng *= (M_PI / 180.0);
