@@ -1,0 +1,800 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav</Extensions>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="pros\src\autonomous.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="pros\src\Globals.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="pros\src\initialize.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="pros\src\opcontrol.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="pros\src\917classes\DriveTrainController.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="pros\src\917classes\DriveTrainState.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="pros\src\917classes\OdomDisplay.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="pros\src\917classes\structDefs.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="pros\src\917classes\Utils.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="quantumtests\pch.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="quantumtests\QuantumTests.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="shared\GeometryFunctions.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="unittests\UnitTest.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="pros\include\api.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="pros\include\constants.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="pros\include\main.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="pros\include\Globals.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="pros\include\917classes\917Include.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="pros\include\917classes\DriveTrainController.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="pros\include\917classes\DriveTrainState.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="pros\include\917classes\OdomDisplay.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="pros\include\917classes\structDefs.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="pros\include\917classes\Utils.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="pros\include\display\lvgl.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="pros\include\display\lv_conf.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="pros\include\display\lv_conf_checker.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="pros\include\display\lv_version.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="pros\include\display\lv_core\lv_group.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="pros\include\display\lv_core\lv_indev.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="pros\include\display\lv_core\lv_lang.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="pros\include\display\lv_core\lv_obj.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="pros\include\display\lv_core\lv_refr.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="pros\include\display\lv_core\lv_style.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="pros\include\display\lv_core\lv_vdb.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="pros\include\display\lv_draw\lv_draw.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="pros\include\display\lv_draw\lv_draw_arc.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="pros\include\display\lv_draw\lv_draw_img.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="pros\include\display\lv_draw\lv_draw_label.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="pros\include\display\lv_draw\lv_draw_line.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="pros\include\display\lv_draw\lv_draw_rbasic.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="pros\include\display\lv_draw\lv_draw_rect.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="pros\include\display\lv_draw\lv_draw_triangle.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="pros\include\display\lv_draw\lv_draw_vbasic.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="pros\include\display\lv_fonts\lv_font_builtin.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="pros\include\display\lv_hal\lv_hal.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="pros\include\display\lv_hal\lv_hal_disp.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="pros\include\display\lv_hal\lv_hal_indev.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="pros\include\display\lv_hal\lv_hal_tick.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="pros\include\display\lv_misc\lv_anim.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="pros\include\display\lv_misc\lv_area.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="pros\include\display\lv_misc\lv_circ.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="pros\include\display\lv_misc\lv_color.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="pros\include\display\lv_misc\lv_font.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="pros\include\display\lv_misc\lv_fs.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="pros\include\display\lv_misc\lv_gc.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="pros\include\display\lv_misc\lv_ll.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="pros\include\display\lv_misc\lv_log.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="pros\include\display\lv_misc\lv_math.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="pros\include\display\lv_misc\lv_mem.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="pros\include\display\lv_misc\lv_symbol_def.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="pros\include\display\lv_misc\lv_task.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="pros\include\display\lv_misc\lv_templ.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="pros\include\display\lv_misc\lv_txt.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="pros\include\display\lv_misc\lv_ufs.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="pros\include\display\lv_objx\lv_arc.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="pros\include\display\lv_objx\lv_bar.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="pros\include\display\lv_objx\lv_btn.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="pros\include\display\lv_objx\lv_btnm.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="pros\include\display\lv_objx\lv_calendar.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="pros\include\display\lv_objx\lv_canvas.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="pros\include\display\lv_objx\lv_cb.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="pros\include\display\lv_objx\lv_chart.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="pros\include\display\lv_objx\lv_cont.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="pros\include\display\lv_objx\lv_ddlist.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="pros\include\display\lv_objx\lv_gauge.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="pros\include\display\lv_objx\lv_img.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="pros\include\display\lv_objx\lv_imgbtn.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="pros\include\display\lv_objx\lv_kb.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="pros\include\display\lv_objx\lv_label.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="pros\include\display\lv_objx\lv_led.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="pros\include\display\lv_objx\lv_line.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="pros\include\display\lv_objx\lv_list.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="pros\include\display\lv_objx\lv_lmeter.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="pros\include\display\lv_objx\lv_mbox.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="pros\include\display\lv_objx\lv_objx_templ.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="pros\include\display\lv_objx\lv_page.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="pros\include\display\lv_objx\lv_preload.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="pros\include\display\lv_objx\lv_roller.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="pros\include\display\lv_objx\lv_slider.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="pros\include\display\lv_objx\lv_spinbox.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="pros\include\display\lv_objx\lv_sw.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="pros\include\display\lv_objx\lv_ta.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="pros\include\display\lv_objx\lv_table.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="pros\include\display\lv_objx\lv_tabview.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="pros\include\display\lv_objx\lv_tileview.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="pros\include\display\lv_objx\lv_win.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="pros\include\display\lv_themes\lv_theme.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="pros\include\display\lv_themes\lv_theme_alien.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="pros\include\display\lv_themes\lv_theme_default.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="pros\include\display\lv_themes\lv_theme_material.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="pros\include\display\lv_themes\lv_theme_mono.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="pros\include\display\lv_themes\lv_theme_nemo.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="pros\include\display\lv_themes\lv_theme_night.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="pros\include\display\lv_themes\lv_theme_templ.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="pros\include\display\lv_themes\lv_theme_zen.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="pros\include\okapi\api.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="pros\include\okapi\api\coreProsAPI.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="pros\include\okapi\api\chassis\controller\chassisController.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="pros\include\okapi\api\chassis\controller\chassisControllerIntegrated.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="pros\include\okapi\api\chassis\controller\chassisControllerPid.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="pros\include\okapi\api\chassis\controller\chassisScales.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="pros\include\okapi\api\chassis\controller\defaultOdomChassisController.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="pros\include\okapi\api\chassis\controller\odomChassisController.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="pros\include\okapi\api\chassis\model\chassisModel.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="pros\include\okapi\api\chassis\model\hDriveModel.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="pros\include\okapi\api\chassis\model\readOnlyChassisModel.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="pros\include\okapi\api\chassis\model\skidSteerModel.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="pros\include\okapi\api\chassis\model\threeEncoderSkidSteerModel.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="pros\include\okapi\api\chassis\model\threeEncoderXDriveModel.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="pros\include\okapi\api\chassis\model\xDriveModel.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="pros\include\okapi\api\control\closedLoopController.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="pros\include\okapi\api\control\controllerInput.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="pros\include\okapi\api\control\controllerOutput.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="pros\include\okapi\api\control\offsettableControllerInput.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="pros\include\okapi\api\control\async\asyncController.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="pros\include\okapi\api\control\async\asyncLinearMotionProfileController.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="pros\include\okapi\api\control\async\asyncMotionProfileController.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="pros\include\okapi\api\control\async\asyncPosIntegratedController.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="pros\include\okapi\api\control\async\asyncPositionController.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="pros\include\okapi\api\control\async\asyncPosPidController.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="pros\include\okapi\api\control\async\asyncVelIntegratedController.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="pros\include\okapi\api\control\async\asyncVelocityController.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="pros\include\okapi\api\control\async\asyncVelPidController.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="pros\include\okapi\api\control\async\asyncWrapper.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="pros\include\okapi\api\control\iterative\iterativeController.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="pros\include\okapi\api\control\iterative\iterativeMotorVelocityController.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="pros\include\okapi\api\control\iterative\iterativePositionController.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="pros\include\okapi\api\control\iterative\iterativePosPidController.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="pros\include\okapi\api\control\iterative\iterativeVelocityController.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="pros\include\okapi\api\control\iterative\iterativeVelPidController.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="pros\include\okapi\api\control\util\controllerRunner.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="pros\include\okapi\api\control\util\flywheelSimulator.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="pros\include\okapi\api\control\util\pathfinderUtil.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="pros\include\okapi\api\control\util\pidTuner.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="pros\include\okapi\api\control\util\settledUtil.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="pros\include\okapi\api\device\button\abstractButton.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="pros\include\okapi\api\device\button\buttonBase.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="pros\include\okapi\api\device\motor\abstractMotor.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="pros\include\okapi\api\device\rotarysensor\continuousRotarySensor.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="pros\include\okapi\api\device\rotarysensor\rotarySensor.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="pros\include\okapi\api\filter\averageFilter.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="pros\include\okapi\api\filter\composableFilter.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="pros\include\okapi\api\filter\demaFilter.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="pros\include\okapi\api\filter\ekfFilter.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="pros\include\okapi\api\filter\emaFilter.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="pros\include\okapi\api\filter\filter.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="pros\include\okapi\api\filter\filteredControllerInput.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="pros\include\okapi\api\filter\medianFilter.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="pros\include\okapi\api\filter\passthroughFilter.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="pros\include\okapi\api\filter\velMath.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="pros\include\okapi\api\odometry\odometry.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="pros\include\okapi\api\odometry\odomMath.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="pros\include\okapi\api\odometry\odomState.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="pros\include\okapi\api\odometry\point.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="pros\include\okapi\api\odometry\stateMode.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="pros\include\okapi\api\odometry\threeEncoderOdometry.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="pros\include\okapi\api\odometry\twoEncoderOdometry.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="pros\include\okapi\api\units\QAcceleration.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="pros\include\okapi\api\units\QAngle.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="pros\include\okapi\api\units\QAngularAcceleration.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="pros\include\okapi\api\units\QAngularJerk.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="pros\include\okapi\api\units\QAngularSpeed.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="pros\include\okapi\api\units\QArea.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="pros\include\okapi\api\units\QForce.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="pros\include\okapi\api\units\QFrequency.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="pros\include\okapi\api\units\QJerk.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="pros\include\okapi\api\units\QLength.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="pros\include\okapi\api\units\QMass.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="pros\include\okapi\api\units\QPressure.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="pros\include\okapi\api\units\QSpeed.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="pros\include\okapi\api\units\QTime.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="pros\include\okapi\api\units\QTorque.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="pros\include\okapi\api\units\QVolume.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="pros\include\okapi\api\units\RQuantity.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="pros\include\okapi\api\util\abstractRate.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="pros\include\okapi\api\util\abstractTimer.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="pros\include\okapi\api\util\logging.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="pros\include\okapi\api\util\mathUtil.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="pros\include\okapi\api\util\supplier.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="pros\include\okapi\api\util\timeUtil.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="pros\include\okapi\impl\chassis\controller\chassisControllerBuilder.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="pros\include\okapi\impl\control\async\asyncMotionProfileControllerBuilder.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="pros\include\okapi\impl\control\async\asyncPosControllerBuilder.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="pros\include\okapi\impl\control\async\asyncVelControllerBuilder.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="pros\include\okapi\impl\control\iterative\iterativeControllerFactory.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="pros\include\okapi\impl\control\util\controllerRunnerFactory.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="pros\include\okapi\impl\control\util\pidTunerFactory.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="pros\include\okapi\impl\device\adiUltrasonic.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="pros\include\okapi\impl\device\controller.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="pros\include\okapi\impl\device\controllerUtil.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="pros\include\okapi\impl\device\distanceSensor.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="pros\include\okapi\impl\device\opticalSensor.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="pros\include\okapi\impl\device\button\adiButton.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="pros\include\okapi\impl\device\button\controllerButton.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="pros\include\okapi\impl\device\motor\adiMotor.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="pros\include\okapi\impl\device\motor\motor.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="pros\include\okapi\impl\device\motor\motorGroup.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="pros\include\okapi\impl\device\rotarysensor\adiEncoder.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="pros\include\okapi\impl\device\rotarysensor\adiGyro.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="pros\include\okapi\impl\device\rotarysensor\IMU.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="pros\include\okapi\impl\device\rotarysensor\integratedEncoder.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="pros\include\okapi\impl\device\rotarysensor\potentiometer.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="pros\include\okapi\impl\device\rotarysensor\rotationSensor.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="pros\include\okapi\impl\filter\velMathFactory.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="pros\include\okapi\impl\util\configurableTimeUtilFactory.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="pros\include\okapi\impl\util\rate.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="pros\include\okapi\impl\util\timer.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="pros\include\okapi\impl\util\timeUtilFactory.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="pros\include\okapi\pathfinder\include\pathfinder.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="pros\include\okapi\pathfinder\include\pathfinder\fit.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="pros\include\okapi\pathfinder\include\pathfinder\io.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="pros\include\okapi\pathfinder\include\pathfinder\lib.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="pros\include\okapi\pathfinder\include\pathfinder\mathutil.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="pros\include\okapi\pathfinder\include\pathfinder\spline.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="pros\include\okapi\pathfinder\include\pathfinder\structs.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="pros\include\okapi\pathfinder\include\pathfinder\trajectory.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="pros\include\okapi\pathfinder\include\pathfinder\followers\distance.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="pros\include\okapi\pathfinder\include\pathfinder\followers\encoder.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="pros\include\okapi\pathfinder\include\pathfinder\modifiers\swerve.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="pros\include\okapi\pathfinder\include\pathfinder\modifiers\tank.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="pros\include\pros\adi.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="pros\include\pros\apix.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="pros\include\pros\api_legacy.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="pros\include\pros\colors.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="pros\include\pros\distance.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="pros\include\pros\ext_adi.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="pros\include\pros\imu.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="pros\include\pros\llemu.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="pros\include\pros\misc.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="pros\include\pros\motors.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="pros\include\pros\optical.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="pros\include\pros\rotation.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="pros\include\pros\rtos.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="pros\include\pros\serial.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="pros\include\pros\vision.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="pros\include\pros\adi.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="pros\include\pros\distance.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="pros\include\pros\imu.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="pros\include\pros\llemu.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="pros\include\pros\misc.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="pros\include\pros\motors.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="pros\include\pros\optical.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="pros\include\pros\rotation.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="pros\include\pros\rtos.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="pros\include\pros\serial.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="pros\include\pros\vision.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="quantumtests\pch.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="pros\bin\cold.package.bin">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="pros\bin\hot.package.bin">
+      <Filter>Resource Files</Filter>
+    </None>
+  </ItemGroup>
+</Project>
